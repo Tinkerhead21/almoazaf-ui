@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees | SereneHR</title>
+    <meta name="description" content="Manage employees, view analytics, and handle HR operations with SereneHR.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons for modern, clean iconography -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="ph-fill ph-sparkle"></i>
+            </div>
+            <div class="logo-text">
+                <h1>SereneHR</h1>
+                <span>Enterprise Plan</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="ph ph-users"></i>
+                <span>Employees</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-money"></i>
+                <span>Payroll</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trend-up"></i>
+                <span>Performance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-user-plus"></i>
+                <span>Recruitment</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-file-text"></i>
+                <span>Documents</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="upgrade-card">
+                <h3>Upgrade Plan</h3>
+                <p>Unlock advanced analytics and global payroll features.</p>
+                <button class="btn btn-primary btn-block">Upgrade Now</button>
+            </div>
+
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-question"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top header -->
+        <header class="top-header">
+            <h2 class="page-title">Employees</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <button class="btn-text toggle-analytics" id="toggleAnalyticsBtn">
+                    <i class="ph ph-eye-slash"></i> Hide Analytics
+                </button>
+            </div>
+        </header>
+
+
+        <!-- Page body -->
+        <div class="page-body">
+
+            <!-- Analytics Grid -->
+            <div class="analytics-grid" id="analyticsGrid">
+                <!-- Card 1 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">TOTAL EMPLOYEES</span>
+                        <span class="badge badge-success">+12.5%</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">1,284</div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="employeesChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">TURNOVER RATE</span>
+                        <span class="status-text status-danger">Low Risk</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">4.2%</div>
+                        <div class="custom-legend">
+                            <span class="legend-item"><span class="dot"
+                                    style="background-color: var(--primary);"></span> Joined</span>
+                            <span class="legend-item"><span class="dot" style="background-color: #F43F5E;"></span>
+                                Left</span>
+                        </div>
+                    </div>
+                    <div class="chart-container bottom-align" style="flex-direction: column;">
+                        <div id="turnoverChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">RETENTION RATE</span>
+                        <span class="status-text" style="color: var(--text-secondary); font-size: 0.75rem;">Avg tenure:
+                            4.2 yrs</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">92%</div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="retentionChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="analytics-card" style="position: relative;">
+                    <div class="card-header">
+                        <span class="card-title">EMPLOYMENT TYPE</span>
+                    </div>
+                    <div class="custom-legend"
+                        style="position: absolute; left: var(--spacing-md); top: 55px; align-items: flex-start; gap: 8px;">
+                        <div class="card-metrics"
+                            style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.5rem;">963</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #6366F1;"></span>
+                                Full-time</span>
+                        </div>
+                        <div class="card-metrics"
+                            style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.5rem;">192</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #A855F7;"></span>
+                                Part-time</span>
+                        </div>
+                        <div class="card-metrics"
+                            style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.5rem;">129</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #EC4899;"></span>
+                                Outsource</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="justify-content: flex-end; margin-top: -10px;">
+                        <div id="employmentChart" style="width: 150px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee List Section -->
+            <div class="content-card list-section">
+
+                <!-- List Header -->
+                <div class="list-header">
+                    <div class="search-bar light">
+                        <i class="ph ph-funnel"></i>
+                        <input type="text" placeholder="Search for an employee...">
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn btn-outline">
+                            <i class="ph ph-faders"></i> Filter
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="ph ph-export"></i> Export
+                        </button>
+                        <button class="btn btn-primary">
+                            + Add Employee
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>EMPLOYEE ID & NAME</th>
+                                <th>ROLE & DEPARTMENT</th>
+                                <th>STATUS</th>
+                                <th>CONTRACT TYPE</th>
+                                <th>JOIN DATE</th>
+                                <th class="actions-col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Row 1 -->
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex"
+                                            alt="Alex Thompson" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Alex Thompson</span>
+                                            <span class="emp-id">ID: SC-4281</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="role-cell">
+                                        <span class="role-name">Product Designer</span>
+                                        <span class="department">Design Operations</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-active">ACTIVE</span></td>
+                                <td>Full-time</td>
+                                <td>Sep 12, 2021</td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost"><i class="ph ph-dots-three-vertical"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
+                                            alt="Sarah Jenkins" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Sarah Jenkins</span>
+                                            <span class="emp-id">ID: SC-8821</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="role-cell">
+                                        <span class="role-name">Sr. Software Engineer</span>
+                                        <span class="department">Core Infrastructure</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-leave">ON LEAVE</span></td>
+                                <td>Full-time</td>
+                                <td>Jan 05, 2019</td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost"><i class="ph ph-dots-three-vertical"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus"
+                                            alt="Marcus Rodriguez" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Marcus Rodriguez</span>
+                                            <span class="emp-id">ID: SC-1209</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="role-cell">
+                                        <span class="role-name">Talent Acquisition</span>
+                                        <span class="department">Human Resources</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-active">ACTIVE</span></td>
+                                <td>Contractor</td>
+                                <td>Mar 22, 2023</td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost"><i class="ph ph-dots-three-vertical"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena"
+                                            alt="Elena Belova" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Elena Belova</span>
+                                            <span class="emp-id">ID: SC-5541</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="role-cell">
+                                        <span class="role-name">Head of Sales</span>
+                                        <span class="department">Growth & Expansion</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge-training">IN TRAINING</span></td>
+                                <td>Full-time</td>
+                                <td>Nov 30, 2023</td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost"><i class="ph ph-dots-three-vertical"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Pagination -->
+                <div class="list-footer">
+                    <span class="showing-text">Showing <strong>1-10</strong> of <strong>1,284</strong> employees</span>
+                    <div class="pagination">
+                        <button class="page-btn disabled"><i class="ph ph-caret-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-ellipsis">...</span>
+                        <button class="page-btn">128</button>
+                        <button class="page-btn"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

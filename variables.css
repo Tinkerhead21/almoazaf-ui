@@ -1,0 +1,156 @@
+/* ========================================================================= */
+/* Semantic Design Token System                                              */
+/* ========================================================================= */
+
+:root {
+  /* ----------------------------------------------------------------------- */
+  /* Tier 1: Global/Primitive Tokens (The Palette)                           */
+  /* ----------------------------------------------------------------------- */
+  
+  /* Brand Colors (Updated to Coastal Vibes: Teals and Corals) */
+  --color-primary-400: 74, 98, 126;  /* Deeper Blueish/Slate */
+  --color-primary-500: 45, 78, 120;  /* Main Theme Blue */
+  --color-primary-600: 30, 55, 85;   /* Darker Navy */
+  
+  --color-accent-400: 236, 126, 95;  /* Soft Coral */
+  --color-accent-500: 226, 106, 75;  /* Main Coral */
+  --color-accent-600: 200, 85, 55;   /* Deep Rust/Coral */
+
+  /* Neutral Colors (Coastal Softness - Updated to a more neutral gray background) */
+  --color-neutral-0: 255, 255, 255;
+  --color-neutral-50: 247, 248, 250;   /* Neutral Off-white Gray */
+  --color-neutral-100: 236, 239, 243;  /* Soft Neutral Blue-Gray */
+  --color-neutral-200: 209, 213, 221;  /* Muted Gray */
+  --color-neutral-300: 170, 178, 189;  
+  --color-neutral-400: 130, 138, 148;  
+  --color-neutral-500: 75, 95, 110;    
+  --color-neutral-600: 55, 70, 85;     
+  --color-neutral-700: 45, 55, 65;     
+  --color-neutral-800: 35, 45, 55;     
+  --color-neutral-900: 25, 32, 40;     /* Deep Ocean Black */
+  --color-neutral-950: 15, 20, 25;     
+
+  /* Status Base Colors */
+  --color-emerald-100: 220, 252, 231;
+  --color-emerald-600: 5, 150, 105;
+  --color-sky-100: 224, 242, 254;
+  --color-sky-600: 2, 132, 199;
+  --color-amber-100: 254, 243, 199;
+  --color-amber-600: 217, 119, 6;
+  --color-red-100: 254, 226, 226;
+  --color-red-500: 239, 68, 68;
+  --color-red-600: 220, 38, 38;
+  --color-pink-300: 236, 126, 95;    /* Using coral as chart secondary now */
+  
+  /* Black / White Primitives */
+  --color-black: 0, 0, 0;
+  --color-white: 255, 255, 255;
+
+  /* ----------------------------------------------------------------------- */
+  /* Tier 2: Semantic/Alias Tokens (Contextual Role)                         */
+  /* ----------------------------------------------------------------------- */
+  
+  /* Primary Action Colors */
+  --primary: rgb(var(--color-primary-500));
+  --primary-rgb: var(--color-primary-500);
+  --primary-hover: rgb(var(--color-primary-600));
+
+  /* Surfaces */
+  --surface-body: rgb(var(--color-neutral-50));
+  --surface-card: rgb(var(--color-neutral-0));
+  --surface-hover: rgb(var(--color-neutral-100));
+
+  /* Typography */
+  --text-primary: rgb(var(--color-neutral-900));
+  --text-secondary: rgb(var(--color-neutral-600));
+  --text-tertiary: rgb(var(--color-neutral-400));
+  --text-inverse: rgb(var(--color-neutral-0));
+
+  /* Borders */
+  --border-subtle: rgb(var(--color-neutral-50));
+  --border-default: rgb(var(--color-neutral-100));
+  --border-strong: rgb(var(--color-neutral-200));
+
+  /* Status Feedback */
+  --status-success-bg: rgb(var(--color-emerald-100));
+  --status-success-text: rgb(var(--color-emerald-600));
+  
+  --status-info-bg: rgb(var(--color-sky-100));
+  --status-info-text: rgb(var(--color-sky-600));
+  
+  --status-warning-bg: rgb(var(--color-amber-100));
+  --status-warning-text: rgb(var(--color-amber-600));
+  
+  --status-danger-bg: rgb(var(--color-red-100));
+  --status-danger-text: rgb(var(--color-red-500));
+
+  /* Charts / Visuals */
+  --chart-primary: rgb(var(--color-primary-500));
+  --chart-secondary: rgb(var(--color-accent-400));
+  
+  /* Variables kept for Radius, Shadows, Spacing */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows (Now using relative colors) */
+  --shadow-sm: 0 1px 2px 0 rgba(var(--color-neutral-700), 0.1), 0 1px 3px 1px rgba(var(--color-neutral-700), 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(var(--color-black), 0.05), 0 2px 4px -1px rgba(var(--color-black), 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(var(--color-black), 0.08), 0 4px 6px -2px rgba(var(--color-black), 0.04);
+  --shadow-primary: 0 10px 25px -5px rgba(var(--primary-rgb), 0.4);
+
+  /* Spacing */
+  --spacing-2xs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+
+  /* Typography Globals */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================================================= */
+/* Dark Theme Options                                                        */
+/* ========================================================================= */
+[data-theme="dark"] {
+  /* Surfaces */
+  --surface-body: rgb(var(--color-neutral-950));
+  --surface-card: rgb(var(--color-neutral-900));
+  --surface-hover: rgb(var(--color-neutral-800));
+
+  /* Typography */
+  --text-primary: rgb(var(--color-neutral-50));
+  --text-secondary: rgb(var(--color-neutral-300));
+  --text-tertiary: rgb(var(--color-neutral-500));
+
+  /* Borders */
+  --border-subtle: rgb(var(--color-neutral-800));
+  --border-default: rgb(var(--color-neutral-700));
+  --border-strong: rgb(var(--color-neutral-600));
+
+  /* Primary Action */
+  --primary: rgb(var(--color-neutral-200)); /* Lighter accent for dark mode readability */
+  --primary-rgb: var(--color-neutral-200);
+  --primary-hover: rgb(var(--color-neutral-100));
+
+  /* Status Feedback (Darkened for less glare) */
+  --status-success-bg: rgba(var(--color-emerald-600), 0.2);
+  --status-success-text: rgb(var(--color-emerald-100));
+  
+  --status-info-bg: rgba(var(--color-sky-600), 0.2);
+  --status-info-text: rgb(var(--color-sky-100));
+  
+  --status-warning-bg: rgba(var(--color-amber-600), 0.2);
+  --status-warning-text: rgb(var(--color-amber-100));
+  
+  --status-danger-bg: rgba(var(--color-red-600), 0.2);
+  --status-danger-text: rgb(var(--color-red-100));
+
+  /* Shadows (Darker overall) */
+  --shadow-sm: 0 1px 2px 0 rgba(var(--color-black), 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(var(--color-black), 0.4);
+}
