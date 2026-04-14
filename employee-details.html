@@ -74,8 +74,8 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="profile-header-section">
-            <!-- Top header -->
+        <!-- Minimal top header layout -->
+        <div class="profile-header-section" style="border-bottom: none; background: transparent; padding-bottom: 0;">
             <header class="top-header">
                 <a href="index.html" class="btn-text"
                     style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; margin-left: -8px; padding: 8px;">
@@ -87,348 +87,241 @@
                     </button>
                 </div>
             </header>
-
-            <div class="profile-header-content">
-                <!-- Profile Header -->
-                <div class="profile-header-card">
-                    <div class="profile-avatar-wrapper">
-                        <img class="profile-avatar-large"
-                            src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
-                            alt="Marcus Thorne">
-                        <button class="btn-camera"><i class="ph-fill ph-camera"></i></button>
-                    </div>
-
-                    <div class="profile-header-info">
-                        <div class="profile-name-row">
-                            <h1>Marcus Thorne</h1>
-                            <span class="badge"
-                                style="background-color: var(--border-default); color: var(--text-secondary); font-size: 0.75rem; font-weight: 700; padding: 6px 12px; letter-spacing: 0.05em;">ID:
-                                SER-9942</span>
-                        </div>
-
-                        <div class="profile-meta-row">
-                            <span class="meta-item"><i class="ph-fill ph-briefcase"></i> Full-time</span>
-                            <span class="meta-item"><i class="ph-fill ph-buildings"></i> Product Design</span>
-                            <span class="meta-item"><i class="ph-fill ph-identification-card"></i> Senior Architect</span>
-                            <span class="meta-item"><i class="ph-fill ph-calendar-blank"></i> Joined Oct 12, 2021</span>
-                        </div>
-                    </div>
-
-                    <div class="profile-header-actions">
-                        <button class="btn" style="background-color: #E0E7FF; color: var(--primary); font-weight: 600;"><i
-                                class="ph ph-pencil-simple"></i> Edit Profile</button>
-                        <button class="btn icon-btn"
-                            style="border: 1px solid #fecdd3; color: #e11d48; background-color: #fff1f2; width: 40px; height: 40px;"><i
-                                class="ph ph-trash"></i></button>
-                    </div>
-                </div>
-
-                <!-- Profile Tabs -->
-                <div class="profile-tabs">
-                    <a href="#" class="tab-link active" data-target="tab-overview">Overview</a>
-
-                    <!-- Calendar Nested Tab -->
-                    <div class="tab-dropdown">
-                        <div class="tab-link toggle-dropdown" data-dropdown="calendar-menu">
-                            <div class="tab-label-group">
-                                <span class="parent-label">Calendar</span>
-                                <span class="selected-label"></span>
-                            </div>
-                            <i class="ph ph-caret-down"></i>
-                        </div>
-                        <div class="dropdown-menu" id="calendar-menu">
-                            <a href="#" class="dropdown-item" data-parent="Calendar"
-                                data-target="tab-calendar-schedule">Schedule</a>
-                            <a href="#" class="dropdown-item" data-parent="Calendar"
-                                data-target="tab-calendar-attendance">Attendance</a>
-                            <a href="#" class="dropdown-item" data-parent="Calendar"
-                                data-target="tab-calendar-events">Events</a>
-                        </div>
-                    </div>
-
-                    <a href="#" class="tab-link" data-target="tab-performance">Performance</a>
-                    <a href="#" class="tab-link" data-target="tab-payroll">Payroll</a>
-
-                    <!-- Legal Nested Tab -->
-                    <div class="tab-dropdown">
-                        <div class="tab-link toggle-dropdown" data-dropdown="legal-menu">
-                            <div class="tab-label-group">
-                                <span class="parent-label">Legal</span>
-                                <span class="selected-label"></span>
-                            </div>
-                            <i class="ph ph-caret-down"></i>
-                        </div>
-                        <div class="dropdown-menu" id="legal-menu">
-                            <a href="#" class="dropdown-item" data-parent="Legal"
-                                data-target="tab-legal-contracts">Contracts</a>
-                            <a href="#" class="dropdown-item" data-parent="Legal" data-target="tab-legal-assets">Assets</a>
-                            <a href="#" class="dropdown-item" data-parent="Legal"
-                                data-target="tab-legal-documents">Documents</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
-        <!-- Page body -->
-        <div class="page-body">
-            <!-- Tab Contents -->
-            <div class="tab-content">
-                <!-- Overview Pane -->
-                <div id="tab-overview" class="tab-pane active">
-                    <!-- Grid Layout -->
-                    <div class="profile-grid">
-
-                        <!-- Left Column -->
-                        <div class="grid-col-left">
-                            <!-- Contact Info Card -->
-                            <div class="content-card profile-card">
-                                <h3>Contact Info</h3>
-
-                                <div class="info-group">
-                                    <span class="info-label">WORK EMAIL</span>
-                                    <span class="info-value">marcus.thorne@serenehr.com</span>
-                                </div>
-
-                                <div class="info-group">
-                                    <span class="info-label">PERSONAL PHONE</span>
-                                    <span class="info-value">+1 (555) 012-3456</span>
-                                </div>
-
-                                <div class="info-group">
-                                    <span class="info-label">ADDRESS</span>
-                                    <span class="info-value">821 Highline Drive, Penthouse 4B<br>New York, NY
-                                        10001</span>
-                                </div>
-
-                                <div class="info-group emergency-contact"
-                                    style="border-top: 1px solid var(--border-subtle); padding-top: var(--spacing-md);">
-                                    <span class="info-label">EMERGENCY CONTACT</span>
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                                        <span class="info-value">Elena Thorne (Wife)</span>
-                                        <span class="badge"
-                                            style="background-color: #E0E7FF; color: var(--primary);">Primary</span>
-                                    </div>
-                                </div>
+        <div class="page-body" style="padding-top: var(--spacing-sm);">
+            <div class="profile-grid">
+                
+                <!-- Left Sidebar: Unified Compact Info Card -->
+                <div class="grid-col-left">
+                    <div class="content-card profile-card" style="padding: var(--spacing-lg); gap: var(--spacing-lg);">
+                        
+                        <!-- Header -->
+                        <div style="text-align: center;">
+                            <div class="profile-avatar-wrapper" style="margin: 0 auto; width: 100px;">
+                                <img class="profile-avatar-large" style="width: 100px; height: 100px; border-radius: 20px;"
+                                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
+                                    alt="Marcus Thorne">
+                                <button class="btn-camera" style="width: 28px; height: 28px; bottom: -4px; right: -4px;"><i class="ph-fill ph-camera" style="font-size: 0.8rem;"></i></button>
+                            </div>
+                            
+                            <div style="margin-top: 14px;">
+                                <h1 style="font-size: 1.25rem; margin-bottom: 4px;">Marcus Thorne</h1>
+                                <span class="badge" style="background-color: var(--border-subtle); color: var(--text-secondary); font-size: 0.65rem; padding: 4px 8px;">ID: SER-9942</span>
                             </div>
 
-                            <!-- Assets Assigned Card -->
-                            <div class="content-card profile-card">
-                                <h3>Assets Assigned</h3>
-                                <div class="asset-item">
-                                    <i class="ph-fill ph-laptop"></i>
-                                    <span>MacBook Pro M3 Max</span>
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px; text-align: left;">
+                                <span style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-briefcase" style="color: var(--primary); font-size: 1.1rem;"></i> Full-time &bull; Product Design</span>
+                                <span style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-identification-card" style="color: var(--primary); font-size: 1.1rem;"></i> Senior Architect</span>
+                                <span style="font-size: 0.85rem; color: var(--text-secondary); display: flex; align-items: center; gap: 10px;"><i class="ph-fill ph-calendar-blank" style="color: var(--primary); font-size: 1.1rem;"></i> Joined Oct 2021 (2y 6m)</span>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin-top: 20px;">
+                                <button class="btn btn-outline" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 8px 12px;"><i class="ph ph-pencil-simple"></i> Edit Profile</button>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
+
+                        <!-- Compact Contact Info -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Contact</h3>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">EMAIL</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">marcus.t@serenehr.com</span>
                                 </div>
-                                <div class="asset-item">
-                                    <i class="ph-fill ph-device-mobile"></i>
-                                    <span>iPhone 15 Pro Max</span>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">PHONE</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">+1 (555) 012-3456</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">ADDRESS</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500; text-align: right; max-width: 150px;">821 Highline Dr, NY</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 12px; border-top: 1px dashed var(--border-subtle);">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">EMERGENCY</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">Elena Thorne (Wife)</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Right Column -->
-                        <div class="grid-col-right">
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
 
-                            <!-- Employment Details -->
-                            <div class="content-card profile-card">
-                                <div
-                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xs);">
-                                    <h3>Employment Details</h3>
-                                    <a href="#"
-                                        style="color: var(--primary); font-size: 0.875rem; font-weight: 600;">History
-                                        &rarr;</a>
+                        <!-- Compact Employment -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Employment Details</h3>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">SALARY</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">$145,000 / Yr</span>
                                 </div>
-
-                                <div class="details-grid">
-                                    <div class="info-group">
-                                        <span class="info-label">PROBATION PERIOD</span>
-                                        <span class="info-value"
-                                            style="display: flex; align-items: center; gap: 6px;">Completed <i
-                                                class="ph-fill ph-check-circle"
-                                                style="color: var(--status-success-text); font-size: 1.1rem;"></i></span>
-                                    </div>
-                                    <div class="info-group">
-                                        <span class="info-label">NOTICE PERIOD</span>
-                                        <span class="info-value">3 Months</span>
-                                    </div>
-                                    <div class="info-group">
-                                        <span class="info-label">WORK SCHEDULE</span>
-                                        <span class="info-value">Flexible &bull; 40h/week</span>
-                                    </div>
-                                    <div class="info-group">
-                                        <span class="info-label">CONTRACT TYPE</span>
-                                        <span class="info-value">Indefinite</span>
-                                    </div>
-                                    <div class="info-group">
-                                        <span class="info-label">BASIC SALARY</span>
-                                        <span class="info-value">$145,000 / Year</span>
-                                    </div>
-                                    <div class="info-group">
-                                        <span class="info-label">WORK DURATION</span>
-                                        <span class="info-value">2 Yrs, 6 Mos</span>
-                                    </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">SCHEDULE</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">Flexible &bull; 40h</span>
                                 </div>
-                            </div>
-
-                            <!-- Org Info -->
-                            <div class="content-card profile-card">
-                                <h3>Org Info</h3>
-
-                                <div class="reports-to-wrapper" style="margin-top: var(--spacing-sm);">
-                                    <div class="reports-to-card">
-                                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
-                                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah"
-                                                alt="Sarah" class="avatar"
-                                                style="width: 44px; height: 44px; background-color: #1e293b;">
-                                            <div>
-                                                <span class="info-label">REPORTS TO</span>
-                                                <h4 style="margin: 0; font-size: 1.05rem; font-weight: 600;">Sarah
-                                                    Jenkins</h4>
-                                                <span
-                                                    style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">VP
-                                                    of Engineering & Design</span>
-                                            </div>
-                                        </div>
-                                        <button class="btn icon-btn"
-                                            style="background-color: var(--surface-card); box-shadow: var(--shadow-sm); color: var(--primary);"><i
-                                                class="ph-fill ph-envelope-simple"></i></button>
-                                    </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">CONTRACT</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">Indefinite</span>
                                 </div>
-
-                                <div class="team-members-section" style="margin-top: var(--spacing-lg);">
-                                    <span class="info-label">TEAM MEMBERS</span>
-                                    <div class="stacked-avatars" style="margin-top: 8px;">
-                                        <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=150&auto=format&fit=crop"
-                                            alt="1">
-                                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"
-                                            alt="2">
-                                        <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=150&auto=format&fit=crop"
-                                            alt="3">
-                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&auto=format&fit=crop"
-                                            alt="4">
-                                        <div class="avatar-more">+12</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Performance Rating Big Card -->
-                            <div class="content-card performance-card-blue">
-                                <div class="perf-header"
-                                    style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div>
-                                        <h2 style="color: white; margin: 0 0 4px 0; font-size: 1.25rem;">Performance
-                                            Rating</h2>
-                                        <span style="color: rgba(255,255,255,0.8); font-size: 0.875rem;">Last Review:
-                                            Quarter 3, 2023</span>
-                                    </div>
-                                    <div class="perf-score"
-                                        style="font-size: 3.5rem; font-weight: 700; color: white; line-height: 1; letter-spacing: -0.02em;">
-                                        4.8
-                                    </div>
-                                </div>
-
-                                <div class="perf-progress-bg"
-                                    style="background-color: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin: var(--spacing-xl) 0 var(--spacing-md) 0;">
-                                    <div class="perf-progress-fill"
-                                        style="background-color: white; width: 96%; height: 100%; border-radius: 4px;">
-                                    </div>
-                                </div>
-
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span
-                                        style="color: white; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em;">EXCEEDS
-                                        EXPECTATIONS</span>
-                                    <button class="btn"
-                                        style="background-color: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); font-size: 0.8rem; padding: 6px 14px;">View
-                                        Feedback</button>
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">PROBATION</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 4px;">Completed <i class="ph-fill ph-check-circle" style="color: var(--status-success-text); font-size: 1rem;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
+
+                        <!-- Org & Performance -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Reports To</h3>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" style="width: 36px; height: 36px; border-radius: 50%; background: #1e293b;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.85rem; font-weight: 600;">Sarah Jenkins</h4>
+                                        <span style="font-size: 0.75rem; color: var(--text-secondary);">VP of Eng & Design</span>
+                                    </div>
+                                </div>
+                                <button class="btn icon-btn ghost" style="width: 32px; height: 32px;"><i class="ph-fill ph-envelope-simple"></i></button>
+                            </div>
+                            
+                            <div style="margin-top: 16px; padding: 12px 16px; background: rgba(11, 87, 208, 0.04); border-radius: var(--radius-md); border: 1px solid rgba(11, 87, 208, 0.1);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.7rem; font-weight: 700; color: var(--primary); letter-spacing: 0.05em;">RATING</span>
+                                    <span style="font-size: 1.25rem; font-weight: 700; color: var(--primary);">4.8</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Exceeds Expectations</span>
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary);">Q3, 2023</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
+
+                        <!-- Fast Attributes (e.g. Assets) -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Assets</h3>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; background: var(--surface-body); padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-weight: 500;">
+                                    <i class="ph-fill ph-laptop" style="color: var(--primary);"></i> MacBook M3
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; background: var(--surface-body); padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); color: var(--text-secondary); font-weight: 500;">
+                                    <i class="ph-fill ph-device-mobile" style="color: var(--primary);"></i> iPhone 15
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Flat Tabs and Panes -->
+                <div class="grid-col-right" style="display: flex; flex-direction: column;">
+                    <div class="content-card" style="flex: 1; display: flex; flex-direction: column;">
+                        
+                        <!-- Flat Profile Tabs -->
+                        <!-- Add min-width to avoid flex shrinking too much -->
+                        <div class="profile-tabs" style="padding: 24px 24px 0 24px; margin-bottom: 0; display: flex; overflow-x: auto; gap: var(--spacing-lg); border-bottom: 1px solid var(--border-default); white-space: nowrap;">
+                            <a href="#" class="tab-link" data-target="tab-calendar-schedule">Schedule</a>
+                            <a href="#" class="tab-link" data-target="tab-calendar-attendance">Attendance</a>
+                            <a href="#" class="tab-link" data-target="tab-calendar-events">Events</a>
+                            
+                            <a href="#" class="tab-link active" data-target="tab-performance">Performance</a>
+                            <a href="#" class="tab-link" data-target="tab-payroll">Payroll</a>
+
+                            <a href="#" class="tab-link" data-target="tab-legal-contracts">Contracts</a>
+                            <a href="#" class="tab-link" data-target="tab-legal-assets">Assets</a>
+                            <a href="#" class="tab-link" data-target="tab-legal-documents">Documents</a>
+                        </div>
+
+                        <!-- Tab Contents -->
+                        <div class="tab-content" style="padding: 24px; flex: 1;">
+                            
+                            <!-- Calendar Panes -->
+                            <div id="tab-calendar-schedule" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-calendar"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Schedule Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+                            <div id="tab-calendar-attendance" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-clock"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Attendance Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+                            <div id="tab-calendar-events" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-flag"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Events Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+
+                            <!-- Basic Top Level Panes -->
+                            <div id="tab-performance" class="tab-pane active">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-trend-up"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Performance Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+                            <div id="tab-payroll" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-money"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Payroll Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+
+                            <!-- Legal Panes -->
+                            <div id="tab-legal-contracts" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-file-text"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Contracts Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+                            <div id="tab-legal-assets" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-laptop"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Assets Inventory Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
+                                </div>
+                            </div>
+                            <div id="tab-legal-documents" class="tab-pane">
+                                <div class="content-card profile-card"
+                                    style="text-align: center; padding: 60px; color: var(--text-tertiary); border: none; box-shadow: none;">
+                                    <i class="ph ph-folder"
+                                        style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
+                                    <h3>Legal Documents Content Placeholder</h3>
+                                    <p>This section is currently under construction.</p>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-
-                    <!-- Calendar Panes -->
-                    <div id="tab-calendar-schedule" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-calendar"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Schedule Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-                    <div id="tab-calendar-attendance" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-clock"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Attendance Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-                    <div id="tab-calendar-events" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-flag"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Events Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-
-                    <!-- Basic Top Level Panes -->
-                    <div id="tab-performance" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-trend-up"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Performance Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-                    <div id="tab-payroll" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-money"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Payroll Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-
-                    <!-- Legal Panes -->
-                    <div id="tab-legal-contracts" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-file-text"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Contracts Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-                    <div id="tab-legal-assets" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-laptop"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Assets Inventory Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-                    <div id="tab-legal-documents" class="tab-pane">
-                        <div class="content-card profile-card"
-                            style="text-align: center; padding: 60px; color: var(--text-tertiary);">
-                            <i class="ph ph-folder"
-                                style="font-size: 3rem; color: var(--border-strong); margin-bottom: 12px;"></i>
-                            <h3>Legal Documents Content Placeholder</h3>
-                            <p>This section is currently under construction.</p>
-                        </div>
-                    </div>
-
-                </div> <!-- end tab content root -->
+                </div>
 
             </div>
+        </div>
     </main>
 
     <script src="script.js"></script>
