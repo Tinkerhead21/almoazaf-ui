@@ -304,4 +304,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Add Employee Modal Logic ---
+    const addEmployeeBtn = document.getElementById('addEmployeeBtn');
+    const addEmployeeModal = document.getElementById('addEmployeeModal');
+    
+    if (addEmployeeBtn && addEmployeeModal) {
+        // Open modal
+        addEmployeeBtn.addEventListener('click', () => {
+            addEmployeeModal.showModal();
+        });
+        
+        // Close modal buttons
+        const closeBtns = addEmployeeModal.querySelectorAll('.close-modal');
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                addEmployeeModal.close();
+            });
+        });
+        
+        // Form submit override (just closes it for UI demo)
+        const addEmployeeForm = document.getElementById('addEmployeeForm');
+        if (addEmployeeForm) {
+            addEmployeeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addEmployeeModal.close();
+                addEmployeeForm.reset();
+            });
+        }
+        
+        // Close on outside click
+        addEmployeeModal.addEventListener('click', (e) => {
+            const dialogDimensions = addEmployeeModal.getBoundingClientRect();
+            if (
+                e.clientX < dialogDimensions.left ||
+                e.clientX > dialogDimensions.right ||
+                e.clientY < dialogDimensions.top ||
+                e.clientY > dialogDimensions.bottom
+            ) {
+                addEmployeeModal.close();
+            }
+        });
+    }
+
+    // --- Modal Accordion Logic ---
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    if (accordionHeaders.length > 0) {
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.closest('.accordion-item');
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items in this accordion group
+                const accordion = item.closest('.accordion');
+                const allItems = accordion.querySelectorAll('.accordion-item');
+                allItems.forEach(acc => {
+                    acc.classList.remove('active');
+                });
+                
+                // If it wasn't active initially, toggle it on
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    }
 });

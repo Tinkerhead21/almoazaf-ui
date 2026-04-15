@@ -1164,3 +1164,202 @@ button {
 .is-editing h4.editable-field {
   display: block;
 }
+
+/* Modal Styles */
+.modal {
+  border: none;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-card);
+  color: var(--text-primary);
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  margin: auto;
+  box-shadow: var(--shadow-sm); /* Using shadow-sm if others don't exist */
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.modal-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: var(--spacing-lg);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-top: 1px solid var(--border-default);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.form-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+@media (max-width: 600px) {
+  .form-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-section-title {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 1px dashed var(--border-subtle);
+  padding-bottom: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.required {
+  color: #e11d48;
+}
+
+.input-field {
+  padding: 8px 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-body);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: var(--transition-fast);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(11, 87, 208, 0.1);
+}
+
+/* Modal Form Accordion & Name Input */
+.input-underline-large {
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  border: none;
+  border-bottom: 2px solid var(--border-default);
+  background: transparent;
+  padding: 8px 0;
+  transition: var(--transition-fast);
+}
+
+.input-underline-large:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+
+.input-underline-large::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+}
+
+.accordion-item {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  cursor: pointer;
+}
+
+.accordion-title {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.accordion-icon {
+  color: var(--text-tertiary);
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: flex; /* Hidden by default via max-height or we can just use display: none */
+  flex-direction: column;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.accordion-item.active .accordion-content {
+  height: auto;
+  opacity: 1;
+  padding-bottom: var(--spacing-md);
+  overflow: visible;
+}
+
+.form-section-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
