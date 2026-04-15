@@ -248,4 +248,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Export toggleTheme for global access (original mock support)
     window.toggleTheme = () => themeToggles[0]?.click();
+
+    // --- Edit Profile Logic ---
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const tabsSection = document.querySelector('.grid-col-right');
+    const editableFields = document.querySelectorAll('.editable-field');
+    const profileCard = document.querySelector('.grid-col-left .profile-card');
+
+    if (editProfileBtn && profileCard) {
+        editProfileBtn.addEventListener('click', () => {
+            const isEditing = profileCard.classList.contains('is-editing');
+            
+            if (isEditing) {
+                // Save state
+                profileCard.classList.remove('is-editing');
+                if (tabsSection) {
+                    tabsSection.style.opacity = '';
+                    tabsSection.style.pointerEvents = '';
+                    tabsSection.style.filter = '';
+                }
+                
+                editProfileBtn.innerHTML = '<i class="ph ph-pencil-simple"></i> Edit Profile';
+                editProfileBtn.classList.remove('btn-primary');
+                editProfileBtn.classList.add('btn-outline');
+                editProfileBtn.style.color = '';
+                editProfileBtn.style.backgroundColor = '';
+                editProfileBtn.style.borderColor = '';
+                
+                editableFields.forEach(field => {
+                    field.removeAttribute('contenteditable');
+                    field.removeAttribute('spellcheck');
+                });
+            } else {
+                // Edit state
+                profileCard.classList.add('is-editing');
+                if (tabsSection) {
+                    tabsSection.style.opacity = '0.4';
+                    tabsSection.style.pointerEvents = 'none';
+                    tabsSection.style.filter = 'grayscale(0.6)';
+                    tabsSection.style.transition = 'all 0.3s ease';
+                }
+                
+                editProfileBtn.innerHTML = '<i class="ph ph-check"></i> Save Profile';
+                editProfileBtn.classList.remove('btn-outline');
+                editProfileBtn.classList.add('btn-primary');
+                
+                editableFields.forEach(field => {
+                    field.setAttribute('contenteditable', 'true');
+                    field.setAttribute('spellcheck', 'false');
+                });
+                
+                if (editableFields.length > 0) {
+                    editableFields[0].focus();
+                }
+            }
+        });
+    }
 });

@@ -1140,3 +1140,27 @@ button {
 .search-bar-mobile {
   display: none;
 }
+
+/* Edit Profile Styles */
+.is-editing .editable-field {
+  border: 1px dashed var(--border-strong, #ccc);
+  background-color: var(--surface-hover, #f1f5f9);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  margin: -3px -5px; /* compensate for padding */
+  outline: none;
+  min-height: 1em;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.is-editing .editable-field:focus {
+  border: 1px solid var(--primary);
+  background-color: var(--surface-body);
+  box-shadow: 0 0 0 2px rgba(11, 87, 208, 0.1);
+}
+
+.is-editing h1.editable-field, 
+.is-editing h4.editable-field {
+  display: block;
+}
