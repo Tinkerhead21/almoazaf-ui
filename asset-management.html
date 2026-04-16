@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Management | SereneHR</title>
+    <meta name="description" content="Manage corporate assets and inventory.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="ph-fill ph-sparkle"></i>
+            </div>
+            <div class="logo-text">
+                <h1>SereneHR</h1>
+                <span>Enterprise Plan</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-users"></i>
+                <span>Employees</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-money"></i>
+                <span>Payroll</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trend-up"></i>
+                <span>Performance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-user-plus"></i>
+                <span>Recruitment</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-file-text"></i>
+                <span>Documents</span>
+            </a>
+            <a href="asset-management.html" class="nav-item active">
+                <i class="ph ph-laptop"></i>
+                <span>Asset Management</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="upgrade-card">
+                <h3>Upgrade Plan</h3>
+                <p>Unlock advanced analytics and global payroll features.</p>
+                <button class="btn btn-primary btn-block">Upgrade Now</button>
+            </div>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-question"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <h2 class="page-title">Asset Management</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <button class="btn-text toggle-analytics" id="toggleAssetAnalyticsBtn">
+                    <i class="ph ph-eye-slash"></i> Hide Overview
+                </button>
+            </div>
+        </header>
+
+        <div class="page-body">
+            
+            <!-- Cards Section (4 Cards) -->
+            <div class="analytics-grid" id="assetAnalyticsGrid">
+                <!-- Card 1 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">TOTAL UNITS</span>
+                        <span class="badge badge-success">+5.2%</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">1,492</div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="assetTotalChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">ASSIGNED RATE</span>
+                        <span class="status-text status-success">Optimal</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">77%</div>
+                        <div class="custom-legend">
+                            <span class="legend-item"><span class="dot" style="background-color: var(--primary);"></span> Assigned</span>
+                            <span class="legend-item"><span class="dot" style="background-color: #10B981;"></span> Available</span>
+                        </div>
+                    </div>
+                    <div class="chart-container bottom-align" style="flex-direction: column;">
+                        <div id="assetAssignedChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">MAINTENANCE TICKETS</span>
+                        <span class="status-text status-danger">38 Active</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">-12%</div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="assetMaintenanceChart" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="analytics-card" style="position: relative;">
+                    <div class="card-header">
+                        <span class="card-title">ASSET CATEGORIES</span>
+                    </div>
+                    <div class="custom-legend" style="position: absolute; left: var(--spacing-md); top: 55px; align-items: flex-start; gap: 8px;">
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">854</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #6366F1;"></span> Laptops</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">420</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #A855F7;"></span> Mobile</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">218</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #EC4899;"></span> Peripherals</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="justify-content: flex-end; margin-top: -10px;">
+                        <div id="assetCategoryChart" style="width: 150px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asset Table Section -->
+            <div class="content-card list-section">
+                <!-- List Header -->
+                <div class="list-header">
+                    <div class="search-bar light">
+                        <i class="ph ph-funnel"></i>
+                        <input type="text" placeholder="Search for an asset template...">
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn btn-outline">
+                            <i class="ph ph-faders"></i> Filter
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="ph ph-export"></i> Export
+                        </button>
+                        <button id="addAssetBtn" class="btn btn-primary">
+                            + Add Asset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ASSET NAME & SPECS</th>
+                                <th>CATEGORY</th>
+                                <th>TOTAL UNITS</th>
+                                <th>AVAILABILITY</th>
+                                <th class="actions-col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Asset Row 1 -->
+                            <tr onclick="window.location.href='asset-details.html'" style="cursor:pointer;">
+                                <td>
+                                    <div class="employee-cell">
+                                        <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--surface-body); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-subtle);">
+                                            <i class="ph ph-laptop" style="font-size: 1.5rem; color: var(--primary);"></i>
+                                        </div>
+                                        <div class="employee-info">
+                                            <span class="emp-name" style="font-weight: 600;">MacBook Pro M3</span>
+                                            <span class="emp-id" style="color: var(--text-secondary); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="CPU: M3 Pro | RAM: 16GB | Storage: 512GB">CPU: M3 Pro | RAM: 16GB | Storage: 512GB</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background-color: var(--surface-body); border: 1px solid var(--border-subtle); color: var(--text-secondary);">Computer</span></td>
+                                <td><div class="card-value" style="font-size: 1rem;">124</div></td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:4px; font-size: 0.8rem;">
+                                        <div style="display:flex; justify-content:space-between; width: 120px;">
+                                            <span style="color:var(--text-secondary);">Assigned:</span><span style="font-weight:600;">110</span>
+                                        </div>
+                                        <div style="display:flex; justify-content:space-between; width: 120px;">
+                                            <span style="color:var(--text-secondary);">Available:</span><span style="font-weight:600; color:var(--status-success-text);">14</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Units"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Asset Row 2 -->
+                            <tr onclick="window.location.href='asset-details.html'" style="cursor:pointer;">
+                                <td>
+                                    <div class="employee-cell">
+                                        <div style="width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--surface-body); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-subtle);">
+                                            <i class="ph ph-device-mobile" style="font-size: 1.5rem; color: var(--primary);"></i>
+                                        </div>
+                                        <div class="employee-info">
+                                            <span class="emp-name" style="font-weight: 600;">iPhone 15 Pro</span>
+                                            <span class="emp-id" style="color: var(--text-secondary); max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">CPU: A17 Pro | RAM: 8GB | Storage: 256GB</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background-color: var(--surface-body); border: 1px solid var(--border-subtle); color: var(--text-secondary);">Mobile</span></td>
+                                <td><div class="card-value" style="font-size: 1rem;">85</div></td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:4px; font-size: 0.8rem;">
+                                        <div style="display:flex; justify-content:space-between; width: 120px;">
+                                            <span style="color:var(--text-secondary);">Assigned:</span><span style="font-weight:600;">85</span>
+                                        </div>
+                                        <div style="display:flex; justify-content:space-between; width: 120px;">
+                                            <span style="color:var(--text-secondary);">Available:</span><span style="font-weight:600; color:var(--status-danger-text);">0</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Units"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Pagination -->
+                <div class="list-footer">
+                    <span class="showing-text">Showing <strong>1-2</strong> of <strong>42</strong> assets</span>
+                    <div class="pagination">
+                        <button class="page-btn disabled"><i class="ph ph-caret-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-ellipsis">...</span>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Standard Modal for Add Asset Template ONLY -->
+    <dialog id="assetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Asset Template</h2>
+                <button class="icon-btn ghost close-modal" type="button"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="addAssetForm" class="form-section-col">
+                    <div class="form-group">
+                        <label>Asset Name <span class="required">*</span></label>
+                        <input type="text" class="input-field" placeholder="e.g. MacBook Pro M3" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category <span class="required">*</span></label>
+                        <select class="input-field" required>
+                            <option value="">Select category</option>
+                            <option>Computer</option>
+                            <option>Mobile</option>
+                            <option>Peripheral</option>
+                            <option>Furniture</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Specs (Asset-Agnostic)</label>
+                        <textarea class="input-field" rows="3" placeholder="e.g. CPU: M3 Pro | RAM: 16GB | Storage: 512GB"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline close-modal">Cancel</button>
+                <button type="submit" form="addAssetForm" class="btn btn-primary">Save Template</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const getCssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+            /* Charts Initialization */
+            // 1. Total Assets Chart (Bar)
+            if (document.querySelector("#assetTotalChart")) {
+                const totalOptions = {
+                    series: [{ name: 'Units', data: [1100, 1150, 1200, 1350, 1400, 1492] }],
+                    chart: { type: 'bar', height: 75, sparkline: { enabled: true }, parentHeightOffset: 0,
+                             animations: { enabled: true, easing: 'easeinout', speed: 800 } },
+                    plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
+                    colors: [getCssVar('--primary') || '#0b57d0'],
+                    tooltip: { theme: 'light', y: { formatter: val => val } },
+                    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] }
+                };
+                new ApexCharts(document.querySelector("#assetTotalChart"), totalOptions).render();
+            }
+
+            // 2. Assigned Rate Chart (Stacked Bar)
+            if (document.querySelector("#assetAssignedChart")) {
+                const assignedOptions = {
+                    series: [{ name: 'Assigned', data: [80, 85, 75, 77] }, { name: 'Available', data: [20, 15, 25, 23] }],
+                    chart: { type: 'bar', height: 75, stacked: true, parentHeightOffset: 0, toolbar: { show: false } },
+                    grid: { show: false, padding: { top: 0, right: 0, bottom: -15, left: 0 } },
+                    plotOptions: { bar: { borderRadius: 2, columnWidth: '50%' } },
+                    colors: [getCssVar('--primary') || '#6366F1', '#10B981'],
+                    stroke: { width: 0 },
+                    xaxis: { categories: ['Q1', 'Q2', 'Q3', 'Q4'], labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false } },
+                    yaxis: { show: false },
+                    dataLabels: { enabled: false },
+                    legend: { show: false },
+                    tooltip: { theme: 'light', shared: true, intersect: false }
+                };
+                new ApexCharts(document.querySelector("#assetAssignedChart"), assignedOptions).render();
+            }
+
+            // 3. Maintenance Chart (Area)
+            if (document.querySelector("#assetMaintenanceChart")) {
+                const maintenanceOptions = {
+                    series: [{ name: 'Tickets', data: [45, 30, 42, 50, 40, 38] }],
+                    chart: { type: 'area', height: 60, sparkline: { enabled: true }, parentHeightOffset: 0 },
+                    stroke: { curve: 'smooth', width: 3 },
+                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0, stops: [0, 100] } },
+                    colors: ['#F43F5E'],
+                    tooltip: { theme: 'light', y: { formatter: val => val } }
+                };
+                new ApexCharts(document.querySelector("#assetMaintenanceChart"), maintenanceOptions).render();
+            }
+
+            // 4. Asset Category Chart (RadialBar)
+            if (document.querySelector("#assetCategoryChart")) {
+                const categoryOptions = {
+                    series: [57, 28, 15],
+                    chart: { type: 'radialBar', height: 150, offsetX: 0, width: 150, parentHeightOffset: 0 },
+                    plotOptions: {
+                        radialBar: {
+                            hollow: { size: '30%' },
+                            track: { margin: 6, background: getCssVar('--border-subtle') || '#f1f3f4' },
+                            dataLabels: { name: { show: false }, value: { show: false } }
+                        }
+                    },
+                    stroke: { lineCap: 'round' },
+                    labels: ['Laptops', 'Mobile', 'Peripherals'],
+                    colors: ['#6366F1', '#A855F7', '#EC4899'],
+                    legend: { show: false },
+                    tooltip: { enabled: true, theme: 'light' }
+                };
+                new ApexCharts(document.querySelector("#assetCategoryChart"), categoryOptions).render();
+            }
+
+            /* Toggle Overview */
+            const toggleAnalyticsBtn = document.getElementById('toggleAssetAnalyticsBtn');
+            const analyticsGrid = document.getElementById('assetAnalyticsGrid');
+            if (toggleAnalyticsBtn && analyticsGrid) {
+                toggleAnalyticsBtn.addEventListener('click', () => {
+                    const isHidden = analyticsGrid.style.display === 'none';
+                    if (isHidden) {
+                        analyticsGrid.style.display = 'grid';
+                        toggleAnalyticsBtn.innerHTML = '<i class="ph ph-eye-slash"></i> Hide Overview';
+                    } else {
+                        analyticsGrid.style.display = 'none';
+                        toggleAnalyticsBtn.innerHTML = '<i class="ph ph-eye"></i> Show Overview';
+                    }
+                });
+            }
+
+            /* Basic Modal Logic */
+            const assetModal = document.getElementById('assetModal');
+            const addAssetBtn = document.getElementById('addAssetBtn');
+            const closeBtns = assetModal.querySelectorAll('.close-modal');
+
+            if (addAssetBtn) {
+                addAssetBtn.addEventListener('click', () => assetModal.showModal());
+            }
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', () => assetModal.close());
+            });
+
+            const addAssetForm = document.getElementById('addAssetForm');
+            if (addAssetForm) {
+                addAssetForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    assetModal.close();
+                    addAssetForm.reset();
+                    // Ordinarily we would post data here or redirect to asset-details.html
+                    window.location.href = 'asset-details.html';
+                });
+            }
+
+            assetModal.addEventListener('click', (e) => {
+                const dialogDimensions = assetModal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
+                ) {
+                    assetModal.close();
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

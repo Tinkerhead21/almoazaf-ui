@@ -110,7 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         row.addEventListener('click', (e) => {
             // Prevent navigation if an action button is clicked
             if (!e.target.closest('button')) {
-                window.location.href = 'employee-details.html';
+                if (row.getAttribute('onclick')) {
+                    // Let inline onclick handle it
+                    return;
+                }
+                const targetUrl = row.getAttribute('data-href') || 'employee-details.html';
+                window.location.href = targetUrl;
             }
         });
     });
