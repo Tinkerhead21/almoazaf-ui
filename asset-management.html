@@ -328,12 +328,18 @@
             if (document.querySelector("#assetTotalChart")) {
                 const totalOptions = {
                     series: [{ name: 'Units', data: [1100, 1150, 1200, 1350, 1400, 1492] }],
-                    chart: { type: 'bar', height: 75, sparkline: { enabled: true }, parentHeightOffset: 0,
-                             animations: { enabled: true, easing: 'easeinout', speed: 800 } },
+                    chart: { type: 'bar', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
                     plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
                     colors: [getCssVar('--primary') || '#0b57d0'],
-                    tooltip: { theme: 'light', y: { formatter: val => val } },
-                    xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] }
+                    grid: { show: false },
+                    yaxis: { show: false },
+                    xaxis: { 
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+                    },
+                    tooltip: { theme: 'light', y: { formatter: val => val } }
                 };
                 new ApexCharts(document.querySelector("#assetTotalChart"), totalOptions).render();
             }
@@ -342,12 +348,17 @@
             if (document.querySelector("#assetAssignedChart")) {
                 const assignedOptions = {
                     series: [{ name: 'Assigned', data: [80, 85, 75, 77] }, { name: 'Available', data: [20, 15, 25, 23] }],
-                    chart: { type: 'bar', height: 75, stacked: true, parentHeightOffset: 0, toolbar: { show: false } },
-                    grid: { show: false, padding: { top: 0, right: 0, bottom: -15, left: 0 } },
+                    chart: { type: 'bar', height: 100, stacked: true, parentHeightOffset: 0, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+                    grid: { show: false },
                     plotOptions: { bar: { borderRadius: 2, columnWidth: '50%' } },
                     colors: [getCssVar('--primary') || '#6366F1', '#10B981'],
                     stroke: { width: 0 },
-                    xaxis: { categories: ['Q1', 'Q2', 'Q3', 'Q4'], labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false } },
+                    xaxis: { 
+                        categories: ['Q1', 'Q2', 'Q3', 'Q4'], 
+                        labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }, 
+                        axisBorder: { show: false }, 
+                        axisTicks: { show: false } 
+                    },
                     yaxis: { show: false },
                     dataLabels: { enabled: false },
                     legend: { show: false },
@@ -360,9 +371,17 @@
             if (document.querySelector("#assetMaintenanceChart")) {
                 const maintenanceOptions = {
                     series: [{ name: 'Tickets', data: [45, 30, 42, 50, 40, 38] }],
-                    chart: { type: 'area', height: 60, sparkline: { enabled: true }, parentHeightOffset: 0 },
+                    chart: { type: 'area', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
                     stroke: { curve: 'smooth', width: 3 },
                     fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0, stops: [0, 100] } },
+                    grid: { show: false },
+                    yaxis: { show: false },
+                    xaxis: { 
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+                    },
                     colors: ['#F43F5E'],
                     tooltip: { theme: 'light', y: { formatter: val => val } }
                 };

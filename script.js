@@ -27,12 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#employeesChart")) {
         const empOptions = {
             series: [{ name: 'Employees', data: [950, 1000, 1050, 1100, 1200, 1284] }],
-            chart: { type: 'bar', height: 75, sparkline: { enabled: true }, parentHeightOffset: 0,
-                     animations: { enabled: true, easing: 'easeinout', speed: 800 } },
+            chart: { type: 'bar', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
             colors: [getCssVar('--primary') || '#0b57d0'],
-            tooltip: { theme: 'light', y: { formatter: val => val } },
-            xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] }
+            grid: { show: false },
+            yaxis: { show: false },
+            xaxis: { 
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+            },
+            tooltip: { theme: 'light', y: { formatter: val => val } }
         };
         new ApexCharts(document.querySelector("#employeesChart"), empOptions).render();
     }
@@ -41,12 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#turnoverChart")) {
         const turnoverOptions = {
             series: [{ name: 'Joined', data: [40, 45, 35, 55] }, { name: 'Left', data: [10, 8, 25, 5] }],
-            chart: { type: 'bar', height: 75, stacked: false, parentHeightOffset: 0, toolbar: { show: false } },
-            grid: { show: false, padding: { top: 0, right: 0, bottom: -15, left: 0 } },
+            chart: { type: 'bar', height: 100, stacked: false, parentHeightOffset: 0, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+            grid: { show: false },
             plotOptions: { bar: { borderRadius: 2, columnWidth: '50%' } },
             colors: [getCssVar('--primary') || '#6366F1', '#F43F5E'],
             stroke: { width: 0 },
-            xaxis: { categories: ['Q1', 'Q2', 'Q3', 'Q4'], labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false } },
+            xaxis: { 
+                categories: ['Q1', 'Q2', 'Q3', 'Q4'], 
+                labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }, 
+                axisBorder: { show: false }, 
+                axisTicks: { show: false } 
+            },
             yaxis: { show: false },
             dataLabels: { enabled: false },
             legend: { show: false },
@@ -59,9 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#retentionChart")) {
         const retentionOptions = {
             series: [{ name: 'Retention', data: [88, 89, 90, 89, 91, 92] }],
-            chart: { type: 'area', height: 60, sparkline: { enabled: true }, parentHeightOffset: 0 },
+            chart: { type: 'area', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
             stroke: { curve: 'smooth', width: 3 },
             fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0, stops: [0, 100] } },
+            grid: { show: false },
+            yaxis: { show: false },
+            xaxis: { 
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+            },
             colors: [getCssVar('--primary') || '#0b57d0'],
             tooltip: { theme: 'light', y: { formatter: val => val + "%" } }
         };

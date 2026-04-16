@@ -92,27 +92,81 @@
             <div class="analytics-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
                 
                 <!-- Chart 1: Volume Trends -->
-                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Ticket Volume Trends</div>
-                    <div id="volumeTrendsChart" style="height: 160px; margin-top: 8px;"></div>
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">TICKET VOLUME</span>
+                        <span class="badge badge-danger">+18.2%</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">124</div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="volumeTrendsChart" style="width: 100%; margin-top: -15px;"></div>
+                    </div>
                 </div>
 
                 <!-- Chart 2: Status Donut Chart -->
-                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Status Distribution</div>
-                    <div id="statusDistributionChart" style="height: 160px; margin-top: 8px; display:flex; justify-content:center;"></div>
+                <div class="analytics-card" style="position: relative;">
+                    <div class="card-header">
+                        <span class="card-title">ACTIVE WORKLOAD</span>
+                        <span class="status-text status-danger">High Volume</span>
+                    </div>
+                    <div class="custom-legend" style="position: absolute; left: 16px; top: 48px; align-items: flex-start; gap: 8px;">
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">15</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #EF4444;"></span> Requested</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">30</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #F59E0B;"></span> Ongoing</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">55</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #10B981;"></span> Resolved</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="justify-content: flex-end; margin-top: 10px;">
+                        <div id="statusDistributionChart" style="width: 110px;"></div>
+                    </div>
                 </div>
 
-                <!-- Chart 3: Department Stacked Bar -->
-                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Tickets by Dept</div>
-                    <div id="departmentTicketsChart" style="height: 160px; margin-top: 8px;"></div>
+                <!-- Chart 3: Department Repairs Donut -->
+                <div class="analytics-card" style="position: relative;">
+                    <div class="card-header">
+                        <span class="card-title">DEPT REPAIRS</span>
+                        <span class="badge" style="background:var(--border-subtle)">Hardware</span>
+                    </div>
+                    <div class="custom-legend" style="position: absolute; left: 16px; top: 48px; align-items: flex-start; gap: 8px;">
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">32</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #3B82F6;"></span> Design</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">18</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #8B5CF6;"></span> Sales</span>
+                        </div>
+                        <div class="card-metrics" style="margin-bottom: 0; min-height: auto; align-items: center; gap: 4px;">
+                            <div class="card-value" style="font-size: 1.25rem;">12</div>
+                            <span class="legend-item"><span class="dot" style="background-color: #EC4899;"></span> Eng.</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="justify-content: flex-end; margin-top: 10px;">
+                        <div id="departmentTicketsChart" style="width: 110px;"></div>
+                    </div>
                 </div>
 
                 <!-- Chart 4: MTTR Bar Chart -->
-                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Avg TTR (Days / Mo)</div>
-                    <div id="mttrTrendsChart" style="height: 160px; margin-top: 8px;"></div>
+                <div class="analytics-card">
+                    <div class="card-header">
+                        <span class="card-title">AVG TTR (DAYS)</span>
+                        <span class="badge badge-success">-15.0%</span>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="card-value">2.4<span style="font-size:1rem; color:var(--text-secondary); margin-left:4px;">Days</span></div>
+                    </div>
+                    <div class="chart-container bottom-align">
+                        <div id="mttrTrendsChart" style="width: 100%; margin-top: -15px;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -424,14 +478,7 @@
 
             // --- ApexCharts Initialization for narrower cards ---
             if(typeof ApexCharts !== 'undefined') {
-                const globalThemeOpts = {
-                    chart: { toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
-                    dataLabels: { enabled: false },
-                    tooltip: { theme: 'light', y: { title: { formatter: function() { return '' } } } },
-                    stroke: { curve: 'smooth' }
-                };
-
-                // 1. Volume Trends Chart (Simplified Bar)
+                // 1. Volume Trends Chart (Exposed X-Axis & Legend)
                 const volumeOptions = {
                     series: [{
                         name: 'New',
@@ -440,23 +487,32 @@
                         name: 'Resolved',
                         data: [10, 18, 12, 15, 23]
                     }],
-                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
                     colors: ['#EF4444', '#10B981'],
                     plotOptions: { bar: { borderRadius: 2, columnWidth: '60%' } },
                     dataLabels: { enabled: false },
                     stroke: { show: true, width: 2, colors: ['transparent'] },
+                    grid: { show: false },
+                    yaxis: { show: false },
+                    xaxis: { 
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { style: { colors: 'var(--text-secondary)' } }
+                    },
+                    legend: { show: true, position: 'top', horizontalAlign: 'right', fontSize: '11px', markers: { radius: 12 } },
                     tooltip: { theme: 'light' }
                 };
                 new ApexCharts(document.querySelector("#volumeTrendsChart"), volumeOptions).render();
 
-                // 2. Status Distribution Donut
+                // 2. Status Distribution Donut (Employment Type structure)
                 const statusOptions = {
                     series: [15, 30, 55],
                     labels: ['Requested', 'Ongoing', 'Resolved'],
-                    chart: { type: 'donut', height: 160, fontFamily: 'Inter, sans-serif' },
+                    chart: { type: 'donut', height: 110, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
                     colors: ['#EF4444', '#F59E0B', '#10B981'],
                     plotOptions: {
-                        pie: { donut: { size: '70%', labels: { show: true, name: { show: false }, value: { show: true, fontSize: '18px', fontWeight: 600 } } } }
+                        pie: { donut: { size: '65%' } }
                     },
                     dataLabels: { enabled: false },
                     stroke: { width: 0 },
@@ -465,31 +521,41 @@
                 };
                 new ApexCharts(document.querySelector("#statusDistributionChart"), statusOptions).render();
 
-                // 3. Department Tickets Stacked Bar
+                // 3. Department Tickets Donut (Employment Type structure)
                 const deptOptions = {
-                    series: [{
-                        name: 'Repairs', data: [32, 18, 12, 8]
-                    }, {
-                        name: 'Replacements', data: [15, 6, 4, 2]
-                    }],
-                    chart: { type: 'bar', height: 160, stacked: true, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
-                    colors: ['#3B82F6', '#8B5CF6'],
-                    plotOptions: { bar: { horizontal: true, borderRadius: 2, barHeight: '60%' } },
+                    series: [32, 18, 12],
+                    labels: ['Design', 'Sales', 'Engineering'],
+                    chart: { type: 'donut', height: 110, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    colors: ['#3B82F6', '#8B5CF6', '#EC4899'],
+                    plotOptions: {
+                        pie: { donut: { size: '65%' } }
+                    },
                     dataLabels: { enabled: false },
+                    stroke: { width: 0 },
+                    legend: { show: false },
                     tooltip: { theme: 'light' }
                 };
                 new ApexCharts(document.querySelector("#departmentTicketsChart"), deptOptions).render();
 
-                // 4. Time To Resolution (TTR) per month bar chart
+                // 4. Time To Resolution (TTR) per month bar chart (Exposed X-Axis)
                 const mttrOptions = {
                     series: [{
                         name: 'Avg TTR (Days)',
-                        data: [4.2, 3.8, 4.0, 3.2, 2.7, 2.4]
+                        data: [4.2, 3.8, 4.0, 3.2, 2.7]
                     }],
-                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
-                    colors: ['#0EA5E9'],
+                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+                    colors: ['#10B981'],
                     plotOptions: { bar: { borderRadius: 4, columnWidth: '50%' } },
                     dataLabels: { enabled: false },
+                    grid: { show: false },
+                    yaxis: { show: false },
+                    xaxis: { 
+                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                        axisBorder: { show: false },
+                        axisTicks: { show: false },
+                        labels: { style: { colors: 'var(--text-secondary)' } }
+                    },
+                    legend: { show: false },
                     tooltip: { theme: 'light', y: { formatter: function(val) { return val + " days" } } }
                 };
                 new ApexCharts(document.querySelector("#mttrTrendsChart"), mttrOptions).render();
