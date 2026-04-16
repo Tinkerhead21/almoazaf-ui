@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance | SereneHR</title>
+    <meta name="description" content="Manage asset maintenance tickets.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="ph-fill ph-sparkle"></i>
+            </div>
+            <div class="logo-text">
+                <h1>SereneHR</h1>
+                <span>Enterprise Plan</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-users"></i>
+                <span>Employees</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-money"></i>
+                <span>Payroll</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trend-up"></i>
+                <span>Performance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-user-plus"></i>
+                <span>Recruitment</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-file-text"></i>
+                <span>Documents</span>
+            </a>
+            <a href="asset-management.html" class="nav-item">
+                <i class="ph ph-laptop"></i>
+                <span>Asset Management</span>
+            </a>
+            <a href="maintenance.html" class="nav-item active">
+                <i class="ph ph-wrench"></i>
+                <span>Maintenance</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="upgrade-card">
+                <h3>Upgrade Plan</h3>
+                <p>Unlock advanced analytics and global payroll features.</p>
+                <button class="btn btn-primary btn-block">Upgrade Now</button>
+            </div>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-question"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <h2 class="page-title">Maintenance Tickets</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="page-body">
+            
+            <!-- Analytics Dashboard -->
+            <div class="analytics-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 24px;">
+                
+                <!-- Chart 1: Volume Trends -->
+                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Ticket Volume Trends</div>
+                    <div id="volumeTrendsChart" style="height: 160px; margin-top: 8px;"></div>
+                </div>
+
+                <!-- Chart 2: Status Donut Chart -->
+                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Status Distribution</div>
+                    <div id="statusDistributionChart" style="height: 160px; margin-top: 8px; display:flex; justify-content:center;"></div>
+                </div>
+
+                <!-- Chart 3: Department Stacked Bar -->
+                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Tickets by Dept</div>
+                    <div id="departmentTicketsChart" style="height: 160px; margin-top: 8px;"></div>
+                </div>
+
+                <!-- Chart 4: MTTR Bar Chart -->
+                <div class="analytics-card" style="display:flex; flex-direction:column; padding: 16px;">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase;">Avg TTR (Days / Mo)</div>
+                    <div id="mttrTrendsChart" style="height: 160px; margin-top: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <div class="content-card list-section">
+                <!-- List Header -->
+                <div class="list-header">
+                    <div class="search-bar light">
+                        <i class="ph ph-funnel"></i>
+                        <input type="text" placeholder="Search ticket ID or Creator...">
+                    </div>
+                    <div class="list-actions">
+                        <select class="btn btn-outline" style="appearance: auto;">
+                            <option value="">All Statuses</option>
+                            <option value="Requested">Requested</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                        <select class="btn btn-outline" style="appearance: auto;">
+                            <option value="">All Request Types</option>
+                            <option value="Repair">Repair</option>
+                            <option value="Upgrade">Upgrade</option>
+                            <option value="Replacement">Replacement</option>
+                        </select>
+                        <button class="btn btn-primary" id="addTicketBtn">
+                            + Open Ticket
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>TICKET ID</th>
+                                <th>DATE & TIME</th>
+                                <th>CREATOR</th>
+                                <th>REQUEST TYPE</th>
+                                <th>STATUS</th>
+                                <th class="actions-col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ticket 1 -->
+                            <tr onclick="window.location.href='maintenance-details.html'" style="cursor:pointer;" data-href="maintenance-details.html">
+                                <td style="font-weight: 600; color: var(--primary);">#MNT-1049</td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <span style="font-size:0.85rem; color:var(--text-primary);">Apr 16, 2026</span>
+                                        <span style="font-size:0.75rem; color:var(--text-tertiary);">09:12 AM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Michael" alt="Michael Chen" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Michael Chen</span>
+                                            <span class="emp-id">HR-2291</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background:var(--surface-body); border:1px solid var(--border-subtle); color:var(--text-secondary);"><i class="ph ph-wrench" style="margin-right:4px;"></i>Repair</span></td>
+                                <td><span class="badge" style="background:#fef3c7; color:#d97706; border: 1px solid #fde68a;">Ongoing</span></td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Ticket"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+
+                            <!-- Ticket 2 -->
+                            <tr onclick="window.location.href='maintenance-details.html'" style="cursor:pointer;" data-href="maintenance-details.html">
+                                <td style="font-weight: 600; color: var(--primary);">#MNT-1048</td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <span style="font-size:0.85rem; color:var(--text-primary);">Apr 15, 2026</span>
+                                        <span style="font-size:0.75rem; color:var(--text-tertiary);">14:30 PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah Jenkins" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Sarah Jenkins</span>
+                                            <span class="emp-id">SC-8821</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background:var(--surface-body); border:1px solid var(--border-subtle); color:var(--text-secondary);"><i class="ph ph-arrow-circle-up" style="margin-right:4px;"></i>Upgrade</span></td>
+                                <td><span class="badge badge-success">Delivered</span></td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Ticket"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Ticket 3 -->
+                            <tr onclick="window.location.href='maintenance-details.html'" style="cursor:pointer;" data-href="maintenance-details.html">
+                                <td style="font-weight: 600; color: var(--primary);">#MNT-1047</td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <span style="font-size:0.85rem; color:var(--text-primary);">Apr 14, 2026</span>
+                                        <span style="font-size:0.75rem; color:var(--text-tertiary);">11:05 AM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" alt="Alex Thompson" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Alex Thompson</span>
+                                            <span class="emp-id">SC-4281</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background:var(--surface-body); border:1px solid var(--border-subtle); color:var(--text-secondary);"><i class="ph ph-arrows-left-right" style="margin-right:4px;"></i>Replacement</span></td>
+                                <td><span class="badge badge-danger" style="background:#fee2e2; color:#b91c1c;">Requested</span></td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Ticket"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Ticket 4 -->
+                            <tr onclick="window.location.href='maintenance-details.html'" style="cursor:pointer;" data-href="maintenance-details.html">
+                                <td style="font-weight: 600; color: var(--primary);">#MNT-1046</td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <span style="font-size:0.85rem; color:var(--text-primary);">Apr 13, 2026</span>
+                                        <span style="font-size:0.75rem; color:var(--text-tertiary);">16:45 PM</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="employee-cell">
+                                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus" alt="Marcus Rodriguez" class="avatar">
+                                        <div class="employee-info">
+                                            <span class="emp-name">Marcus Rodriguez</span>
+                                            <span class="emp-id">SC-1209</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge" style="background:var(--surface-body); border:1px solid var(--border-subtle); color:var(--text-secondary);"><i class="ph ph-wrench" style="margin-right:4px;"></i>Repair</span></td>
+                                <td><span class="badge" style="background:#dbeafe; color:#1d4ed8; border: 1px solid #bfdbfe;">Resolved</span></td>
+                                <td class="actions-col">
+                                    <button class="icon-btn ghost" title="View Ticket"><i class="ph ph-caret-right"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Pagination -->
+                <div class="list-footer">
+                    <span class="showing-text">Showing <strong>1-4</strong> of <strong>128</strong> tickets</span>
+                    <div class="pagination">
+                        <button class="page-btn disabled"><i class="ph ph-caret-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-ellipsis">...</span>
+                        <button class="page-btn">13</button>
+                        <button class="page-btn"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Open Ticket Modal -->
+    <dialog id="openTicketModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Open Maintenance Ticket</h2>
+                <button class="icon-btn ghost close-ticket-modal" type="button"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <form id="openTicketForm" class="form-section-col">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label>Asset Template <span class="required">*</span></label>
+                            <select class="input-field" required id="ticketAssetSelect">
+                                <option value="">Select Asset Model</option>
+                                <option value="MacBook Pro M3">MacBook Pro M3</option>
+                                <option value="iPhone 15 Pro">iPhone 15 Pro</option>
+                                <option value="Dell UltraSharp 27">Dell UltraSharp 27"</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Unit / Serial Number <span class="required">*</span></label>
+                            <select class="input-field" required id="ticketUnitSelect" disabled>
+                                <option value="">Select Asset First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="padding: 16px; background: var(--surface-body); margin-bottom: 8px;">
+                        <label style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; display:block; margin-bottom: 12px;">Auto-Filled Details</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div>
+                                <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:4px;">Current Assignee</label>
+                                <input type="text" class="input-field" id="ticketEmployeeInput" value="-" readonly style="background: transparent; border-color: transparent; padding: 0; font-weight: 500; color: var(--text-primary); cursor: default;">
+                            </div>
+                            <div>
+                                <label style="display:block; font-size:0.75rem; color:var(--text-secondary); margin-bottom:4px;">Internal Asset Tag</label>
+                                <input type="text" class="input-field" id="ticketTagInput" value="-" readonly style="background: transparent; border-color: transparent; padding: 0; font-weight: 500; color: var(--text-primary); cursor: default;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Request Type <span class="required">*</span></label>
+                        <select class="input-field" required>
+                            <option value="">Select Type</option>
+                            <option value="Repair">Repair</option>
+                            <option value="Upgrade">Upgrade</option>
+                            <option value="Replacement">Replacement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Issue Description / Notes <span class="required">*</span></label>
+                        <textarea class="input-field" rows="4" required placeholder="Describe the issue or reason for maintenance..."></textarea>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer" style="padding: 16px 24px;">
+                <button type="button" class="btn btn-outline close-ticket-modal">Cancel</button>
+                <button type="submit" form="openTicketForm" class="btn btn-primary">Create Ticket</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ticket Modal Logic
+            const addTicketBtn = document.getElementById('addTicketBtn');
+            const openTicketModal = document.getElementById('openTicketModal');
+            const closeTicketBtns = document.querySelectorAll('.close-ticket-modal');
+            const ticketAssetSelect = document.getElementById('ticketAssetSelect');
+            const ticketUnitSelect = document.getElementById('ticketUnitSelect');
+            const ticketEmployeeInput = document.getElementById('ticketEmployeeInput');
+            const ticketTagInput = document.getElementById('ticketTagInput');
+
+            if(addTicketBtn) addTicketBtn.addEventListener('click', () => openTicketModal.showModal());
+            closeTicketBtns.forEach(btn => btn.addEventListener('click', () => openTicketModal.close()));
+
+            // Mock Data directory for serials
+            const mockSerials = {
+                'MacBook Pro M3': [
+                    { sn: '1X2Y3Z45A', tag: 'TAG-1X2Y3Z', emp: 'Sarah Jenkins' },
+                    { sn: '9B8C7D65E', tag: 'TAG-9B8C7D', emp: 'Michael Chen' }
+                ],
+                'iPhone 15 Pro': [
+                    { sn: 'IP-H9382', tag: 'TAG-IPH93', emp: 'Alex Thompson' }
+                ]
+            };
+
+            ticketAssetSelect.addEventListener('change', (e) => {
+                const asset = e.target.value;
+                ticketUnitSelect.innerHTML = '<option value="">Select Unit</option>';
+                ticketEmployeeInput.value = '-';
+                ticketTagInput.value = '-';
+                
+                if (asset && mockSerials[asset]) {
+                    ticketUnitSelect.disabled = false;
+                    mockSerials[asset].forEach(unit => {
+                        const opt = document.createElement('option');
+                        opt.value = unit.sn;
+                        opt.textContent = unit.sn;
+                        opt.dataset.emp = unit.emp;
+                        opt.dataset.tag = unit.tag;
+                        ticketUnitSelect.appendChild(opt);
+                    });
+                } else {
+                    ticketUnitSelect.disabled = true;
+                    ticketUnitSelect.innerHTML = '<option value="">Select Asset First</option>';
+                }
+            });
+
+            ticketUnitSelect.addEventListener('change', (e) => {
+                const opt = e.target.options[e.target.selectedIndex];
+                if(opt && opt.value) {
+                    ticketEmployeeInput.value = opt.dataset.emp || 'Unassigned';
+                    ticketTagInput.value = opt.dataset.tag || 'N/A';
+                } else {
+                    ticketEmployeeInput.value = '-';
+                    ticketTagInput.value = '-';
+                }
+            });
+
+            document.getElementById('openTicketForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                openTicketModal.close();
+                window.location.href = 'maintenance-details.html';
+            });
+            
+            openTicketModal.addEventListener('click', (e) => {
+                const dialogDimensions = openTicketModal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
+                ) {
+                    openTicketModal.close();
+                }
+            });
+
+            // --- ApexCharts Initialization for narrower cards ---
+            if(typeof ApexCharts !== 'undefined') {
+                const globalThemeOpts = {
+                    chart: { toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    dataLabels: { enabled: false },
+                    tooltip: { theme: 'light', y: { title: { formatter: function() { return '' } } } },
+                    stroke: { curve: 'smooth' }
+                };
+
+                // 1. Volume Trends Chart (Simplified Bar)
+                const volumeOptions = {
+                    series: [{
+                        name: 'New',
+                        data: [15, 22, 10, 18, 26]
+                    }, {
+                        name: 'Resolved',
+                        data: [10, 18, 12, 15, 23]
+                    }],
+                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    colors: ['#EF4444', '#10B981'],
+                    plotOptions: { bar: { borderRadius: 2, columnWidth: '60%' } },
+                    dataLabels: { enabled: false },
+                    stroke: { show: true, width: 2, colors: ['transparent'] },
+                    tooltip: { theme: 'light' }
+                };
+                new ApexCharts(document.querySelector("#volumeTrendsChart"), volumeOptions).render();
+
+                // 2. Status Distribution Donut
+                const statusOptions = {
+                    series: [15, 30, 55],
+                    labels: ['Requested', 'Ongoing', 'Resolved'],
+                    chart: { type: 'donut', height: 160, fontFamily: 'Inter, sans-serif' },
+                    colors: ['#EF4444', '#F59E0B', '#10B981'],
+                    plotOptions: {
+                        pie: { donut: { size: '70%', labels: { show: true, name: { show: false }, value: { show: true, fontSize: '18px', fontWeight: 600 } } } }
+                    },
+                    dataLabels: { enabled: false },
+                    stroke: { width: 0 },
+                    legend: { show: false },
+                    tooltip: { theme: 'light' }
+                };
+                new ApexCharts(document.querySelector("#statusDistributionChart"), statusOptions).render();
+
+                // 3. Department Tickets Stacked Bar
+                const deptOptions = {
+                    series: [{
+                        name: 'Repairs', data: [32, 18, 12, 8]
+                    }, {
+                        name: 'Replacements', data: [15, 6, 4, 2]
+                    }],
+                    chart: { type: 'bar', height: 160, stacked: true, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    colors: ['#3B82F6', '#8B5CF6'],
+                    plotOptions: { bar: { horizontal: true, borderRadius: 2, barHeight: '60%' } },
+                    dataLabels: { enabled: false },
+                    tooltip: { theme: 'light' }
+                };
+                new ApexCharts(document.querySelector("#departmentTicketsChart"), deptOptions).render();
+
+                // 4. Time To Resolution (TTR) per month bar chart
+                const mttrOptions = {
+                    series: [{
+                        name: 'Avg TTR (Days)',
+                        data: [4.2, 3.8, 4.0, 3.2, 2.7, 2.4]
+                    }],
+                    chart: { type: 'bar', height: 160, toolbar: { show: false }, fontFamily: 'Inter, sans-serif', sparkline: { enabled: true } },
+                    colors: ['#0EA5E9'],
+                    plotOptions: { bar: { borderRadius: 4, columnWidth: '50%' } },
+                    dataLabels: { enabled: false },
+                    tooltip: { theme: 'light', y: { formatter: function(val) { return val + " days" } } }
+                };
+                new ApexCharts(document.querySelector("#mttrTrendsChart"), mttrOptions).render();
+            }
+        });
+    </script>
+</body>
+</html>

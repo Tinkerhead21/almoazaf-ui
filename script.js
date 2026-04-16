@@ -374,4 +374,99 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // --- Global Row Context Menu Logic ---
+    const contextMenuHtml = `
+        <div id="globalContextMenu" class="context-menu" style="display: none; position: absolute; z-index: 1000; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); box-shadow: 0 8px 16px rgba(0,0,0,0.15); padding: 8px 0; min-width: 170px; pointer-events: auto;">
+            <ul style="list-style: none; margin: 0; padding: 0;">
+                <li class="ctx-menu-item" data-action="view" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-eye" style="font-size: 1rem; color: var(--text-secondary);"></i> View Details</li>
+                <li class="ctx-menu-item" data-action="edit" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-pencil-simple" style="font-size: 1rem; color: var(--text-secondary);"></i> Quick Edit</li>
+                <li class="ctx-menu-item" data-action="duplicate" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-copy" style="font-size: 1rem; color: var(--text-secondary);"></i> Duplicate Row</li>
+                <li style="height: 1px; background: var(--border-subtle); margin: 6px 0;"></li>
+                <li class="ctx-menu-item" data-action="delete" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--status-danger-text); transition: background 0.15s ease;"><i class="ph ph-trash" style="font-size: 1rem;"></i> Delete Sequence</li>
+            </ul>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', contextMenuHtml);
+
+    const ctxMenu = document.getElementById('globalContextMenu');
+    let currentTargetRow = null;
+
+    // Hover simulation injection
+    const ctxStyle = document.createElement('style');
+    ctxStyle.innerHTML = `
+        .ctx-menu-item:hover {
+            background-color: var(--surface-background) !important;
+        }
+    `;
+    document.head.appendChild(ctxStyle);
+
+    document.addEventListener('contextmenu', (e) => {
+        const tr = e.target.closest('.data-table tbody tr');
+        if (tr) {
+            e.preventDefault();
+            currentTargetRow = tr;
+            
+            ctxMenu.style.display = 'block';
+            
+            // Layout Boundaries logic
+            let x = e.pageX;
+            let y = e.pageY;
+            
+            if (x + ctxMenu.offsetWidth > window.innerWidth) {
+                x = window.innerWidth - ctxMenu.offsetWidth - 10;
+            }
+            if (y + ctxMenu.offsetHeight > window.innerHeight) {
+                y = window.innerHeight - ctxMenu.offsetHeight - 10;
+            }
+
+            ctxMenu.style.left = x + 'px';
+            ctxMenu.style.top = y + 'px';
+        } else {
+            ctxMenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#globalContextMenu')) {
+            if(ctxMenu) ctxMenu.style.display = 'none';
+        }
+    });
+
+    // Handle Context Methods
+    document.querySelectorAll('.ctx-menu-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const action = e.currentTarget.dataset.action;
+            ctxMenu.style.display = 'none';
+            
+            if (!currentTargetRow) return;
+
+            if (action === 'view') {
+                const targetUrl = currentTargetRow.getAttribute('data-href');
+                const onclickStr = currentTargetRow.getAttribute('onclick');
+                if (targetUrl) {
+                    window.location.href = targetUrl;
+                } else if (onclickStr) {
+                    const match = onclickStr.match(/window\.location\.href\s*=\s*'([^']+)'/);
+                    if (match && match[1]) {
+                        window.location.href = match[1];
+                    }
+                }
+            } else if (action === 'edit') {
+                alert('Triggering Quick Edit modal on target entity.');
+            } else if (action === 'duplicate') {
+                // Flash animation for clear duplication visibility
+                const clone = currentTargetRow.cloneNode(true);
+                clone.style.background = 'var(--surface-background)';
+                clone.style.transition = 'background 1s ease';
+                currentTargetRow.parentNode.insertBefore(clone, currentTargetRow.nextSibling);
+                setTimeout(() => { clone.style.background = ''; }, 1000);
+            } else if (action === 'delete') {
+                currentTargetRow.style.transition = 'opacity 0.25s ease';
+                currentTargetRow.style.opacity = '0';
+                setTimeout(() => currentTargetRow.remove(), 250);
+            }
+            currentTargetRow = null;
+        });
+    });
 });

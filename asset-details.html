@@ -53,6 +53,10 @@
                 <i class="ph ph-laptop"></i>
                 <span>Asset Management</span>
             </a>
+            <a href="maintenance.html" class="nav-item">
+                <i class="ph ph-wrench"></i>
+                <span>Maintenance</span>
+            </a>
         </nav>
 
         <div class="sidebar-footer">
@@ -260,6 +264,105 @@
         </div>
     </dialog>
 
+    <!-- History Modal -->
+    <dialog id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div>
+                    <h2 style="margin: 0; display:flex; align-items:center; gap:8px;">
+                        <i class="ph ph-clock-counter-clockwise" style="color: var(--primary);"></i> Unit History
+                    </h2>
+                    <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--text-secondary);" id="historyModalSubtitle">Serial: N/A</p>
+                </div>
+                <button class="icon-btn ghost close-history" type="button"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div class="timeline" style="position: relative; padding-left: 24px; border-left: 2px solid var(--border-subtle); display:flex; flex-direction:column; gap:24px;">
+                    
+                    <!-- Event 1 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--surface-body); border: 2px solid var(--primary);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Michael" style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle);">
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">Michael Chen</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: HR-2291</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Apr 15, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">09:42 AM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Status Changed:</span> 
+                            <strong style="color: var(--text-primary);">Assigned</strong> 
+                            <i class="ph ph-arrow-right" style="vertical-align: middle; margin: 0 4px; color: var(--text-secondary);"></i> 
+                            <span class="badge badge-danger" style="background:#fee2e2; color:#b91c1c;">Maintenance</span>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--border-subtle);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle);">
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">Alex Thompson</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: SC-4281</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Mar 02, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">14:15 PM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Assigned to Employee:</span> 
+                            <strong style="color: var(--text-primary);">Sarah Jenkins</strong>
+                            <div style="margin-top: 4px; font-size: 0.75rem;">
+                                <span style="color: var(--text-secondary);">Status Changed:</span> 
+                                <strong>Available</strong> <i class="ph ph-arrow-right" style="vertical-align: middle; margin: 0 4px; color: var(--text-secondary);"></i> <strong>Assigned</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--border-subtle);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle); display:flex; align-items:center; justify-content:center;">
+                                    <i class="ph-fill ph-robot" style="color: var(--primary); font-size: 0.9rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">System Admin</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: SYS-0001</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Jan 10, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">10:00 AM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Action:</span> 
+                            <strong style="color: var(--text-primary);">Unit Initialized</strong>
+                            <div style="margin-top: 4px; font-size: 0.75rem; color: var(--text-secondary);">
+                                Asset added to inventory via bulk import. Status set to <strong style="color: var(--text-primary);">Available</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 16px 24px;">
+                <button type="button" class="btn btn-primary close-history">Close</button>
+            </div>
+        </div>
+    </dialog>
+
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -354,9 +457,19 @@
                         </div>
                     </td>
                     <td class="actions-col">
-                        <button class="icon-btn ghost remove-row-btn" title="Remove Unit"><i class="ph ph-trash" style="color: var(--status-danger-text);"></i></button>
+                        <div style="display:flex; justify-content:flex-end; gap: 4px;">
+                            <button class="icon-btn ghost history-row-btn" title="View History"><i class="ph ph-clock-counter-clockwise"></i></button>
+                            <button class="icon-btn ghost remove-row-btn" title="Remove Unit"><i class="ph ph-trash" style="color: var(--status-danger-text);"></i></button>
+                        </div>
                     </td>
                 `;
+
+                // Handle history button
+                tr.querySelector('.history-row-btn').addEventListener('click', () => {
+                    const hModal = document.getElementById('historyModal');
+                    document.getElementById('historyModalSubtitle').textContent = `Serial: ${serialNumber || 'Unassigned'} ${assetTag ? '(' + assetTag + ')' : ''}`;
+                    hModal.showModal();
+                });
 
                 // Handle remove button
                 tr.querySelector('.remove-row-btn').addEventListener('click', () => {
@@ -447,6 +560,21 @@
                     e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
                 ) {
                     importModal.close();
+                }
+            });
+
+            // History modal close logic
+            const historyModal = document.getElementById('historyModal');
+            document.querySelectorAll('.close-history').forEach(btn => {
+                btn.addEventListener('click', () => historyModal.close());
+            });
+            historyModal.addEventListener('click', (e) => {
+                const dialogDimensions = historyModal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
+                ) {
+                    historyModal.close();
                 }
             });
             
