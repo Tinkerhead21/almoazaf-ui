@@ -27,12 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#employeesChart")) {
         const empOptions = {
             series: [{ name: 'Employees', data: [950, 1000, 1050, 1100, 1200, 1284] }],
-            chart: { type: 'bar', height: 75, sparkline: { enabled: true }, parentHeightOffset: 0,
-                     animations: { enabled: true, easing: 'easeinout', speed: 800 } },
+            chart: { type: 'bar', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
             colors: [getCssVar('--primary') || '#0b57d0'],
-            tooltip: { theme: 'light', y: { formatter: val => val } },
-            xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'] }
+            grid: { show: false },
+            yaxis: { show: false },
+            xaxis: { 
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+            },
+            tooltip: { theme: 'light', y: { formatter: val => val } }
         };
         new ApexCharts(document.querySelector("#employeesChart"), empOptions).render();
     }
@@ -41,12 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#turnoverChart")) {
         const turnoverOptions = {
             series: [{ name: 'Joined', data: [40, 45, 35, 55] }, { name: 'Left', data: [10, 8, 25, 5] }],
-            chart: { type: 'bar', height: 75, stacked: false, parentHeightOffset: 0, toolbar: { show: false } },
-            grid: { show: false, padding: { top: 0, right: 0, bottom: -15, left: 0 } },
+            chart: { type: 'bar', height: 100, stacked: false, parentHeightOffset: 0, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+            grid: { show: false },
             plotOptions: { bar: { borderRadius: 2, columnWidth: '50%' } },
             colors: [getCssVar('--primary') || '#6366F1', '#F43F5E'],
             stroke: { width: 0 },
-            xaxis: { categories: ['Q1', 'Q2', 'Q3', 'Q4'], labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false } },
+            xaxis: { 
+                categories: ['Q1', 'Q2', 'Q3', 'Q4'], 
+                labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }, 
+                axisBorder: { show: false }, 
+                axisTicks: { show: false } 
+            },
             yaxis: { show: false },
             dataLabels: { enabled: false },
             legend: { show: false },
@@ -59,9 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector("#retentionChart")) {
         const retentionOptions = {
             series: [{ name: 'Retention', data: [88, 89, 90, 89, 91, 92] }],
-            chart: { type: 'area', height: 60, sparkline: { enabled: true }, parentHeightOffset: 0 },
+            chart: { type: 'area', height: 100, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
             stroke: { curve: 'smooth', width: 3 },
             fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0, stops: [0, 100] } },
+            grid: { show: false },
+            yaxis: { show: false },
+            xaxis: { 
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: { show: true, style: { colors: 'var(--text-secondary)', fontSize: '10px' } }
+            },
             colors: [getCssVar('--primary') || '#0b57d0'],
             tooltip: { theme: 'light', y: { formatter: val => val + "%" } }
         };
@@ -110,7 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
         row.addEventListener('click', (e) => {
             // Prevent navigation if an action button is clicked
             if (!e.target.closest('button')) {
-                window.location.href = 'employee-details.html';
+                if (row.getAttribute('onclick')) {
+                    // Let inline onclick handle it
+                    return;
+                }
+                const targetUrl = row.getAttribute('data-href') || 'employee-details.html';
+                window.location.href = targetUrl;
             }
         });
     });
@@ -369,4 +393,99 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // --- Global Row Context Menu Logic ---
+    const contextMenuHtml = `
+        <div id="globalContextMenu" class="context-menu" style="display: none; position: absolute; z-index: 1000; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); box-shadow: 0 8px 16px rgba(0,0,0,0.15); padding: 8px 0; min-width: 170px; pointer-events: auto;">
+            <ul style="list-style: none; margin: 0; padding: 0;">
+                <li class="ctx-menu-item" data-action="view" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-eye" style="font-size: 1rem; color: var(--text-secondary);"></i> View Details</li>
+                <li class="ctx-menu-item" data-action="edit" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-pencil-simple" style="font-size: 1rem; color: var(--text-secondary);"></i> Quick Edit</li>
+                <li class="ctx-menu-item" data-action="duplicate" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;"><i class="ph ph-copy" style="font-size: 1rem; color: var(--text-secondary);"></i> Duplicate Row</li>
+                <li style="height: 1px; background: var(--border-subtle); margin: 6px 0;"></li>
+                <li class="ctx-menu-item" data-action="delete" style="padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--status-danger-text); transition: background 0.15s ease;"><i class="ph ph-trash" style="font-size: 1rem;"></i> Delete Sequence</li>
+            </ul>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', contextMenuHtml);
+
+    const ctxMenu = document.getElementById('globalContextMenu');
+    let currentTargetRow = null;
+
+    // Hover simulation injection
+    const ctxStyle = document.createElement('style');
+    ctxStyle.innerHTML = `
+        .ctx-menu-item:hover {
+            background-color: var(--surface-background) !important;
+        }
+    `;
+    document.head.appendChild(ctxStyle);
+
+    document.addEventListener('contextmenu', (e) => {
+        const tr = e.target.closest('.data-table tbody tr');
+        if (tr) {
+            e.preventDefault();
+            currentTargetRow = tr;
+            
+            ctxMenu.style.display = 'block';
+            
+            // Layout Boundaries logic
+            let x = e.pageX;
+            let y = e.pageY;
+            
+            if (x + ctxMenu.offsetWidth > window.innerWidth) {
+                x = window.innerWidth - ctxMenu.offsetWidth - 10;
+            }
+            if (y + ctxMenu.offsetHeight > window.innerHeight) {
+                y = window.innerHeight - ctxMenu.offsetHeight - 10;
+            }
+
+            ctxMenu.style.left = x + 'px';
+            ctxMenu.style.top = y + 'px';
+        } else {
+            ctxMenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#globalContextMenu')) {
+            if(ctxMenu) ctxMenu.style.display = 'none';
+        }
+    });
+
+    // Handle Context Methods
+    document.querySelectorAll('.ctx-menu-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const action = e.currentTarget.dataset.action;
+            ctxMenu.style.display = 'none';
+            
+            if (!currentTargetRow) return;
+
+            if (action === 'view') {
+                const targetUrl = currentTargetRow.getAttribute('data-href');
+                const onclickStr = currentTargetRow.getAttribute('onclick');
+                if (targetUrl) {
+                    window.location.href = targetUrl;
+                } else if (onclickStr) {
+                    const match = onclickStr.match(/window\.location\.href\s*=\s*'([^']+)'/);
+                    if (match && match[1]) {
+                        window.location.href = match[1];
+                    }
+                }
+            } else if (action === 'edit') {
+                alert('Triggering Quick Edit modal on target entity.');
+            } else if (action === 'duplicate') {
+                // Flash animation for clear duplication visibility
+                const clone = currentTargetRow.cloneNode(true);
+                clone.style.background = 'var(--surface-background)';
+                clone.style.transition = 'background 1s ease';
+                currentTargetRow.parentNode.insertBefore(clone, currentTargetRow.nextSibling);
+                setTimeout(() => { clone.style.background = ''; }, 1000);
+            } else if (action === 'delete') {
+                currentTargetRow.style.transition = 'opacity 0.25s ease';
+                currentTargetRow.style.opacity = '0';
+                setTimeout(() => currentTargetRow.remove(), 250);
+            }
+            currentTargetRow = null;
+        });
+    });
 });

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Details | SereneHR</title>
+    <meta name="description" content="View and manage individual asset units.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="ph-fill ph-sparkle"></i>
+            </div>
+            <div class="logo-text">
+                <h1>SereneHR</h1>
+                <span>Enterprise Plan</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-users"></i>
+                <span>Employees</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-money"></i>
+                <span>Payroll</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trend-up"></i>
+                <span>Performance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-user-plus"></i>
+                <span>Recruitment</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-file-text"></i>
+                <span>Documents</span>
+            </a>
+            <a href="asset-management.html" class="nav-item active">
+                <i class="ph ph-laptop"></i>
+                <span>Asset Management</span>
+            </a>
+            <a href="maintenance.html" class="nav-item">
+                <i class="ph ph-wrench"></i>
+                <span>Maintenance</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="upgrade-card">
+                <h3>Upgrade Plan</h3>
+                <p>Unlock advanced analytics and global payroll features.</p>
+                <button class="btn btn-primary btn-block">Upgrade Now</button>
+            </div>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-question"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <!-- Minimal top header layout -->
+        <div class="profile-header-section" style="border-bottom: none; background: transparent; padding-bottom: 0;">
+            <header class="top-header">
+                <a href="asset-management.html" class="btn-text"
+                    style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; margin-left: -8px; padding: 8px;">
+                    <i class="ph ph-arrow-left"></i> Back to Asset List
+                </a>
+                <div class="header-actions">
+                    <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                        <i class="ph ph-moon"></i>
+                    </button>
+                </div>
+            </header>
+        </div>
+
+        <div class="page-body" style="padding-top: var(--spacing-sm);">
+            <div class="profile-grid">
+                
+                <!-- Left Sidebar: Sticky Info Card -->
+                <div class="grid-col-left">
+                    <div class="content-card profile-card" style="padding: var(--spacing-lg); gap: var(--spacing-lg); position: sticky; top: var(--spacing-lg);">
+                        
+                        <!-- Header -->
+                        <div style="text-align: center;">
+                            <div class="profile-avatar-wrapper" style="margin: 0 auto; width: 100px; height: 100px; border-radius: 20px; background: var(--surface-body); border: 1px solid var(--border-subtle); display:flex; align-items:center; justify-content:center; position:relative;">
+                                <i class="ph ph-laptop" style="font-size: 3rem; color: var(--primary);"></i>
+                                <button class="btn-camera"
+                                    style="width: 28px; height: 28px; bottom: -4px; right: -4px;"><i
+                                        class="ph-fill ph-pencil-simple" style="font-size: 0.8rem;"></i></button>
+                            </div>
+
+                            <div style="margin-top: 14px;">
+                                <h1 style="font-size: 1.25rem; margin-bottom: 4px;">MacBook Pro M3</h1>
+                                <span class="badge" style="background-color: var(--border-subtle); color: var(--text-secondary); font-size: 0.65rem; padding: 4px 8px;">CATEGORY: COMPUTER</span>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin-top: 20px;">
+                                <button class="btn btn-outline" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 8px 12px; height: 40px"><i class="ph ph-pencil-simple"></i> Edit Asset</button>
+                                <button class="btn icon-btn" style="border: 1px solid #fecdd3; color: #e11d48; background-color: #fff1f2; width: 40px; height: 40px; flex-shrink: 0;"><i class="ph ph-trash"></i></button>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
+
+                        <!-- Hardware Specs -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Specifications</h3>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">CPU</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">M3 Pro</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">RAM</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">16GB unified</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">STORAGE</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">512GB SSD</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                    <span style="font-size: 0.7rem; color: var(--text-tertiary); font-weight: 600;">DISPLAY</span>
+                                    <span style="font-size: 0.85rem; font-weight: 500;">14" Liquid Retina</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 0;">
+
+                        <!-- Inventory Highlights -->
+                        <div>
+                            <h3 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-tertiary); letter-spacing: 0.05em; margin-bottom: 12px; margin-top: 0;">Inventory Summary</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <div style="padding: 12px; border-radius: var(--radius-sm); background: var(--surface-body); border: 1px solid var(--border-subtle); text-align: center;">
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 600;">Total</div>
+                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary);" id="stickyTotal">0</div>
+                                </div>
+                                <div style="padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05); text-align: center;">
+                                    <div style="font-size: 0.7rem; color: var(--status-success-text); text-transform: uppercase; font-weight: 600;">Available</div>
+                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--status-success-text);" id="stickyAvailable">0</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary);">
+                                <span>Assigned: <strong style="color: var(--text-primary);" id="stickyAssigned">0</strong></span>
+                                <span>Maintenance: <strong style="color: var(--status-danger-text);" id="stickyMaintenance">0</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Units Table -->
+                <div class="grid-col-right" style="display: flex; flex-direction: column;">
+                    <div class="content-card list-section" style="flex: 1; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                        
+                        <div class="list-header" style="justify-content: space-between; padding: 24px; border-bottom: 1px solid var(--border-subtle);">
+                            <h2 style="margin: 0; font-size: 1.1rem; flex-shrink: 0;">Unit Inventory</h2>
+                            
+                            <div class="list-actions" style="flex-wrap: wrap;">
+                                <div class="search-bar light">
+                                    <i class="ph ph-funnel"></i>
+                                    <input type="text" placeholder="Search serial/tag...">
+                                </div>
+                                <button class="btn btn-outline" id="importStockBtn">
+                                    <i class="ph ph-upload-simple"></i> Import
+                                </button>
+                                <button class="btn btn-primary" id="addStockBtn">
+                                    + Add Stock
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="assetUnitsTable">
+                                <thead>
+                                    <tr>
+                                        <th>SERIAL NUMBER</th>
+                                        <th>ASSET TAG</th>
+                                        <th>EMPLOYEE</th>
+                                        <th>STATUS</th>
+                                        <th class="actions-col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assetUnitsBody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="list-footer">
+                            <span class="showing-text">Showing <strong id="showingStart">1</strong>-<strong id="showingEnd">2</strong> of <strong id="showingTotal">0</strong> units</span>
+                            <div class="pagination">
+                                <button class="page-btn disabled"><i class="ph ph-caret-left"></i></button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <span class="page-ellipsis">...</span>
+                                <button class="page-btn">13</button>
+                                <button class="page-btn"><i class="ph ph-caret-right"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Import Modal -->
+    <dialog id="importModal" class="modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header">
+                <h2>Import Asset Units</h2>
+                <button class="icon-btn ghost close-import" type="button"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div style="display:flex; flex-direction:column; gap:20px;">
+                    <div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 0.95rem;">1. Download Template</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 12px 0;">
+                            Start by downloading our predefined template. Fill it with your asset serial numbers and internal tags.
+                        </p>
+                        <a href="#" class="btn btn-outline" style="align-self: flex-start; text-decoration: none; color: inherit; display: inline-flex;">
+                            <i class="ph ph-download-simple"></i> Download Template (.csv)
+                        </a>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px dashed var(--border-subtle); margin: 0;">
+
+                    <div>
+                        <h4 style="margin: 0 0 8px 0; font-size: 0.95rem;">2. Upload File</h4>
+                        <div style="border: 2px dashed var(--border-subtle); padding: 40px 24px; border-radius: var(--radius-md); text-align: center; background: var(--surface-body); margin-top: 8px; cursor: pointer; transition: border-color 0.2s ease;">
+                            <i class="ph ph-upload-simple" style="font-size: 2.5rem; color: var(--text-tertiary); margin-bottom: 12px;"></i>
+                            <h4 style="margin:0 0 4px 0; font-size:0.95rem;">Click or drag file to upload</h4>
+                            <p style="margin:0; font-size:0.75rem; color:var(--text-secondary);">Supports CSV, XLS, or XLSX</p>
+                            <input type="file" style="display:none;" id="fileUploadInput" accept=".csv, .xls, .xlsx">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 16px 24px;">
+                <button type="button" class="btn btn-outline close-import">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImportBtn">Import Units</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- History Modal -->
+    <dialog id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <div>
+                    <h2 style="margin: 0; display:flex; align-items:center; gap:8px;">
+                        <i class="ph ph-clock-counter-clockwise" style="color: var(--primary);"></i> Unit History
+                    </h2>
+                    <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--text-secondary);" id="historyModalSubtitle">Serial: N/A</p>
+                </div>
+                <button class="icon-btn ghost close-history" type="button"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+                <div class="timeline" style="position: relative; padding-left: 24px; border-left: 2px solid var(--border-subtle); display:flex; flex-direction:column; gap:24px;">
+                    
+                    <!-- Event 1 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--surface-body); border: 2px solid var(--primary);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Michael" style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle);">
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">Michael Chen</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: HR-2291</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Apr 15, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">09:42 AM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Status Changed:</span> 
+                            <strong style="color: var(--text-primary);">Assigned</strong> 
+                            <i class="ph ph-arrow-right" style="vertical-align: middle; margin: 0 4px; color: var(--text-secondary);"></i> 
+                            <span class="badge badge-danger" style="background:#fee2e2; color:#b91c1c;">Maintenance</span>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--border-subtle);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle);">
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">Alex Thompson</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: SC-4281</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Mar 02, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">14:15 PM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Assigned to Employee:</span> 
+                            <strong style="color: var(--text-primary);">Sarah Jenkins</strong>
+                            <div style="margin-top: 4px; font-size: 0.75rem;">
+                                <span style="color: var(--text-secondary);">Status Changed:</span> 
+                                <strong>Available</strong> <i class="ph ph-arrow-right" style="vertical-align: middle; margin: 0 4px; color: var(--text-secondary);"></i> <strong>Assigned</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 -->
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -31px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--border-subtle);"></div>
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap: 8px;">
+                                <div style="width: 24px; height: 24px; border-radius: 50%; background: var(--surface-body); border: 1px solid var(--border-subtle); display:flex; align-items:center; justify-content:center;">
+                                    <i class="ph-fill ph-robot" style="color: var(--primary); font-size: 0.9rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.85rem; font-weight: 600;">System Admin</div>
+                                    <div style="font-size: 0.7rem; color: var(--text-secondary);">ID: SYS-0001</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Jan 10, 2026</div>
+                                <div style="font-size: 0.7rem; color: var(--text-tertiary);">10:00 AM</div>
+                            </div>
+                        </div>
+                        <div style="padding: 12px; background: var(--surface-body); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem;">
+                            <span style="color: var(--text-secondary);">Action:</span> 
+                            <strong style="color: var(--text-primary);">Unit Initialized</strong>
+                            <div style="margin-top: 4px; font-size: 0.75rem; color: var(--text-secondary);">
+                                Asset added to inventory via bulk import. Status set to <strong style="color: var(--text-primary);">Available</strong>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding: 16px 24px;">
+                <button type="button" class="btn btn-primary close-history">Close</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const assetUnitsBody = document.getElementById('assetUnitsBody');
+            const addStockBtn = document.getElementById('addStockBtn');
+            const importStockBtn = document.getElementById('importStockBtn');
+            const importModal = document.getElementById('importModal');
+            
+            // Stats & DOM Elements
+            const stickyTotal = document.getElementById('stickyTotal');
+            const stickyAvailable = document.getElementById('stickyAvailable');
+            const stickyAssigned = document.getElementById('stickyAssigned');
+            const stickyMaintenance = document.getElementById('stickyMaintenance');
+            
+            const showingStart = document.getElementById('showingStart');
+            const showingEnd = document.getElementById('showingEnd');
+            const showingTotal = document.getElementById('showingTotal');
+
+            function getStatusBadge(status) {
+                switch(status) {
+                    case 'Available': return '<span class="badge badge-success">Available</span>';
+                    case 'Assigned': return '<span class="badge badge-leave">Assigned</span>'; // leaf/training neutral look
+                    case 'Maintenance': return '<span class="badge badge-danger" style="background:#fee2e2; color:#b91c1c;">Maintenance</span>';
+                    default: return '<span class="badge" style="background:var(--border-subtle)">Unknown</span>';
+                }
+            }
+
+            function updateStats() {
+                const rows = assetUnitsBody.querySelectorAll('tr');
+                const total = rows.length;
+                let available = 0;
+                let assigned = 0;
+                let maintenance = 0;
+                
+                rows.forEach(tr => {
+                    const select = tr.querySelector('select');
+                    if(select) {
+                        if (select.value === 'Available') available++;
+                        if (select.value === 'Assigned') assigned++;
+                        if (select.value === 'Maintenance') maintenance++;
+                    }
+                });
+
+                // Update sticky info
+                if (stickyTotal) stickyTotal.textContent = total;
+                if (stickyAvailable) stickyAvailable.textContent = available;
+                if (stickyAssigned) stickyAssigned.textContent = assigned;
+                if (stickyMaintenance) stickyMaintenance.textContent = maintenance;
+                
+                // Update pagination text
+                if (showingTotal) showingTotal.textContent = total;
+                if (showingEnd) showingEnd.textContent = total;
+                if (showingStart) showingStart.textContent = total === 0 ? 0 : 1;
+            }
+
+            function addUnitRow(serialNumber = '', assetTag = '', status = 'Available', employee = '') {
+                const tr = document.createElement('tr');
+                
+                tr.innerHTML = `
+                    <td>
+                        <input type="text" class="input-field" value="${serialNumber}" readonly placeholder="Serial Number" style="max-width: 180px; padding: 6px; font-size:0.85rem; background:transparent; border-color:transparent; color: var(--text-secondary); cursor: default;">
+                    </td>
+                    <td>
+                        <input type="text" class="input-field" value="${assetTag}" readonly placeholder="Asset Tag (Opt)" style="max-width: 140px; padding: 6px; font-size:0.85rem; background:transparent; border-color:transparent; color: var(--text-secondary); cursor: default;">
+                    </td>
+                    <td style="min-width: 210px;">
+                        <select class="input-field employee-select" style="width: 100%; padding: 6px; font-size:0.85rem; background:transparent; border-color:var(--border-subtle); display: ${employee ? 'none' : 'block'};" onchange="window.updateEmployeeCard(this)" ${status !== 'Assigned' ? 'disabled' : ''}>
+                            <option value="">Select Employee...</option>
+                            <option value="Alex Thompson" data-id="SC-4281" data-photo="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" ${employee === 'Alex Thompson' ? 'selected' : ''}>Alex Thompson</option>
+                            <option value="Sarah Jenkins" data-id="SC-8821" data-photo="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" ${employee === 'Sarah Jenkins' ? 'selected' : ''}>Sarah Jenkins</option>
+                            <option value="Marcus Rodriguez" data-id="SC-1209" data-photo="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus" ${employee === 'Marcus Rodriguez' ? 'selected' : ''}>Marcus Rodriguez</option>
+                            <option value="Elena Belova" data-id="SC-5541" data-photo="https://api.dicebear.com/7.x/notionists/svg?seed=Elena" ${employee === 'Elena Belova' ? 'selected' : ''}>Elena Belova</option>
+                        </select>
+                        <div class="employee-card-display" style="display: ${employee ? 'flex' : 'none'}; align-items:center; gap:10px; padding: 4px 8px; background: var(--surface-body); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;" onclick="this.style.display='none'; this.previousElementSibling.style.display='block'; this.previousElementSibling.focus();" title="Click to change employee">
+                            <img src="${employee ? 'https://api.dicebear.com/7.x/notionists/svg?seed=' + employee.split(' ')[0] : ''}" style="width: 28px; height: 28px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-sm);">
+                            <div>
+                                <div style="font-size: 0.8rem; font-weight: 600; line-height: 1.2;" class="card-emp-name">${employee}</div>
+                                <div style="font-size: 0.65rem; color: var(--text-secondary); margin-top:2px;" class="card-emp-id">ID: SC-XXXX</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="position: relative; display: inline-block; width: 110px;">
+                            <select style="position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:2;" onchange="window.updateRowState(this)">
+                                <option value="Available" ${status === 'Available' ? 'selected' : ''}>Available</option>
+                                <option value="Assigned" ${status === 'Assigned' ? 'selected' : ''}>Assigned</option>
+                                <option value="Maintenance" ${status === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                            </select>
+                            <div class="status-badge-container" style="position: relative; z-index:1; pointer-events:none; display: flex;">
+                                ${getStatusBadge(status)}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="actions-col">
+                        <div style="display:flex; justify-content:flex-end; gap: 4px;">
+                            <button class="icon-btn ghost history-row-btn" title="View History"><i class="ph ph-clock-counter-clockwise"></i></button>
+                            <button class="icon-btn ghost remove-row-btn" title="Remove Unit"><i class="ph ph-trash" style="color: var(--status-danger-text);"></i></button>
+                        </div>
+                    </td>
+                `;
+
+                // Handle history button
+                tr.querySelector('.history-row-btn').addEventListener('click', () => {
+                    const hModal = document.getElementById('historyModal');
+                    document.getElementById('historyModalSubtitle').textContent = `Serial: ${serialNumber || 'Unassigned'} ${assetTag ? '(' + assetTag + ')' : ''}`;
+                    hModal.showModal();
+                });
+
+                // Handle remove button
+                tr.querySelector('.remove-row-btn').addEventListener('click', () => {
+                    tr.remove();
+                    updateStats();
+                });
+
+                // Make sure initial mock data gets the correct ID if employee is present
+                if(employee) {
+                    const selectEl = tr.querySelector('.employee-select');
+                    const opt = Array.from(selectEl.options).find(o => o.value === employee);
+                    if(opt) {
+                        tr.querySelector('.card-emp-id').textContent = 'ID: ' + opt.getAttribute('data-id');
+                    }
+                }
+                
+                assetUnitsBody.prepend(tr); // add to top for easier multi-add visibility
+                updateStats();    
+            }
+
+            window.updateEmployeeCard = function(selectEl) {
+                const card = selectEl.nextElementSibling;
+                if (!selectEl.value) {
+                    card.style.display = 'none';
+                    return;
+                }
+                const opt = selectEl.options[selectEl.selectedIndex];
+                const photo = opt.getAttribute('data-photo');
+                const id = opt.getAttribute('data-id');
+                const name = opt.value;
+                
+                card.querySelector('img').src = photo;
+                card.querySelector('.card-emp-name').textContent = name;
+                card.querySelector('.card-emp-id').textContent = 'ID: ' + id;
+                
+                selectEl.style.display = 'none';
+                card.style.display = 'flex';
+            };
+
+            window.updateRowState = function(selectEl) {
+                const container = selectEl.nextElementSibling;
+                container.innerHTML = getStatusBadge(selectEl.value);
+
+                // Enable/disable the employee select field based on whether they are assigned
+                const tr = selectEl.closest('tr');
+                const employeeSelect = tr.querySelector('.employee-select');
+                const employeeCard = tr.querySelector('.employee-card-display');
+                
+                if(selectEl.value === 'Assigned') {
+                    employeeSelect.disabled = false;
+                    if(!employeeSelect.value) {
+                        employeeSelect.style.display = 'block';
+                        employeeCard.style.display = 'none';
+                        employeeSelect.focus();
+                    }
+                } else {
+                    employeeSelect.disabled = true;
+                    employeeSelect.value = ''; // auto-clear on unassign
+                    employeeSelect.style.display = 'block';
+                    employeeCard.style.display = 'none';
+                }
+                updateStats();
+            };
+
+            // Actions mapping
+            addStockBtn.addEventListener('click', () => {
+                addUnitRow('', '', 'Available');
+            });
+
+            // Import modal logic
+            const closeImportBtns = document.querySelectorAll('.close-import');
+            importStockBtn.addEventListener('click', () => importModal.showModal());
+            closeImportBtns.forEach(btn => btn.addEventListener('click', () => importModal.close()));
+            
+            document.getElementById('confirmImportBtn').addEventListener('click', () => {
+                // Mocking bulk import action by adding multiple rows at once
+                addUnitRow('12Z9Y8X7W', 'TAG-12Z9Y8', 'Available', '');
+                addUnitRow('65A4B3C2D', 'TAG-65A4B3', 'Available', '');
+                addUnitRow('98E7F6G5H', 'TAG-98E7F6', 'Available', '');
+                importModal.close();
+            });
+            
+            // Close modal on outside click
+            importModal.addEventListener('click', (e) => {
+                const dialogDimensions = importModal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
+                ) {
+                    importModal.close();
+                }
+            });
+
+            // History modal close logic
+            const historyModal = document.getElementById('historyModal');
+            document.querySelectorAll('.close-history').forEach(btn => {
+                btn.addEventListener('click', () => historyModal.close());
+            });
+            historyModal.addEventListener('click', (e) => {
+                const dialogDimensions = historyModal.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left || e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top || e.clientY > dialogDimensions.bottom
+                ) {
+                    historyModal.close();
+                }
+            });
+            
+            // Add initial mock data
+            addUnitRow('1X2Y3Z45A', 'TAG-1X2Y3Z', 'Available', '');
+            addUnitRow('9B8C7D65E', 'TAG-9B8C7D', 'Assigned', 'Sarah Jenkins');
+            addUnitRow('5F4G3H21J', 'TAG-5F4G3H', 'Available', '');
+            addUnitRow('8K9L0M12N', 'TAG-8K9L0M', 'Maintenance', '');
+        });
+    </script>
+</body>
+</html>
