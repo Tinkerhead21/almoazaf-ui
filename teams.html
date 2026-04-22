@@ -63,7 +63,7 @@
         .tree-item.expanded i.expand-icon {
             transform: rotate(90deg);
         }
-        
+
         .tree-item.leaf i.expand-icon {
             opacity: 0;
         }
@@ -76,6 +76,119 @@
 
         .tree-item:hover .tree-item-actions {
             opacity: 1;
+        }
+
+        /* Role Selection Styles */
+        .role-selector-container {
+            position: relative;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .role-dropdown-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--surface-hover);
+            border: 1px solid var(--border-default);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .role-dropdown-btn:hover {
+            border-color: var(--primary);
+            background: var(--surface-card);
+        }
+
+        .role-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 20;
+            display: none;
+            flex-direction: column;
+            padding: 4px;
+            margin-top: 4px;
+        }
+
+        .role-menu.show {
+            display: flex;
+        }
+
+        .role-option {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .role-option:hover {
+            background: var(--surface-hover);
+        }
+
+        .role-option-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .role-option-hint {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            line-height: 1.3;
+            margin-top: 2px;
+        }
+
+        .role-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            width: 180px;
+            line-height: 1.4;
+            z-index: 10;
+            display: none;
+            box-shadow: var(--shadow-lg);
+            pointer-events: none;
+        }
+
+        .role-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .role-selector-container:hover .role-tooltip {
+            display: block;
+        }
+
+        .role-selector-container.menu-open .role-tooltip {
+            display: none !important;
         }
 
         .team-breadcrumb {
@@ -110,7 +223,7 @@
             text-align: center;
             transition: var(--transition-fast);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .member-card:hover {
@@ -179,70 +292,130 @@
             align-items: flex-start;
             margin-bottom: 16px;
         }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 48px;
+            text-align: center;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            opacity: 0.2;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* Role Selection Styles */
+        .role-selector-container {
+            position: relative;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .role-dropdown-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--surface-hover);
+            border: 1px solid var(--border-default);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .role-dropdown-btn:hover {
+            border-color: var(--primary);
+            background: var(--surface-card);
+        }
+
+        .role-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            width: 180px;
+            line-height: 1.4;
+            z-index: 10;
+            display: none;
+            box-shadow: var(--shadow-lg);
+            pointer-events: none;
+        }
+
+        .role-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .role-selector-container:hover .role-tooltip {
+            display: block;
+        }
+
+        /* Employee Selection Modal */
+        .employee-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .employee-pick-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-default);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .employee-pick-item:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        .employee-pick-item.selected {
+            background: var(--status-info-bg);
+            border-color: var(--primary);
+        }
+
+        .employee-pick-item .avatar-sm {
+            width: 36px;
+            height: 36px;
+        }
     </style>
 </head>
 
 <body>
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <i class="ph-fill ph-sparkle"></i>
-            </div>
-            <div class="logo-text">
-                <h1>SereneHR</h1>
-                <span>Enterprise Plan</span>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="index.html" class="nav-item">
-                <i class="ph ph-squares-four"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="index.html" class="nav-item">
-                <i class="ph ph-users"></i>
-                <span>Employees</span>
-            </a>
-            <a href="teams.html" class="nav-item active">
-                <i class="ph ph-users-three"></i>
-                <span>Teams</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="ph ph-money"></i>
-                <span>Payroll</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="ph ph-trend-up"></i>
-                <span>Performance</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="ph ph-user-plus"></i>
-                <span>Recruitment</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="ph ph-file-text"></i>
-                <span>Documents</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="upgrade-card">
-                <h3>Upgrade Plan</h3>
-                <p>Unlock advanced analytics and global payroll features.</p>
-                <button class="btn btn-primary btn-block">Upgrade Now</button>
-            </div>
-
-            <a href="#" class="nav-item secondary-nav">
-                <i class="ph ph-question"></i>
-                <span>Support</span>
-            </a>
-            <a href="#" class="nav-item secondary-nav">
-                <i class="ph ph-sign-out"></i>
-                <span>Logout</span>
-            </a>
-        </div>
-    </aside>
+    <app-sidebar active-page="teams"></app-sidebar>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -259,17 +432,19 @@
         <!-- Page body -->
         <div class="page-body">
             <div class="profile-grid">
-                
+
                 <!-- Left Sidebar: Team Tree -->
                 <div class="grid-col-left">
                     <div class="content-card profile-card" style="padding: var(--spacing-md);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                             <h3 style="margin: 0; font-size: 1rem;">Organization</h3>
-                            <button id="createTeamBtn" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.8rem;">
+                            <button id="createTeamBtn" class="btn btn-primary"
+                                style="padding: 4px 8px; font-size: 0.8rem;">
                                 <i class="ph ph-plus"></i> New
                             </button>
                         </div>
-                        
+
                         <div class="search-bar light" style="margin-bottom: 16px;">
                             <i class="ph ph-magnifying-glass"></i>
                             <input type="text" placeholder="Search teams...">
@@ -283,7 +458,9 @@
                                     <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
                                     <span>Engineering</span>
                                     <div class="tree-item-actions">
-                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering"
+                                            style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                            title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                     </div>
                                 </div>
                                 <ul>
@@ -293,51 +470,65 @@
                                             <i class="ph-fill ph-users-three"></i>
                                             <span>Backend</span>
                                             <div class="tree-item-actions">
-                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                <button class="icon-btn ghost add-subteam-btn"
+                                                    data-parent="Engineering > Backend"
+                                                    style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                                    title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                             </div>
                                         </div>
                                         <ul>
                                             <li>
-                                                <div class="tree-item leaf active">
+                                                <div class="tree-item leaf" data-team-id="api-team">
                                                     <i class="ph-fill ph-caret-right expand-icon"></i>
                                                     <i class="ph-fill ph-users"></i>
                                                     <span>API Team</span>
                                                     <div class="tree-item-actions">
-                                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend > API Team" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                        <button class="icon-btn ghost add-subteam-btn"
+                                                            data-parent="Engineering > Backend > API Team"
+                                                            style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                                            title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="tree-item leaf">
+                                                <div class="tree-item leaf" data-team-id="database-team">
                                                     <i class="ph-fill ph-caret-right expand-icon"></i>
                                                     <i class="ph-fill ph-users"></i>
                                                     <span>Database Team</span>
                                                     <div class="tree-item-actions">
-                                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend > Database Team" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                        <button class="icon-btn ghost add-subteam-btn"
+                                                            data-parent="Engineering > Backend > Database Team"
+                                                            style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                                            title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                                     </div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <div class="tree-item leaf">
+                                        <div class="tree-item leaf" data-team-id="frontend-team">
                                             <i class="ph-fill ph-caret-right expand-icon"></i>
                                             <i class="ph-fill ph-users-three"></i>
                                             <span>Frontend</span>
                                             <div class="tree-item-actions">
-                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Frontend" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                <button class="icon-btn ghost add-subteam-btn"
+                                                    data-parent="Engineering > Frontend"
+                                                    style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                                    title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <div class="tree-item leaf">
+                                <div class="tree-item leaf" data-team-id="product-mgmt">
                                     <i class="ph-fill ph-caret-right expand-icon"></i>
                                     <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
                                     <span>Product Management</span>
                                     <div class="tree-item-actions">
-                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Product Management" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Product Management"
+                                            style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                            title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                     </div>
                                 </div>
                             </li>
@@ -347,17 +538,22 @@
                                     <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
                                     <span>Human Resources</span>
                                     <div class="tree-item-actions">
-                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Human Resources" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Human Resources"
+                                            style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                            title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                     </div>
                                 </div>
                                 <ul>
                                     <li>
-                                        <div class="tree-item leaf">
+                                        <div class="tree-item leaf" data-team-id="talent-acquisition">
                                             <i class="ph-fill ph-caret-right expand-icon"></i>
                                             <i class="ph-fill ph-users"></i>
                                             <span>Talent Acquisition</span>
                                             <div class="tree-item-actions">
-                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Human Resources > Talent Acquisition" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                <button class="icon-btn ghost add-subteam-btn"
+                                                    data-parent="Human Resources > Talent Acquisition"
+                                                    style="width: 24px; height: 24px; min-width: auto; padding: 0;"
+                                                    title="Add Sub-team"><i class="ph ph-plus"></i></button>
                                             </div>
                                         </div>
                                     </li>
@@ -369,33 +565,39 @@
 
                 <!-- Right Column: Focus Team Details -->
                 <div class="grid-col-right" style="display: flex; flex-direction: column;">
-                    <div class="content-card" style="flex: 1; padding: var(--spacing-lg);">
-                        
+                    <div id="noTeamSelected" class="content-card empty-state">
+                        <i class="ph ph-users-three"></i>
+                        <h2>Select a team</h2>
+                        <p>Browse the organization structure and select a team to manage its members and hierarchy.</p>
+                    </div>
+
+                    <div id="teamDetailsView" class="content-card"
+                        style="flex: 1; padding: var(--spacing-lg); display: none;">
+
                         <!-- Breadcrumb -->
-                        <div class="team-breadcrumb">
-                            <span>Engineering</span>
-                            <i class="ph ph-caret-right"></i>
-                            <span>Backend</span>
-                            <i class="ph ph-caret-right"></i>
-                            <span class="current">API Team</span>
+                        <div class="team-breadcrumb" id="teamBreadcrumb">
+                            <!-- Populated via script -->
                         </div>
 
                         <!-- Team Header -->
                         <div class="team-header-flex">
                             <div>
-                                <h1 style="margin: 0; font-size: 1.8rem; margin-bottom: 8px;">API Team</h1>
-                                <p style="color: var(--text-secondary); margin: 0; max-width: 600px;">
-                                    Responsible for building, maintaining, and scaling the core APIs that power SereneHR applications.
+                                <h1 id="teamTitle" style="margin: 0; font-size: 1.8rem; margin-bottom: 8px;">API Team
+                                </h1>
+                                <p id="teamDesc" style="color: var(--text-secondary); margin: 0; max-width: 600px;">
+                                    Responsible for building, maintaining, and scaling the core APIs that power SereneHR
+                                    applications.
                                 </p>
                             </div>
                             <div class="team-actions">
-                                <button class="btn btn-primary add-subteam-btn" data-parent="Engineering > Backend > API Team">
+                                <button class="btn btn-primary add-subteam-btn" id="addSubteamDetailBtn">
                                     <i class="ph ph-plus"></i> Add Sub-team
                                 </button>
                                 <button class="btn btn-outline" id="editTeamBtn">
                                     <i class="ph ph-pencil-simple"></i> Edit
                                 </button>
-                                <button class="btn icon-btn" style="border: 1px solid #fecdd3; color: #e11d48; background-color: #fff1f2; width: 40px; height: 40px;">
+                                <button class="btn icon-btn"
+                                    style="border: 1px solid #fecdd3; color: #e11d48; background-color: #fff1f2; width: 40px; height: 40px;">
                                     <i class="ph ph-trash"></i>
                                 </button>
                             </div>
@@ -405,52 +607,15 @@
 
                         <!-- Members Section -->
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h2 style="font-size: 1.1rem; margin: 0;">Team Members (4)</h2>
-                            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">
+                            <h2 style="font-size: 1.1rem; margin: 0;" id="memberCountText">Team Members (0)</h2>
+                            <button id="addMemberBtn" class="btn btn-outline"
+                                style="padding: 6px 12px; font-size: 0.85rem;">
                                 <i class="ph ph-user-plus"></i> Add Member
                             </button>
                         </div>
 
-                        <div class="team-members-grid">
-                            <!-- Team Lead -->
-                            <div class="member-card">
-                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus" alt="Marcus" class="member-avatar">
-                                <div class="member-name">Marcus Rodriguez</div>
-                                <div class="member-title">Senior Backend Architect</div>
-                                <div class="role-badge role-lead">
-                                    <i class="ph-fill ph-star"></i> Team Lead
-                                </div>
-                            </div>
-
-                            <!-- Member 1 -->
-                            <div class="member-card">
-                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" class="member-avatar">
-                                <div class="member-name">Sarah Jenkins</div>
-                                <div class="member-title">Software Engineer II</div>
-                                <div class="role-badge role-member">
-                                    <i class="ph-fill ph-code"></i> Member
-                                </div>
-                            </div>
-
-                            <!-- Member 2 -->
-                            <div class="member-card">
-                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena" alt="Elena" class="member-avatar">
-                                <div class="member-name">Elena Belova</div>
-                                <div class="member-title">Software Engineer I</div>
-                                <div class="role-badge role-member">
-                                    <i class="ph-fill ph-code"></i> Member
-                                </div>
-                            </div>
-
-                            <!-- Viewer -->
-                            <div class="member-card">
-                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" alt="Alex" class="member-avatar">
-                                <div class="member-name">Alex Thompson</div>
-                                <div class="member-title">Product Manager</div>
-                                <div class="role-badge role-viewer">
-                                    <i class="ph-fill ph-eye"></i> Viewer
-                                </div>
-                            </div>
+                        <div class="team-members-grid" id="membersGrid">
+                            <!-- Populated via script -->
                         </div>
 
                     </div>
@@ -465,34 +630,45 @@
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h2 id="teamModalTitle">Create New Team</h2>
-                <button class="icon-btn ghost close-modal" type="button" id="closeTeamModal"><i class="ph ph-x"></i></button>
+                <button class="icon-btn ghost close-modal" type="button" id="closeTeamModal"><i
+                        class="ph ph-x"></i></button>
             </div>
             <div class="modal-body">
                 <form id="teamForm" class="form-section-col">
-                    <div id="modalParentBreadcrumb" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; display: none; align-items: center; gap: 8px;">
-                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Adding to:</span>
-                        <span id="modalParentText" style="background: var(--surface-hover); padding: 4px 10px; border-radius: var(--radius-full); font-weight: 500; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; color: var(--text-primary);">
+                    <div id="modalParentBreadcrumb"
+                        style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; display: none; align-items: center; gap: 8px;">
+                        <span
+                            style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Adding
+                            to:</span>
+                        <span id="modalParentText"
+                            style="background: var(--surface-hover); padding: 4px 10px; border-radius: var(--radius-full); font-weight: 500; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; color: var(--text-primary);">
                         </span>
                     </div>
 
                     <div class="form-group">
                         <label>Team Icon</label>
                         <div style="display: flex; gap: 12px; align-items: center;">
-                            <button type="button" id="iconSelectBtn" style="width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-card); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;">
+                            <button type="button" id="iconSelectBtn"
+                                style="width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-card); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;">
                                 <span id="selectedIconDisplay">🏢</span>
-                                <div id="emojiPickerPopup" style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 100; display: none; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
+                                <div id="emojiPickerPopup"
+                                    style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 100; display: none; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
                                     <emoji-picker class="light"></emoji-picker>
                                 </div>
                             </button>
                             <div style="display: flex; flex-direction: column; gap: 4px;">
-                                <span style="font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">Select Emoji</span>
-                                <span style="font-size: 0.75rem; color: var(--text-tertiary);">Or upload a custom image icon</span>
+                                <span style="font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">Select
+                                    Emoji</span>
+                                <span style="font-size: 0.75rem; color: var(--text-tertiary);">Or upload a custom image
+                                    icon</span>
                             </div>
                             <div style="margin-left: auto;">
-                                <label for="customIconUpload" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; cursor: pointer;">
+                                <label for="customIconUpload" class="btn btn-outline"
+                                    style="padding: 6px 12px; font-size: 0.85rem; cursor: pointer;">
                                     <i class="ph ph-upload"></i> Upload
                                 </label>
-                                <input type="file" id="customIconUpload" style="display: none;" accept=".png, .svg, .jpg, .jpeg">
+                                <input type="file" id="customIconUpload" style="display: none;"
+                                    accept=".png, .svg, .jpg, .jpeg">
                             </div>
                         </div>
                     </div>
@@ -501,7 +677,7 @@
                         <label>Team Name <span class="required">*</span></label>
                         <input type="text" class="input-field" placeholder="e.g. API Team" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="input-field" placeholder="What does this team do?" rows="3"></textarea>
@@ -514,6 +690,51 @@
             </div>
         </div>
     </dialog>
+
+    <!-- Add Member Modal -->
+    <dialog id="addMemberModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Add Team Members</h2>
+                <button class="icon-btn ghost close-modal" type="button" id="closeMemberModal"><i
+                        class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="search-bar light" style="margin-bottom: 12px;">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" id="employeeSearchInput" placeholder="Search by name or title...">
+                </div>
+
+                <div id="roleFilters" style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <button class="badge role-filter active" data-role="all"
+                        style="cursor: pointer; border: 1px solid var(--border-default); background: var(--surface-hover);">All</button>
+                    <button class="badge role-filter" data-role="Engineering"
+                        style="cursor: pointer; border: 1px solid var(--border-default); background: var(--surface-card);">Engineering</button>
+                    <button class="badge role-filter" data-role="Design"
+                        style="cursor: pointer; border: 1px solid var(--border-default); background: var(--surface-card);">Design</button>
+                    <button class="badge role-filter" data-role="HR"
+                        style="cursor: pointer; border: 1px solid var(--border-default); background: var(--surface-card);">HR</button>
+                    <button class="badge role-filter" data-role="Operations"
+                        style="cursor: pointer; border: 1px solid var(--border-default); background: var(--surface-card);">Operations</button>
+                </div>
+
+                <div id="selectionSummary"
+                    style="font-size: 0.8rem; color: var(--primary); font-weight: 600; margin-bottom: 8px; display: none;">
+                    0 members selected
+                </div>
+
+                <div class="employee-list" id="employeePickerList" style="max-height: 300px; overflow-y: auto;">
+                    <!-- Populated via script -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelMemberModal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmAddMember" disabled>Add Selected
+                    Members</button>
+            </div>
+        </div>
+    </dialog>
+
 
     <script src="script.js"></script>
     <script>
@@ -537,11 +758,21 @@
                 node.addEventListener('click', (e) => {
                     // Prevent closing if we just clicked to expand
                     if (!node.classList.contains('leaf') && e.target.classList.contains('expand-icon')) {
-                        return; 
+                        return;
                     }
                     // Remove active from all
                     document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
                     node.classList.add('active');
+
+                    // Update View
+                    const teamId = node.getAttribute('data-team-id');
+                    if (teamId) {
+                        updateTeamView(teamId);
+                    } else if (node.classList.contains('leaf')) {
+                        updateTeamView(null);
+                        const noTeamTitle = noTeamSelected.querySelector('h2');
+                        if (noTeamTitle) noTeamTitle.textContent = node.querySelector('span').textContent;
+                    }
                 });
             });
 
@@ -554,17 +785,17 @@
             const teamModalTitle = document.getElementById('teamModalTitle');
             const modalParentBreadcrumb = document.getElementById('modalParentBreadcrumb');
             const modalParentText = document.getElementById('modalParentText');
-            
+
             // Emoji Picker Logic
             const iconSelectBtn = document.getElementById('iconSelectBtn');
             const emojiPickerPopup = document.getElementById('emojiPickerPopup');
             const selectedIconDisplay = document.getElementById('selectedIconDisplay');
             const customIconUpload = document.getElementById('customIconUpload');
 
-            if(iconSelectBtn && emojiPickerPopup) {
+            if (iconSelectBtn && emojiPickerPopup) {
                 iconSelectBtn.addEventListener('click', (e) => {
                     // Prevent triggering if clicking inside the picker
-                    if(e.target.closest('emoji-picker')) return;
+                    if (e.target.closest('emoji-picker')) return;
                     emojiPickerPopup.style.display = emojiPickerPopup.style.display === 'block' ? 'none' : 'block';
                 });
 
@@ -581,11 +812,11 @@
                 });
             }
 
-            if(customIconUpload) {
+            if (customIconUpload) {
                 customIconUpload.addEventListener('change', (e) => {
                     if (e.target.files && e.target.files[0]) {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             selectedIconDisplay.textContent = ''; // clear emoji
                             selectedIconDisplay.style.backgroundImage = `url(${e.target.result})`;
                             selectedIconDisplay.style.backgroundSize = 'cover';
@@ -601,7 +832,7 @@
 
             const openModal = (title, parentPath) => {
                 teamModalTitle.textContent = title;
-                if(parentPath) {
+                if (parentPath) {
                     modalParentBreadcrumb.style.display = 'flex';
                     // Convert Path string into breadcrumb
                     modalParentText.innerHTML = `<i class="ph-fill ph-buildings"></i> ${parentPath}`;
@@ -611,7 +842,7 @@
                 teamModal.showModal();
             }
 
-            if(createTeamBtn) {
+            if (createTeamBtn) {
                 createTeamBtn.addEventListener('click', () => {
                     openModal("Create New Team", null); // Top level
                 });
@@ -626,20 +857,287 @@
                 });
             });
 
-            if(editTeamBtn) {
+            if (editTeamBtn) {
                 editTeamBtn.addEventListener('click', () => {
                     openModal("Edit Team", "Engineering > Backend");
                 });
             }
 
             const closeModals = () => {
-                if(teamModal) teamModal.close();
+                if (teamModal) teamModal.close();
             };
 
-            if(closeTeamModal) closeTeamModal.addEventListener('click', closeModals);
-            if(cancelTeamModal) cancelTeamModal.addEventListener('click', closeModals);
+            if (closeTeamModal) closeTeamModal.addEventListener('click', closeModals);
+            if (cancelTeamModal) cancelTeamModal.addEventListener('click', closeModals);
+
+            // --- Team Data Logic ---
+            const teamsData = {
+                'api-team': {
+                    name: 'API Team',
+                    path: ['Engineering', 'Backend', 'API Team'],
+                    desc: 'Responsible for building, maintaining, and scaling the core APIs that power SereneHR applications.',
+                    members: [
+                        { id: 1, name: 'Marcus Rodriguez', title: 'Senior Backend Architect', role: 'lead', avatar: 'Marcus' },
+                        { id: 2, name: 'Sarah Jenkins', title: 'Software Engineer II', role: 'member', avatar: 'Sarah' },
+                        { id: 3, name: 'Elena Belova', title: 'Software Engineer I', role: 'member', avatar: 'Elena' },
+                        { id: 4, name: 'Alex Thompson', title: 'Product Manager', role: 'member', avatar: 'Alex' }
+                    ]
+                },
+                'database-team': {
+                    name: 'Database Team',
+                    path: ['Engineering', 'Backend', 'Database Team'],
+                    desc: 'Manages database schema migrations, performance tuning, and data integrity across all environments.',
+                    members: [
+                        { id: 5, name: 'David Chen', title: 'DBA Lead', role: 'lead', avatar: 'David' }
+                    ]
+                },
+                'frontend-team': {
+                    name: 'Frontend Team',
+                    path: ['Engineering', 'Frontend'],
+                    desc: 'Crafting premium user experiences with modern web technologies and a focus on accessibility.',
+                    members: [
+                        { id: 6, name: 'Sofia Vergara', title: 'UI Architect', role: 'lead', avatar: 'Sofia' }
+                    ]
+                }
+            };
+
+            const roleInfo = {
+                'lead': { label: 'Team Lead', icon: 'ph-star', class: 'role-lead', hint: 'Manages daily tasks, approves time off, and provides technical guidance.' },
+                'manager': { label: 'Manager', icon: 'ph-shield-check', class: 'role-lead', hint: 'Oversees budget, hiring, and long-term strategy for the team.' },
+                'member': { label: 'Member', icon: 'ph-code', class: 'role-member', hint: 'Regular contributor to the team\'s objectives and tasks.' }
+            };
+
+            const employees = [
+                { id: 10, name: 'James Wilson', title: 'Security Engineer', role: 'Engineering', avatar: 'James' },
+                { id: 11, name: 'Linda Park', title: 'UX Designer', role: 'Design', avatar: 'Linda' },
+                { id: 12, name: 'Robert Fox', title: 'DevOps Engineer', role: 'Engineering', avatar: 'Robert' },
+                { id: 13, name: 'Angela Merkel', title: 'HR Specialist', role: 'HR', avatar: 'HR' },
+                { id: 14, name: 'Yuki Tanaka', title: 'Frontend Developer', role: 'Engineering', avatar: 'Yuki' },
+                { id: 15, name: 'Sofia Vergara', title: 'UI Architect', role: 'Design', avatar: 'Sofia' },
+                { id: 16, name: 'David Smith', title: 'Operations Lead', role: 'Operations', avatar: 'DavidS' }
+            ];
+
+            const noTeamSelected = document.getElementById('noTeamSelected');
+            const teamDetailsView = document.getElementById('teamDetailsView');
+            const membersGrid = document.getElementById('membersGrid');
+            const teamTitle = document.getElementById('teamTitle');
+            const teamDesc = document.getElementById('teamDesc');
+            const teamBreadcrumb = document.getElementById('teamBreadcrumb');
+            const memberCountText = document.getElementById('memberCountText');
+            const addSubteamDetailBtn = document.getElementById('addSubteamDetailBtn');
+
+            function updateTeamView(teamId) {
+                const team = teamsData[teamId];
+                if (!team) {
+                    noTeamSelected.style.display = 'flex';
+                    teamDetailsView.style.display = 'none';
+                    return;
+                }
+
+                noTeamSelected.style.display = 'none';
+                teamDetailsView.style.display = 'block';
+
+                teamTitle.textContent = team.name;
+                teamDesc.textContent = team.desc;
+                addSubteamDetailBtn.setAttribute('data-parent', team.path.join(' > '));
+
+                // Breadcrumb
+                teamBreadcrumb.innerHTML = team.path.map((p, i) =>
+                    i === team.path.length - 1
+                        ? `<span class="current">${p}</span>`
+                        : `<span>${p}</span><i class="ph ph-caret-right"></i>`
+                ).join('');
+
+                // Members
+                renderMembers(teamId, team.members);
+            }
+
+            function renderMembers(teamId, members) {
+                memberCountText.textContent = `Team Members (${members.length})`;
+                membersGrid.innerHTML = members.map(m => `
+                    <div class="member-card">
+                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=${m.avatar}" alt="${m.name}" class="member-avatar">
+                        <div class="member-name">${m.name}</div>
+                        <div class="member-title">${m.title}</div>
+                        
+                        <div class="role-selector-container" data-member-id="${m.id}" data-team-id="${teamId}">
+                            <div class="role-tooltip">${roleInfo[m.role].hint}</div>
+                            <button class="role-dropdown-btn ${roleInfo[m.role].class}">
+                                <i class="ph-fill ${roleInfo[m.role].icon}"></i>
+                                <span>${roleInfo[m.role].label}</span>
+                                <i class="ph ph-caret-down" style="font-size: 0.6rem; opacity: 0.6;"></i>
+                            </button>
+                            <div class="role-menu">
+                                <div style="padding: 10px 12px; font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; font-weight: 700; border-bottom: 1px solid var(--border-subtle);">ASSIGN ROLE</div>
+                                ${Object.entries(roleInfo).map(([id, info]) => `
+                                    <div class="role-option" data-role="${id}">
+                                        <div class="role-option-title">
+                                            <i class="ph-fill ${info.icon}"></i>
+                                            ${info.label}
+                                        </div>
+                                        <div class="role-option-hint">${info.hint}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Role Dropdown logic
+                document.querySelectorAll('.role-dropdown-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const container = btn.closest('.role-selector-container');
+                        const menu = container.querySelector('.role-menu');
+
+                        // Close all others
+                        document.querySelectorAll('.role-menu').forEach(m => {
+                            if (m !== menu) m.classList.remove('show');
+                        });
+                        document.querySelectorAll('.role-selector-container').forEach(c => {
+                            if (c !== container) c.classList.remove('menu-open');
+                        });
+
+                        menu.classList.toggle('show');
+                        container.classList.toggle('menu-open');
+                    });
+                });
+
+                document.querySelectorAll('.role-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const container = option.closest('.role-selector-container');
+                        const teamId = container.getAttribute('data-team-id');
+                        const memberId = container.getAttribute('data-member-id');
+                        const newRole = option.getAttribute('data-role');
+
+                        const team = teamsData[teamId];
+                        const member = team.members.find(m => m.id == memberId);
+                        if (member) {
+                            member.role = newRole;
+                            renderMembers(teamId, team.members);
+                        }
+                    });
+                });
+            }
+
+            // Close menus on outside click
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.role-menu').forEach(m => m.classList.remove('show'));
+                document.querySelectorAll('.role-selector-container').forEach(c => c.classList.remove('menu-open'));
+            });
+
+            // --- Member Management ---
+            const employeeSearchInput = document.getElementById('employeeSearchInput');
+            const selectionSummary = document.getElementById('selectionSummary');
+
+            let selectedEmployeeIds = new Set();
+            let currentRoleFilter = 'all';
+
+            if (addMemberBtn) {
+                addMemberBtn.addEventListener('click', () => {
+                    selectedEmployeeIds.clear();
+                    applyFilters();
+                    addMemberModal.showModal();
+                    updateSelectionUI();
+                });
+            }
+
+            function applyFilters() {
+                const searchText = employeeSearchInput ? employeeSearchInput.value.toLowerCase() : '';
+                const filtered = employees.filter(emp => {
+                    const matchesSearch = emp.name.toLowerCase().includes(searchText) || emp.title.toLowerCase().includes(searchText);
+                    const matchesRole = currentRoleFilter === 'all' || emp.role === currentRoleFilter;
+                    return matchesSearch && matchesRole;
+                });
+                renderEmployeePicker(filtered);
+            }
+
+            if (employeeSearchInput) {
+                employeeSearchInput.addEventListener('input', applyFilters);
+            }
+
+            document.querySelectorAll('.role-filter').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.role-filter').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'var(--surface-card)';
+                    });
+                    btn.classList.add('active');
+                    btn.style.background = 'var(--surface-hover)';
+                    currentRoleFilter = btn.getAttribute('data-role');
+                    applyFilters();
+                });
+            });
+
+            function renderEmployeePicker(list) {
+                if (!employeePickerList) return;
+                employeePickerList.innerHTML = list.map(emp => `
+                    <div class="employee-pick-item ${selectedEmployeeIds.has(String(emp.id)) ? 'selected' : ''}" data-id="${emp.id}" style="position: relative;">
+                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=${emp.avatar}" class="avatar-sm" style="border-radius: 50%;">
+                        <div style="flex: 1; text-align: left;">
+                            <div style="font-weight: 600; font-size: 0.9rem;">${emp.name}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-tertiary);">${emp.title}</div>
+                        </div>
+                        ${selectedEmployeeIds.has(String(emp.id)) ? '<i class="ph-fill ph-check-circle" style="color: var(--primary); font-size: 1.2rem;"></i>' : ''}
+                    </div>
+                `).join('') || '<div style="padding: 24px; text-align: center; color: var(--text-tertiary);">No employees match your search</div>';
+
+                employeePickerList.querySelectorAll('.employee-pick-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const id = item.getAttribute('data-id');
+                        if (selectedEmployeeIds.has(id)) {
+                            selectedEmployeeIds.delete(id);
+                            item.classList.remove('selected');
+                        } else {
+                            selectedEmployeeIds.add(id);
+                            item.classList.add('selected');
+                        }
+                        updateSelectionUI();
+                        // Re-render only to update the checkmark icon if needed
+                        applyFilters();
+                    });
+                });
+            }
+
+            function updateSelectionUI() {
+                const count = selectedEmployeeIds.size;
+                confirmAddMember.disabled = count === 0;
+                if (selectionSummary) {
+                    selectionSummary.style.display = count > 0 ? 'block' : 'none';
+                    selectionSummary.textContent = `${count} member${count > 1 ? 's' : ''} selected`;
+                }
+            }
+
+            if (confirmAddMember) {
+                confirmAddMember.addEventListener('click', () => {
+                    const activeTeamNode = document.querySelector('.tree-item.active');
+                    if (!activeTeamNode) return;
+
+                    const teamId = activeTeamNode.getAttribute('data-team-id');
+                    if (teamId && teamsData[teamId]) {
+                        selectedEmployeeIds.forEach(id => {
+                            const emp = employees.find(e => e.id == id);
+                            if (emp) {
+                                // Check if already in team
+                                if (!teamsData[teamId].members.find(m => m.id == id)) {
+                                    teamsData[teamId].members.push({ ...emp, role: 'member' });
+                                }
+                            }
+                        });
+                        updateTeamView(teamId);
+                    }
+                    addMemberModal.close();
+                });
+            }
+
+            const closeMemberModalBtn = document.getElementById('closeMemberModal');
+            const cancelMemberModalBtn = document.getElementById('cancelMemberModal');
+            if (closeMemberModalBtn) closeMemberModalBtn.addEventListener('click', () => addMemberModal.close());
+            if (cancelMemberModalBtn) cancelMemberModalBtn.addEventListener('click', () => addMemberModal.close());
         });
     </script>
+    <script src="sidebar.js"></script>
 </body>
 
 </html>
