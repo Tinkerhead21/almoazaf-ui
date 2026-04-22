@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams | SereneHR</title>
+    <meta name="description" content="Manage organizational structure and teams.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script type="module" src="https://unpkg.com/emoji-picker-element@1"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom Styles for Teams Screen */
+        .tree-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tree-nav ul {
+            list-style: none;
+            padding-left: 20px;
+            margin: 4px 0;
+            border-left: 1px dashed var(--border-strong);
+        }
+
+        .tree-nav li {
+            position: relative;
+            margin: 4px 0;
+        }
+
+        .tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .tree-item:hover {
+            background-color: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        .tree-item.active {
+            background-color: var(--status-info-bg);
+            color: var(--status-info-text);
+        }
+
+        .tree-item i.expand-icon {
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+
+        .tree-item.expanded i.expand-icon {
+            transform: rotate(90deg);
+        }
+        
+        .tree-item.leaf i.expand-icon {
+            opacity: 0;
+        }
+
+        .tree-item-actions {
+            margin-left: auto;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tree-item:hover .tree-item-actions {
+            opacity: 1;
+        }
+
+        .team-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+        }
+
+        .team-breadcrumb span.current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .team-members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: 24px;
+        }
+
+        .member-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-strong);
+        }
+
+        .member-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 12px;
+            background: var(--surface-hover);
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .member-title {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .role-lead {
+            background: var(--status-success-bg);
+            color: var(--status-success-text);
+        }
+
+        .role-member {
+            background: var(--status-info-bg);
+            color: var(--status-info-text);
+        }
+
+        .role-viewer {
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+        }
+
+        .team-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .team-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">
+                <i class="ph-fill ph-sparkle"></i>
+            </div>
+            <div class="logo-text">
+                <h1>SereneHR</h1>
+                <span>Enterprise Plan</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-squares-four"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="index.html" class="nav-item">
+                <i class="ph ph-users"></i>
+                <span>Employees</span>
+            </a>
+            <a href="teams.html" class="nav-item active">
+                <i class="ph ph-users-three"></i>
+                <span>Teams</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-money"></i>
+                <span>Payroll</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-trend-up"></i>
+                <span>Performance</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-user-plus"></i>
+                <span>Recruitment</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="ph ph-file-text"></i>
+                <span>Documents</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="upgrade-card">
+                <h3>Upgrade Plan</h3>
+                <p>Unlock advanced analytics and global payroll features.</p>
+                <button class="btn btn-primary btn-block">Upgrade Now</button>
+            </div>
+
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-question"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="nav-item secondary-nav">
+                <i class="ph ph-sign-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top header -->
+        <header class="top-header">
+            <h2 class="page-title">Teams Structure</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="profile-grid">
+                
+                <!-- Left Sidebar: Team Tree -->
+                <div class="grid-col-left">
+                    <div class="content-card profile-card" style="padding: var(--spacing-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="margin: 0; font-size: 1rem;">Organization</h3>
+                            <button id="createTeamBtn" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.8rem;">
+                                <i class="ph ph-plus"></i> New
+                            </button>
+                        </div>
+                        
+                        <div class="search-bar light" style="margin-bottom: 16px;">
+                            <i class="ph ph-magnifying-glass"></i>
+                            <input type="text" placeholder="Search teams...">
+                        </div>
+
+                        <!-- Tree Navigation -->
+                        <ul class="tree-nav">
+                            <li>
+                                <div class="tree-item expanded">
+                                    <i class="ph-fill ph-caret-right expand-icon"></i>
+                                    <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
+                                    <span>Engineering</span>
+                                    <div class="tree-item-actions">
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <div class="tree-item expanded">
+                                            <i class="ph-fill ph-caret-right expand-icon"></i>
+                                            <i class="ph-fill ph-users-three"></i>
+                                            <span>Backend</span>
+                                            <div class="tree-item-actions">
+                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li>
+                                                <div class="tree-item leaf active">
+                                                    <i class="ph-fill ph-caret-right expand-icon"></i>
+                                                    <i class="ph-fill ph-users"></i>
+                                                    <span>API Team</span>
+                                                    <div class="tree-item-actions">
+                                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend > API Team" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="tree-item leaf">
+                                                    <i class="ph-fill ph-caret-right expand-icon"></i>
+                                                    <i class="ph-fill ph-users"></i>
+                                                    <span>Database Team</span>
+                                                    <div class="tree-item-actions">
+                                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Backend > Database Team" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="tree-item leaf">
+                                            <i class="ph-fill ph-caret-right expand-icon"></i>
+                                            <i class="ph-fill ph-users-three"></i>
+                                            <span>Frontend</span>
+                                            <div class="tree-item-actions">
+                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Engineering > Frontend" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="tree-item leaf">
+                                    <i class="ph-fill ph-caret-right expand-icon"></i>
+                                    <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
+                                    <span>Product Management</span>
+                                    <div class="tree-item-actions">
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Product Management" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="tree-item expanded">
+                                    <i class="ph-fill ph-caret-right expand-icon"></i>
+                                    <i class="ph-fill ph-buildings" style="color: var(--primary);"></i>
+                                    <span>Human Resources</span>
+                                    <div class="tree-item-actions">
+                                        <button class="icon-btn ghost add-subteam-btn" data-parent="Human Resources" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                    </div>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <div class="tree-item leaf">
+                                            <i class="ph-fill ph-caret-right expand-icon"></i>
+                                            <i class="ph-fill ph-users"></i>
+                                            <span>Talent Acquisition</span>
+                                            <div class="tree-item-actions">
+                                                <button class="icon-btn ghost add-subteam-btn" data-parent="Human Resources > Talent Acquisition" style="width: 24px; height: 24px; min-width: auto; padding: 0;" title="Add Sub-team"><i class="ph ph-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column: Focus Team Details -->
+                <div class="grid-col-right" style="display: flex; flex-direction: column;">
+                    <div class="content-card" style="flex: 1; padding: var(--spacing-lg);">
+                        
+                        <!-- Breadcrumb -->
+                        <div class="team-breadcrumb">
+                            <span>Engineering</span>
+                            <i class="ph ph-caret-right"></i>
+                            <span>Backend</span>
+                            <i class="ph ph-caret-right"></i>
+                            <span class="current">API Team</span>
+                        </div>
+
+                        <!-- Team Header -->
+                        <div class="team-header-flex">
+                            <div>
+                                <h1 style="margin: 0; font-size: 1.8rem; margin-bottom: 8px;">API Team</h1>
+                                <p style="color: var(--text-secondary); margin: 0; max-width: 600px;">
+                                    Responsible for building, maintaining, and scaling the core APIs that power SereneHR applications.
+                                </p>
+                            </div>
+                            <div class="team-actions">
+                                <button class="btn btn-primary add-subteam-btn" data-parent="Engineering > Backend > API Team">
+                                    <i class="ph ph-plus"></i> Add Sub-team
+                                </button>
+                                <button class="btn btn-outline" id="editTeamBtn">
+                                    <i class="ph ph-pencil-simple"></i> Edit
+                                </button>
+                                <button class="btn icon-btn" style="border: 1px solid #fecdd3; color: #e11d48; background-color: #fff1f2; width: 40px; height: 40px;">
+                                    <i class="ph ph-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 24px 0;">
+
+                        <!-- Members Section -->
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h2 style="font-size: 1.1rem; margin: 0;">Team Members (4)</h2>
+                            <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">
+                                <i class="ph ph-user-plus"></i> Add Member
+                            </button>
+                        </div>
+
+                        <div class="team-members-grid">
+                            <!-- Team Lead -->
+                            <div class="member-card">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus" alt="Marcus" class="member-avatar">
+                                <div class="member-name">Marcus Rodriguez</div>
+                                <div class="member-title">Senior Backend Architect</div>
+                                <div class="role-badge role-lead">
+                                    <i class="ph-fill ph-star"></i> Team Lead
+                                </div>
+                            </div>
+
+                            <!-- Member 1 -->
+                            <div class="member-card">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Sarah" alt="Sarah" class="member-avatar">
+                                <div class="member-name">Sarah Jenkins</div>
+                                <div class="member-title">Software Engineer II</div>
+                                <div class="role-badge role-member">
+                                    <i class="ph-fill ph-code"></i> Member
+                                </div>
+                            </div>
+
+                            <!-- Member 2 -->
+                            <div class="member-card">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena" alt="Elena" class="member-avatar">
+                                <div class="member-name">Elena Belova</div>
+                                <div class="member-title">Software Engineer I</div>
+                                <div class="role-badge role-member">
+                                    <i class="ph-fill ph-code"></i> Member
+                                </div>
+                            </div>
+
+                            <!-- Viewer -->
+                            <div class="member-card">
+                                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Alex" alt="Alex" class="member-avatar">
+                                <div class="member-name">Alex Thompson</div>
+                                <div class="member-title">Product Manager</div>
+                                <div class="role-badge role-viewer">
+                                    <i class="ph-fill ph-eye"></i> Viewer
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Create/Edit Team Modal -->
+    <dialog id="teamModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 id="teamModalTitle">Create New Team</h2>
+                <button class="icon-btn ghost close-modal" type="button" id="closeTeamModal"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="teamForm" class="form-section-col">
+                    <div id="modalParentBreadcrumb" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; display: none; align-items: center; gap: 8px;">
+                        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Adding to:</span>
+                        <span id="modalParentText" style="background: var(--surface-hover); padding: 4px 10px; border-radius: var(--radius-full); font-weight: 500; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; color: var(--text-primary);">
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Team Icon</label>
+                        <div style="display: flex; gap: 12px; align-items: center;">
+                            <button type="button" id="iconSelectBtn" style="width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid var(--border-default); background: var(--surface-card); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative;">
+                                <span id="selectedIconDisplay">🏢</span>
+                                <div id="emojiPickerPopup" style="position: absolute; top: calc(100% + 8px); left: 0; z-index: 100; display: none; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
+                                    <emoji-picker class="light"></emoji-picker>
+                                </div>
+                            </button>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <span style="font-size: 0.85rem; color: var(--text-primary); font-weight: 500;">Select Emoji</span>
+                                <span style="font-size: 0.75rem; color: var(--text-tertiary);">Or upload a custom image icon</span>
+                            </div>
+                            <div style="margin-left: auto;">
+                                <label for="customIconUpload" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; cursor: pointer;">
+                                    <i class="ph ph-upload"></i> Upload
+                                </label>
+                                <input type="file" id="customIconUpload" style="display: none;" accept=".png, .svg, .jpg, .jpeg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Team Name <span class="required">*</span></label>
+                        <input type="text" class="input-field" placeholder="e.g. API Team" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="input-field" placeholder="What does this team do?" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelTeamModal">Cancel</button>
+                <button type="submit" form="teamForm" class="btn btn-primary">Save Team</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="script.js"></script>
+    <script>
+        // Specific script for Teams Screen interactivity
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tree Expansion logic
+            const treeItems = document.querySelectorAll('.tree-item:not(.leaf)');
+            treeItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    item.classList.toggle('expanded');
+                    const sublist = item.nextElementSibling;
+                    if (sublist && sublist.tagName === 'UL') {
+                        sublist.style.display = item.classList.contains('expanded') ? 'block' : 'none';
+                    }
+                });
+            });
+
+            // Handle leaf clicks (activating a team)
+            const teamNodes = document.querySelectorAll('.tree-item');
+            teamNodes.forEach(node => {
+                node.addEventListener('click', (e) => {
+                    // Prevent closing if we just clicked to expand
+                    if (!node.classList.contains('leaf') && e.target.classList.contains('expand-icon')) {
+                        return; 
+                    }
+                    // Remove active from all
+                    document.querySelectorAll('.tree-item').forEach(el => el.classList.remove('active'));
+                    node.classList.add('active');
+                });
+            });
+
+            // Modal logic
+            const teamModal = document.getElementById('teamModal');
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            const editTeamBtn = document.getElementById('editTeamBtn');
+            const closeTeamModal = document.getElementById('closeTeamModal');
+            const cancelTeamModal = document.getElementById('cancelTeamModal');
+            const teamModalTitle = document.getElementById('teamModalTitle');
+            const modalParentBreadcrumb = document.getElementById('modalParentBreadcrumb');
+            const modalParentText = document.getElementById('modalParentText');
+            
+            // Emoji Picker Logic
+            const iconSelectBtn = document.getElementById('iconSelectBtn');
+            const emojiPickerPopup = document.getElementById('emojiPickerPopup');
+            const selectedIconDisplay = document.getElementById('selectedIconDisplay');
+            const customIconUpload = document.getElementById('customIconUpload');
+
+            if(iconSelectBtn && emojiPickerPopup) {
+                iconSelectBtn.addEventListener('click', (e) => {
+                    // Prevent triggering if clicking inside the picker
+                    if(e.target.closest('emoji-picker')) return;
+                    emojiPickerPopup.style.display = emojiPickerPopup.style.display === 'block' ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!iconSelectBtn.contains(e.target)) {
+                        emojiPickerPopup.style.display = 'none';
+                    }
+                });
+
+                document.querySelector('emoji-picker').addEventListener('emoji-click', event => {
+                    selectedIconDisplay.textContent = event.detail.unicode;
+                    selectedIconDisplay.style.backgroundImage = 'none'; // Clear any custom image
+                    emojiPickerPopup.style.display = 'none';
+                });
+            }
+
+            if(customIconUpload) {
+                customIconUpload.addEventListener('change', (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            selectedIconDisplay.textContent = ''; // clear emoji
+                            selectedIconDisplay.style.backgroundImage = `url(${e.target.result})`;
+                            selectedIconDisplay.style.backgroundSize = 'cover';
+                            selectedIconDisplay.style.backgroundPosition = 'center';
+                            selectedIconDisplay.style.width = '100%';
+                            selectedIconDisplay.style.height = '100%';
+                            selectedIconDisplay.style.borderRadius = '50%';
+                        }
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            }
+
+            const openModal = (title, parentPath) => {
+                teamModalTitle.textContent = title;
+                if(parentPath) {
+                    modalParentBreadcrumb.style.display = 'flex';
+                    // Convert Path string into breadcrumb
+                    modalParentText.innerHTML = `<i class="ph-fill ph-buildings"></i> ${parentPath}`;
+                } else {
+                    modalParentBreadcrumb.style.display = 'none';
+                }
+                teamModal.showModal();
+            }
+
+            if(createTeamBtn) {
+                createTeamBtn.addEventListener('click', () => {
+                    openModal("Create New Team", null); // Top level
+                });
+            }
+
+            // Sub-team buttons logic
+            document.querySelectorAll('.add-subteam-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // prevent tree expansion
+                    const parentData = btn.getAttribute('data-parent');
+                    openModal("Create Sub-Team", parentData);
+                });
+            });
+
+            if(editTeamBtn) {
+                editTeamBtn.addEventListener('click', () => {
+                    openModal("Edit Team", "Engineering > Backend");
+                });
+            }
+
+            const closeModals = () => {
+                if(teamModal) teamModal.close();
+            };
+
+            if(closeTeamModal) closeTeamModal.addEventListener('click', closeModals);
+            if(cancelTeamModal) cancelTeamModal.addEventListener('click', closeModals);
+        });
+    </script>
+</body>
+
+</html>
