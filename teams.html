@@ -605,17 +605,144 @@
 
                         <hr style="border: none; border-top: 1px solid var(--border-subtle); margin: 24px 0;">
 
-                        <!-- Members Section -->
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h2 style="font-size: 1.1rem; margin: 0;" id="memberCountText">Team Members (0)</h2>
-                            <button id="addMemberBtn" class="btn btn-outline"
-                                style="padding: 6px 12px; font-size: 0.85rem;">
-                                <i class="ph ph-user-plus"></i> Add Member
+                        <!-- Tabs Section -->
+                        <div class="profile-tabs" style="border-bottom: 1px solid var(--border-subtle); margin-bottom: 24px; padding-bottom: 0;">
+                            <button class="tab-link active" id="tabMembersBtn" style="font-size: 1.1rem; padding-bottom: 12px;">
+                                Team members (<span id="memberCountTab">0</span>)
+                            </button>
+                            <button class="tab-link" id="tabPermissionsBtn" style="font-size: 1.1rem; padding-bottom: 12px;">
+                                Permissions
                             </button>
                         </div>
 
-                        <div class="team-members-grid" id="membersGrid">
-                            <!-- Populated via script -->
+                        <!-- Members Tab Content -->
+                        <div id="membersTabContent" class="tab-pane active">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <h2 style="font-size: 1.1rem; margin: 0; display: none;" id="memberCountText">Team Members (0)</h2>
+                                <div style="flex: 1;"></div>
+                                <button id="addMemberBtn" class="btn btn-outline"
+                                    style="padding: 6px 12px; font-size: 0.85rem;">
+                                    <i class="ph ph-user-plus"></i> Add Member
+                                </button>
+                            </div>
+
+                            <div class="team-members-grid" id="membersGrid">
+                                <!-- Populated via script -->
+                            </div>
+                        </div>
+
+                        <!-- Permissions Tab Content -->
+                        <div id="permissionsTabContent" class="tab-pane" style="display: none;">
+                            <div class="permissions-tree" style="display: flex; flex-direction: column; gap: 12px;">
+                                <!-- Employees Module -->
+                                <div class="perm-section">
+                                    <div class="perm-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-hover); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                                            <i class="ph-fill ph-caret-down"></i>
+                                            <i class="ph ph-users"></i>
+                                            Employees
+                                        </div>
+                                        <div class="perm-toggles" style="display: flex; gap: 12px; align-items: center;">
+                                            <button class="perm-btn enabled">
+                                                <i class="ph ph-eye"></i>
+                                                <span>View</span>
+                                            </button>
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-plus"></i>
+                                                <span>Add employee</span>
+                                            </button>
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-pencil-simple"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-trash"></i>
+                                                <span>Delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="perm-children" style="padding-left: 20px; border-left: 1px dashed var(--border-strong); margin-left: 18px; margin-top: 8px; display: flex; flex-direction: column; gap: 4px;">
+                                        <div class="perm-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-weight: 500;">
+                                                <i class="ph ph-file-text"></i>
+                                                Contracts
+                                            </div>
+                                            <div class="perm-toggles" style="display: flex; gap: 12px; align-items: center;">
+                                                <button class="perm-btn disabled">
+                                                    <i class="ph ph-eye"></i>
+                                                    <span>View</span>
+                                                </button>
+                                                <button class="perm-btn disabled">
+                                                    <i class="ph ph-plus"></i>
+                                                    <span>Add</span>
+                                                </button>
+                                                <button class="perm-btn disabled">
+                                                    <i class="ph ph-pencil-simple"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="perm-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px;">
+                                            <div style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-weight: 500;">
+                                                <i class="ph ph-money"></i>
+                                                Payroll
+                                            </div>
+                                            <div class="perm-toggles" style="display: flex; gap: 12px; align-items: center;">
+                                                <button class="perm-btn disabled">
+                                                    <i class="ph ph-eye"></i>
+                                                    <span>View</span>
+                                                </button>
+                                                <button class="perm-btn disabled">
+                                                    <i class="ph ph-pencil-simple"></i>
+                                                    <span>Edit</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Time Off Module -->
+                                <div class="perm-section">
+                                    <div class="perm-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                                            <i class="ph-fill ph-caret-down"></i>
+                                            <i class="ph ph-calendar"></i>
+                                            Time Off
+                                        </div>
+                                        <div class="perm-toggles" style="display: flex; gap: 12px; align-items: center;">
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-eye"></i>
+                                                <span>View</span>
+                                            </button>
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-check-circle"></i>
+                                                <span>Approve</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Teams & Structure Module -->
+                                <div class="perm-section">
+                                    <div class="perm-header" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--surface-card); border: 1px solid var(--border-default); border-radius: var(--radius-md);">
+                                        <div style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+                                            <i class="ph-fill ph-caret-down"></i>
+                                            <i class="ph ph-buildings"></i>
+                                            Teams & Structure
+                                        </div>
+                                        <div class="perm-toggles" style="display: flex; gap: 12px; align-items: center;">
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-eye"></i>
+                                                <span>View</span>
+                                            </button>
+                                            <button class="perm-btn disabled">
+                                                <i class="ph ph-gear"></i>
+                                                <span>Manage Branches</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
@@ -1135,6 +1262,63 @@
             const cancelMemberModalBtn = document.getElementById('cancelMemberModal');
             if (closeMemberModalBtn) closeMemberModalBtn.addEventListener('click', () => addMemberModal.close());
             if (cancelMemberModalBtn) cancelMemberModalBtn.addEventListener('click', () => addMemberModal.close());
+
+            // Tab Switching Logic
+            const tabMembersBtn = document.getElementById('tabMembersBtn');
+            const tabPermissionsBtn = document.getElementById('tabPermissionsBtn');
+            const membersTabContent = document.getElementById('membersTabContent');
+            const permissionsTabContent = document.getElementById('permissionsTabContent');
+
+            if (tabMembersBtn && tabPermissionsBtn) {
+                tabMembersBtn.addEventListener('click', () => {
+                    tabMembersBtn.classList.add('active');
+                    tabPermissionsBtn.classList.remove('active');
+                    membersTabContent.style.display = 'block';
+                    permissionsTabContent.style.display = 'none';
+                    membersTabContent.classList.add('active');
+                    permissionsTabContent.classList.remove('active');
+                });
+                tabPermissionsBtn.addEventListener('click', () => {
+                    tabPermissionsBtn.classList.add('active');
+                    tabMembersBtn.classList.remove('active');
+                    permissionsTabContent.style.display = 'block';
+                    membersTabContent.style.display = 'none';
+                    permissionsTabContent.classList.add('active');
+                    membersTabContent.classList.remove('active');
+                });
+            }
+
+            // Observer to keep tab count syncing
+            const memberCountTab = document.getElementById('memberCountTab');
+            if (memberCountText && memberCountTab) {
+                const observer = new MutationObserver(mutations => {
+                    mutations.forEach(mutation => {
+                        const txt = memberCountText.textContent || '';
+                        const match = txt.match(/\((\d+)\)/);
+                        if (match) {
+                            memberCountTab.textContent = match[1];
+                        }
+                    });
+                });
+                observer.observe(memberCountText, { childList: true, subtree: true, characterData: true });
+            }
+
+            // Permission Buttons Toggling
+            document.querySelectorAll('.perm-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent card collapsing when clicking a button
+                    btn.classList.toggle('enabled');
+                    btn.classList.toggle('disabled');
+                });
+            });
+
+            // Permissions Card Collapsing
+            document.querySelectorAll('.perm-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const section = header.closest('.perm-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
         });
     </script>
     <script src="sidebar.js"></script>
