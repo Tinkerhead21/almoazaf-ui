@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boards | SereneHR</title>
+    <meta name="description" content="Collaborative idea boards for drafting features, user stories, and tasks — with Azure DevOps integration.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ====================================================================
+           BOARD PAGE LAYOUT
+        ==================================================================== */
+        .board-page {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ====================================================================
+           BOARD TOOLBAR (between header and board)
+        ==================================================================== */
+        .board-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px var(--spacing-lg);
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--surface-card);
+            flex-shrink: 0;
+        }
+
+        .board-name-input {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border: 1px solid transparent;
+            background: transparent;
+            outline: none;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-fast);
+            font-family: var(--font-family);
+            min-width: 80px;
+            max-width: 320px;
+        }
+
+        .board-name-input:hover {
+            border-color: var(--border-default);
+            background: var(--surface-hover);
+        }
+
+        .board-name-input:focus {
+            border-color: var(--primary);
+            background: var(--surface-body);
+        }
+
+        .toolbar-sep {
+            width: 1px;
+            height: 18px;
+            background: var(--border-default);
+            flex-shrink: 0;
+        }
+
+        .toolbar-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .toolbar-stat i {
+            font-size: 0.9rem;
+        }
+
+        /* ====================================================================
+           BOARD SCROLL AREA
+        ==================================================================== */
+        .board-scroll-area {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-default) transparent;
+        }
+
+        .board-scroll-area::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .board-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .board-scroll-area::-webkit-scrollbar-thumb {
+            background: var(--border-default);
+            border-radius: 4px;
+        }
+
+        .board-container {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            height: 100%;
+            min-width: max-content;
+        }
+
+        /* ====================================================================
+           BOARD COLUMN
+        ==================================================================== */
+        .board-column {
+            width: 284px;
+            flex-shrink: 0;
+            background: var(--surface-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-default);
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 210px);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease,
+                        box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .board-column.collapsed {
+            width: 52px;
+            cursor: pointer;
+        }
+
+        .board-column.no-access-col {
+            background: var(--surface-body);
+            border-style: dashed;
+        }
+
+        .board-column.dragging-col {
+            opacity: 0.45;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .board-column.drag-over-col {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.25);
+        }
+
+        .board-column.drop-target-allowed {
+            background-color: rgba(var(--primary-rgb), 0.05);
+            border-color: var(--primary);
+            border-style: solid;
+        }
+
+        .board-column.drop-target-denied {
+            background-color: rgba(var(--color-red-500), 0.05);
+            border-color: rgb(var(--color-red-500));
+            cursor: no-drop;
+        }
+
+        /* ====================================================================
+           COLUMN HEADER
+        ==================================================================== */
+        .col-header {
+            padding: 12px 10px 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--border-subtle);
+            position: relative;
+            user-select: none;
+        }
+
+        .col-drag-handle {
+            color: var(--text-tertiary);
+            cursor: grab;
+            font-size: 1rem;
+            flex-shrink: 0;
+            padding: 2px;
+            border-radius: 4px;
+            transition: var(--transition-fast);
+            line-height: 1;
+        }
+
+        .col-drag-handle:hover {
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+        }
+
+        .col-drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .col-name-input {
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: 1px solid transparent;
+            background: transparent;
+            outline: none;
+            padding: 3px 5px;
+            border-radius: 4px;
+            cursor: default;
+            font-family: var(--font-family);
+            min-width: 0;
+            transition: var(--transition-fast);
+        }
+
+        .col-name-input:focus {
+            border-color: var(--primary);
+            background: var(--surface-body);
+            cursor: text;
+        }
+
+        .col-count-bubble {
+            background: var(--surface-hover);
+            color: var(--text-tertiary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+
+        .col-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            flex-shrink: 0;
+        }
+
+        .col-icon-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            transition: var(--transition-fast);
+            cursor: pointer;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+        }
+
+        .col-icon-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        /* ====================================================================
+           COLLAPSED STATE
+        ==================================================================== */
+        /* Hide normal content when collapsed */
+        .board-column.collapsed .col-header .col-drag-handle,
+        .board-column.collapsed .col-header .col-name-input,
+        .board-column.collapsed .col-header .col-count-bubble,
+        .board-column.collapsed .col-header .col-header-actions {
+            display: none;
+        }
+
+        .board-column.collapsed .col-access-strip,
+        .board-column.collapsed .col-cards,
+        .board-column.collapsed .col-footer {
+            display: none;
+        }
+
+        /* Collapsed expand button */
+        .col-expand-btn {
+            display: none;
+            margin: 0 auto;
+        }
+
+        .board-column.collapsed .col-expand-btn {
+            display: flex;
+        }
+
+        .col-expand-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        /* Collapsed body */
+        .col-collapsed-body {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding: 10px 0;
+            gap: 10px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .board-column.collapsed .col-collapsed-body {
+            display: flex;
+        }
+        .board-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+            cursor: grabbing;
+        }
+        .col-collapsed-name {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-height: 160px;
+            letter-spacing: 0.02em;
+        }
+
+        .col-collapsed-count {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            background: var(--surface-hover);
+            border-radius: var(--radius-full);
+            padding: 3px 7px;
+            margin-top: auto;
+        }
+
+        /* ====================================================================
+           ACCESS STRIP
+        ==================================================================== */
+        .col-access-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 10px;
+            gap: 5px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-subtle);
+            flex-shrink: 0;
+        }
+
+        .col-access-strip.strip-contributor {
+            background: rgba(99, 102, 241, 0.07);
+            color: #6366f1;
+        }
+
+        .col-access-strip.strip-view-only {
+            background: rgba(14, 165, 233, 0.07);
+            color: #0ea5e9;
+        }
+
+        .col-access-strip.strip-no-access {
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5px,
+                rgba(var(--color-neutral-200), 0.5) 5px,
+                rgba(var(--color-neutral-200), 0.5) 10px
+            );
+            color: var(--text-tertiary);
+        }
+
+        /* ====================================================================
+           COLUMN CONTEXT MENU
+        ==================================================================== */
+        .col-context-menu {
+            position: absolute;
+            top: 44px;
+            right: 8px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 200;
+            min-width: 170px;
+            padding: 4px;
+            display: none;
+            animation: menuPop 0.12s ease;
+        }
+
+        @keyframes menuPop {
+            from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .col-context-menu.open {
+            display: block;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-family);
+        }
+
+        .menu-item:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        .menu-item.danger {
+            color: rgb(var(--color-red-500));
+        }
+
+        .menu-item.danger:hover {
+            background: var(--status-danger-bg);
+            color: rgb(var(--color-red-600));
+        }
+
+        .menu-sep {
+            border: none;
+            border-top: 1px solid var(--border-subtle);
+            margin: 4px 0;
+        }
+
+        /* ====================================================================
+           CARD LIST
+        ==================================================================== */
+        .col-cards {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 10px 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-default) transparent;
+        }
+
+        .col-cards::-webkit-scrollbar { width: 4px; }
+        .col-cards::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 2px; }
+
+        /* ====================================================================
+           BOARD CARD
+        ==================================================================== */
+        .board-card {
+            background: var(--surface-body);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            transition: var(--transition-fast);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            animation: cardSlideIn 0.2s ease;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .board-card:hover {
+            border-color: var(--border-strong);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        /* No-access: show title only, no interaction */
+        .board-card.no-access-card {
+            cursor: default;
+            opacity: 0.72;
+        }
+
+        .board-card.no-access-card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--border-default);
+        }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card-type-badge {
+            font-size: 0.62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            flex-shrink: 0;
+        }
+
+        .type-feature  { background: rgba(99,  102, 241, 0.12); color: #6366f1; }
+        .type-story    { background: rgba(14,  165, 233, 0.12); color: #0ea5e9; }
+        .type-task     { background: rgba(234, 179,   8, 0.12); color: #b45309; }
+        .type-feature-dark { background: rgba(99,102,241,0.2); }
+        .type-story-dark   { background: rgba(14,165,233,0.2); }
+        .type-task-dark    { background: rgba(234,179,8,0.2); }
+
+        /* Azure DevOps badge */
+        .azure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 120, 212, 0.10);
+            color: #0078d4;
+            flex-shrink: 0;
+        }
+
+        .azure-icon {
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .card-tag {
+            font-size: 0.62rem;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            background: var(--surface-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-default);
+        }
+
+        .card-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 2px;
+        }
+
+        .card-assignees {
+            display: flex;
+        }
+
+        .card-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--surface-card);
+            margin-right: -7px;
+            object-fit: cover;
+            background: var(--surface-hover);
+        }
+
+        .card-avatar:last-child { margin-right: 0; }
+
+        /* No-access: hide tags and bottom row */
+        .board-card.no-access-card .card-tags,
+        .board-card.no-access-card .card-bottom-row {
+            display: none;
+        }
+
+        /* No-access lock footer */
+        .no-access-lock-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 6px;
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        /* ====================================================================
+           ADD CARD BUTTON & INLINE FORM
+        ==================================================================== */
+        .col-footer {
+            padding: 6px 10px 10px;
+            flex-shrink: 0;
+        }
+
+        .add-card-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            border: 1.5px dashed var(--border-default);
+            background: none;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font-family);
+        }
+
+        .add-card-trigger:hover {
+            background: var(--surface-hover);
+            color: var(--text-secondary);
+            border-color: var(--border-strong);
+        }
+
+        .add-card-form {
+            background: var(--surface-body);
+            border: 1.5px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.08);
+            animation: cardSlideIn 0.15s ease;
+        }
+
+        .card-title-textarea {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            width: 100%;
+            resize: none;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-default);
+            line-height: 1.45;
+        }
+
+        .card-title-textarea::placeholder {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        .form-actions-row {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        /* ====================================================================
+           ADD COLUMN BUTTON & FORM
+        ==================================================================== */
+        .add-col-btn {
+            width: 230px;
+            flex-shrink: 0;
+            height: 52px;
+            border-radius: var(--radius-md);
+            border: 1.5px dashed var(--border-strong);
+            background: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font-family);
+            align-self: flex-start;
+        }
+
+        .add-col-btn:hover {
+            background: var(--surface-card);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .add-col-form {
+            width: 230px;
+            flex-shrink: 0;
+            background: var(--surface-card);
+            border: 1.5px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-self: flex-start;
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+            animation: cardSlideIn 0.15s ease;
+        }
+
+        .add-col-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-family);
+            width: 100%;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .add-col-input::placeholder {
+            color: var(--text-tertiary);
+            font-weight: 400;
+        }
+
+        /* ====================================================================
+           TEAM SWITCHER
+        ==================================================================== */
+        .team-switcher-wrap {
+            position: relative;
+        }
+
+        .team-switcher-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-default);
+            background: var(--surface-card);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: var(--font-family);
+            white-space: nowrap;
+        }
+
+        .team-switcher-btn:hover {
+            border-color: var(--primary);
+            background: var(--surface-hover);
+        }
+
+        .switcher-label-prefix {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-tertiary);
+        }
+
+        .team-switcher-dropdown {
+            position: absolute;
+            top: calc(100% + 7px);
+            right: 0;
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 500;
+            min-width: 220px;
+            padding: 6px;
+            display: none;
+            animation: menuPop 0.12s ease;
+        }
+
+        .team-switcher-dropdown.open {
+            display: block;
+        }
+
+        .team-switch-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-family);
+            color: var(--text-secondary);
+        }
+
+        .team-switch-item:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        .team-switch-item.is-active {
+            background: var(--status-info-bg);
+            color: var(--status-info-text);
+            font-weight: 600;
+        }
+
+        /* ====================================================================
+           MANAGE COLUMNS MODAL
+        ==================================================================== */
+        .manage-cols-modal {
+            max-width: 780px;
+            width: 96vw;
+        }
+
+        .manage-cols-modal .modal-content {
+            max-width: 100%;
+        }
+
+        .perms-table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+        }
+
+        .perms-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 480px;
+        }
+
+        .perms-table th {
+            padding: 10px 14px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-tertiary);
+            border-bottom: 1px solid var(--border-default);
+            background: var(--surface-body);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .perms-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: middle;
+        }
+
+        .perms-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .perms-table tbody tr:hover td {
+            background: var(--surface-hover);
+        }
+
+        .col-row-name-cell {
+            font-weight: 700;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .order-btns {
+            display: flex;
+            gap: 3px;
+        }
+
+        .access-select {
+            padding: 5px 9px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-default);
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: var(--surface-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: var(--font-family);
+            outline: none;
+            transition: var(--transition-fast);
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 256 256'%3E%3Cpath d='M213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80A8 8 0 0 1 53.66 90.34L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32z' fill='%23999'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+        }
+
+        .access-select:focus { border-color: var(--primary); }
+
+        .sel-contributor { background-color: rgba(99,102,241,0.08);  color: #6366f1; border-color: rgba(99,102,241,0.3); }
+        .sel-view-only   { background-color: rgba(14,165,233,0.08);  color: #0ea5e9; border-color: rgba(14,165,233,0.3); }
+        .sel-no-access   { background-color: var(--surface-hover);   color: var(--text-tertiary); }
+
+        /* ====================================================================
+           CARD DETAIL PANEL (PLACEHOLDER)
+        ==================================================================== */
+        .detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(2px);
+            z-index: 400;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .detail-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .detail-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 500px;
+            max-width: 95vw;
+            background: var(--surface-card);
+            border-left: 1px solid var(--border-default);
+            box-shadow: -12px 0 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 401;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .detail-panel.open {
+            transform: translateX(0);
+        }
+
+        .detail-panel-header {
+            padding: 20px 24px 18px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .detail-header-meta {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-badges-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-panel-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 48px 32px;
+            text-align: center;
+        }
+
+        .placeholder-icon-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 24px;
+            background: var(--surface-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-tertiary);
+            opacity: 0.5;
+        }
+
+        .placeholder-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .placeholder-sub {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            max-width: 290px;
+            line-height: 1.6;
+        }
+
+        /* ====================================================================
+           EMPTY COLUMN MESSAGE
+        ==================================================================== */
+        .col-empty-msg {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 20px 10px;
+            color: var(--text-tertiary);
+            font-size: 0.78rem;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .col-empty-msg i {
+            font-size: 1.5rem;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <app-sidebar active-page="boards"></app-sidebar>
+
+    <!-- Main Content -->
+    <main class="main-content board-page">
+
+        <!-- Top Header -->
+        <header class="top-header">
+            <h2 class="page-title">Boards</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+
+                <!-- Team Switcher -->
+                <div class="team-switcher-wrap" id="teamSwitcherWrap">
+                    <button class="team-switcher-btn" id="teamSwitcherBtn">
+                        <span class="switcher-label-prefix">Viewing as</span>
+                        <span id="activeTeamLabel">Engineering</span>
+                        <i class="ph ph-caret-down" style="font-size:0.8rem;"></i>
+                    </button>
+                    <div class="team-switcher-dropdown" id="teamSwitcherDropdown">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Manage Columns -->
+                <button class="btn btn-outline" id="manageColsBtn"
+                    style="padding: 7px 14px; font-size: 0.82rem; gap: 6px;">
+                    <i class="ph ph-sliders-horizontal"></i> Manage Columns
+                </button>
+            </div>
+        </header>
+
+        <!-- Board Toolbar -->
+        <div class="board-toolbar">
+            <input type="text" class="board-name-input" id="boardNameInput"
+                value="Q3 2025 — Product Roadmap"
+                title="Double-click to rename board">
+            <span class="toolbar-sep"></span>
+            <div class="toolbar-stat">
+                <i class="ph ph-columns" style="color:var(--text-tertiary);"></i>
+                <span id="colStatLabel">4 columns</span>
+            </div>
+            <div class="toolbar-stat">
+                <i class="ph ph-cards" style="color:var(--text-tertiary);"></i>
+                <span id="cardStatLabel">8 cards</span>
+            </div>
+            <div style="flex:1;"></div>
+            <div class="toolbar-stat" style="color: var(--text-secondary);">
+                <i class="ph ph-info" style="font-size:0.85rem;"></i>
+                <span style="font-size:0.78rem;">Prototype — no real Azure DevOps sync</span>
+            </div>
+        </div>
+
+        <!-- Board Scroll Area -->
+        <div class="board-scroll-area">
+            <div class="board-container" id="boardContainer">
+                <!-- Columns rendered by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ====================================================================
+         MANAGE COLUMNS MODAL
+    ==================================================================== -->
+    <dialog id="manageColsModal" class="modal manage-cols-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Columns</h2>
+                <button class="icon-btn ghost" id="closeManageCols" type="button">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh;">
+                <p style="font-size:0.84rem; color:var(--text-secondary); margin-bottom:16px; line-height:1.6;">
+                    Configure access per team per column.
+                    <strong style="color:#6366f1;">Contributor</strong> — can add &amp; edit cards.
+                    <strong style="color:#0ea5e9;">View-only</strong> — read card details, no editing.
+                    <strong style="color:var(--text-tertiary);">No Access</strong> — sees card titles only; column auto-collapses.
+                </p>
+
+                <!-- Add column row -->
+                <div style="display:flex; gap:8px; margin-bottom:18px;">
+                    <input type="text" id="newColNameInput" class="input-field"
+                        placeholder="New column name..."
+                        style="flex:1; padding:8px 12px; font-size:0.85rem;">
+                    <button class="btn btn-primary" id="addColFromModalBtn" style="white-space:nowrap;">
+                        <i class="ph ph-plus"></i> Add Column
+                    </button>
+                </div>
+
+                <!-- Permissions table -->
+                <div class="perms-table-wrap">
+                    <table class="perms-table" id="permsTable">
+                        <!-- Populated by JS -->
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelManageCols">Cancel</button>
+                <button type="button" class="btn btn-primary" id="applyPermissionsBtn">
+                    <i class="ph ph-check"></i> Apply Changes
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- ====================================================================
+         CARD DETAIL PANEL
+    ==================================================================== -->
+    <div class="detail-overlay" id="detailOverlay"></div>
+
+    <aside class="detail-panel" id="detailPanel">
+        <div class="detail-panel-header">
+            <div class="detail-header-meta">
+                <div class="detail-badges-row">
+                    <span class="card-type-badge" id="detailTypeBadge">Feature</span>
+                    <span class="azure-badge" id="detailAzureBadge" style="display:none;">
+                        <!-- Azure DevOps SVG Logo -->
+                        <svg class="azure-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 17.657L5.028 9.78l2.51-1.92 7.04-3.512V.624l8.124 5.088-14.48 2.864V20.36L0 17.657zm32 1.185l-5.04 7.872-11.496 2.864L4.344 26.56l4.144-3.384 13.456 4.208V14.22L32 18.842zM16.28 0L32 10.048v11.28l-8.128-4.56V8.832L12.392 5.44z" fill="#0078D4"/>
+                        </svg>
+                        <span id="detailAzureId">AB-0000</span>
+                    </span>
+                </div>
+                <h2 id="detailCardTitle"
+                    style="margin:0; font-size:1.15rem; font-weight:700; line-height:1.35; color:var(--text-primary);"></h2>
+            </div>
+            <button class="icon-btn ghost" id="closeDetailPanel" style="flex-shrink:0; margin-top:-2px;">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+
+        <div class="detail-panel-body">
+            <div class="placeholder-icon-wrap">
+                <i class="ph ph-layout"></i>
+            </div>
+            <p class="placeholder-title">Card details coming soon</p>
+            <p class="placeholder-sub">
+                The full card detail view — including discussion threads, scope of work,
+                and Azure DevOps sync — will be designed in the next iteration.
+            </p>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+                <div style="padding:10px 16px; border-radius:var(--radius-md); border:1px solid var(--border-default); font-size:0.8rem; font-weight:600; color:var(--text-tertiary); display:flex; align-items:center; gap:6px;">
+                    <i class="ph ph-chat-circle-text"></i> Discussion
+                </div>
+                <div style="padding:10px 16px; border-radius:var(--radius-md); border:1px solid var(--border-default); font-size:0.8rem; font-weight:600; color:var(--text-tertiary); display:flex; align-items:center; gap:6px;">
+                    <i class="ph ph-list-checks"></i> Scope
+                </div>
+                <div style="padding:10px 16px; border-radius:var(--radius-md); border:1px solid var(--border-default); font-size:0.8rem; font-weight:600; color:var(--text-tertiary); display:flex; align-items:center; gap:6px;">
+                    <svg class="azure-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width:12px;height:12px;fill:var(--text-tertiary);">
+                        <path d="M0 17.657L5.028 9.78l2.51-1.92 7.04-3.512V.624l8.124 5.088-14.48 2.864V20.36L0 17.657zm32 1.185l-5.04 7.872-11.496 2.864L4.344 26.56l4.144-3.384 13.456 4.208V14.22L32 18.842zM16.28 0L32 10.048v11.28l-8.128-4.56V8.832L12.392 5.44z"/>
+                    </svg>
+                    Azure Sync
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ====================================================================
+         SCRIPTS
+    ==================================================================== -->
+    <script>
+    /* ======================================================================
+       BOARD STATE
+    ====================================================================== */
+    const S = {
+        currentTeam: 'engineering',
+
+        teams: [
+            { id: 'engineering', name: 'Engineering',        emoji: '⚙️' },
+            { id: 'product',     name: 'Product Management', emoji: '📋' },
+            { id: 'hr',          name: 'Human Resources',    emoji: '👥' },
+            { id: 'design',      name: 'Design Operations',  emoji: '🎨' },
+        ],
+
+        columns: [
+            { id: 'c-backlog',    name: 'Backlog',           order: 0 },
+            { id: 'c-discovery',  name: 'In Discovery',      order: 1 },
+            { id: 'c-scoping',    name: 'Scoping',           order: 2 },
+            { id: 'c-ready',      name: 'Ready for Azure',   order: 3 },
+        ],
+
+        // true = collapsed, false = expanded, undefined = follow access rule
+        collapsed: {},
+
+        // permissions[teamId][colId] → 'contributor' | 'view-only' | 'no-access'
+        permissions: {
+            engineering: {
+                'c-backlog':   'contributor',
+                'c-discovery': 'contributor',
+                'c-scoping':   'view-only',
+                'c-ready':     'view-only',
+            },
+            product: {
+                'c-backlog':   'contributor',
+                'c-discovery': 'contributor',
+                'c-scoping':   'contributor',
+                'c-ready':     'view-only',
+            },
+            hr: {
+                'c-backlog':   'view-only',
+                'c-discovery': 'no-access',
+                'c-scoping':   'no-access',
+                'c-ready':     'no-access',
+            },
+            design: {
+                'c-backlog':   'contributor',
+                'c-discovery': 'view-only',
+                'c-scoping':   'view-only',
+                'c-ready':     'no-access',
+            },
+        },
+
+        cards: [
+            {
+                id: 'k-1', colId: 'c-backlog', type: 'feature',
+                title: 'Employee Self-Service Portal',
+                tags: ['ux', 'high-priority'],
+                assignees: ['Alex', 'Sarah'],
+                azureSynced: false, azureId: null,
+            },
+            {
+                id: 'k-2', colId: 'c-backlog', type: 'story',
+                title: 'As an employee I want to view my payslips from the app',
+                tags: ['payroll'],
+                assignees: ['Marcus'],
+                azureSynced: false, azureId: null,
+            },
+            {
+                id: 'k-3', colId: 'c-backlog', type: 'task',
+                title: 'Audit the current leave request workflow',
+                tags: ['hr', 'process'],
+                assignees: ['Elena'],
+                azureSynced: false, azureId: null,
+            },
+            {
+                id: 'k-4', colId: 'c-discovery', type: 'feature',
+                title: 'Real-time Team Availability Dashboard',
+                tags: ['dashboard', 'teams'],
+                assignees: ['Alex', 'Elena'],
+                azureSynced: true, azureId: 'AB-1042',
+            },
+            {
+                id: 'k-5', colId: 'c-discovery', type: 'story',
+                title: 'As a manager I want to see team capacity at a glance',
+                tags: ['manager-view'],
+                assignees: ['Sarah'],
+                azureSynced: false, azureId: null,
+            },
+            {
+                id: 'k-6', colId: 'c-scoping', type: 'feature',
+                title: 'Automated Onboarding Workflow Engine',
+                tags: ['automation', 'onboarding', 'priority'],
+                assignees: ['Marcus', 'Alex'],
+                azureSynced: true, azureId: 'AB-987',
+            },
+            {
+                id: 'k-7', colId: 'c-scoping', type: 'task',
+                title: 'Define role-based access matrix for Boards',
+                tags: ['security', 'rbac'],
+                assignees: ['Sarah', 'Elena'],
+                azureSynced: false, azureId: null,
+            },
+            {
+                id: 'k-8', colId: 'c-ready', type: 'feature',
+                title: 'Multi-currency Payroll Support',
+                tags: ['payroll', 'global', 'v2'],
+                assignees: ['Marcus'],
+                azureSynced: true, azureId: 'AB-764',
+            },
+        ],
+
+        // Working copy for manage-cols modal
+        draftPerms: null,
+    };
+
+    /* ======================================================================
+       HELPERS
+    ====================================================================== */
+    const h = str => {
+        const d = document.createElement('div');
+        d.appendChild(document.createTextNode(String(str)));
+        return d.innerHTML;
+    };
+
+    const uid = p => p + '-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+
+    function getAccess(colId) {
+        return (S.permissions[S.currentTeam] || {})[colId] || 'no-access';
+    }
+
+    function isCollapsed(colId) {
+        // If explicitly set, use that
+        if (S.collapsed[colId] !== undefined) return S.collapsed[colId];
+        // Default: auto-collapse no-access columns
+        return getAccess(colId) === 'no-access';
+    }
+
+    function colCards(colId) {
+        return S.cards.filter(c => c.colId === colId);
+    }
+
+    function teamById(id) {
+        return S.teams.find(t => t.id === id);
+    }
+
+    const TYPE_LABELS = { feature: 'Feature', story: 'User Story', task: 'Task' };
+    const TYPE_CLASS   = { feature: 'type-feature', story: 'type-story', task: 'type-task' };
+
+    const AZURE_SVG = `<svg class="azure-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M0 17.657L5.028 9.78l2.51-1.92 7.04-3.512V.624l8.124 5.088-14.48 2.864V20.36L0 17.657zm32 1.185l-5.04 7.872-11.496 2.864L4.344 26.56l4.144-3.384 13.456 4.208V14.22L32 18.842zM16.28 0L32 10.048v11.28l-8.128-4.56V8.832L12.392 5.44z" fill="#0078D4"/></svg>`;
+
+    /* ======================================================================
+       RENDER ENGINE
+    ====================================================================== */
+    function renderBoard() {
+        const container = document.getElementById('boardContainer');
+        container.innerHTML = '';
+
+        const sorted = [...S.columns].sort((a, b) => a.order - b.order);
+        sorted.forEach(col => container.appendChild(buildColumn(col)));
+
+        // Add column button
+        const addBtn = document.createElement('button');
+        addBtn.className = 'add-col-btn';
+        addBtn.id = 'addColBtn';
+        addBtn.innerHTML = `<i class="ph ph-plus"></i> Add Column`;
+        addBtn.addEventListener('click', showAddColumnForm);
+        container.appendChild(addBtn);
+
+        // Stats
+        document.getElementById('colStatLabel').textContent =
+            S.columns.length + ' column' + (S.columns.length !== 1 ? 's' : '');
+        document.getElementById('cardStatLabel').textContent =
+            S.cards.length + ' card' + (S.cards.length !== 1 ? 's' : '');
+
+        renderTeamSwitcher();
+        // setupColumnDragAndDrop(); // Locked on board as requested
+        setupCardDragAndDrop();
+    }
+
+    /* ------------------------------------------------------------------
+       Build a single column element
+    ------------------------------------------------------------------ */
+    function buildColumn(col) {
+        const access   = getAccess(col.id);
+        const cards    = colCards(col.id);
+        const collapsed = isCollapsed(col.id);
+
+        const el = document.createElement('div');
+        el.className = 'board-column'
+            + (collapsed        ? ' collapsed'      : '')
+            + (access === 'no-access' ? ' no-access-col' : '');
+        el.dataset.colId = col.id;
+        el.draggable = false; // Locked on board
+
+        /* --- Access strip labels --- */
+        const stripClass  = `strip-${access}`;
+        const stripIcon   = access === 'contributor' ? 'ph-pencil-simple'
+                          : access === 'view-only'   ? 'ph-eye'
+                          :                            'ph-lock-simple';
+        const stripLabel  = access === 'contributor' ? 'Contributor'
+                          : access === 'view-only'   ? 'View-only'
+                          :                            'No Access';
+
+        /* --- Header --- */
+        const header = document.createElement('div');
+        header.className = 'col-header';
+        header.innerHTML = `
+            <div style="width: 8px;"></div> <!-- Spacer replacing drag handle -->
+            <input class="col-name-input" type="text" value="${h(col.name)}"
+                   readonly title="Double-click to rename" data-col-id="${col.id}">
+            <span class="col-count-bubble">${cards.length}</span>
+            <div class="col-header-actions">
+                <button class="col-icon-btn collapse-btn" title="Collapse column" data-col-id="${col.id}">
+                    <i class="ph ph-arrow-line-left"></i>
+                </button>
+                <button class="col-icon-btn menu-btn" title="Column options" data-col-id="${col.id}">
+                    <i class="ph ph-dots-three"></i>
+                </button>
+            </div>
+            <!-- Expand button (only visible when collapsed) -->
+            <button class="col-icon-btn col-expand-btn expand-btn" title="Expand column" data-col-id="${col.id}">
+                <i class="ph ph-arrow-line-right"></i>
+            </button>
+            <!-- Context menu -->
+            <div class="col-context-menu" id="menu-${col.id}">
+                <button class="menu-item rename-btn" data-col-id="${col.id}">
+                    <i class="ph ph-pencil-simple"></i> Rename
+                </button>
+                <button class="menu-item move-left-btn" data-col-id="${col.id}">
+                    <i class="ph ph-arrow-left"></i> Move Left
+                </button>
+                <button class="menu-item move-right-btn" data-col-id="${col.id}">
+                    <i class="ph ph-arrow-right"></i> Move Right
+                </button>
+                <hr class="menu-sep">
+                <button class="menu-item danger delete-btn" data-col-id="${col.id}">
+                    <i class="ph ph-trash"></i> Delete Column
+                </button>
+            </div>
+        `;
+        el.appendChild(header);
+
+        /* --- Access strip --- */
+        const strip = document.createElement('div');
+        strip.className = `col-access-strip ${stripClass}`;
+        strip.innerHTML = `<i class="ph ${stripIcon}" style="font-size:0.75rem;"></i> ${stripLabel}`;
+        el.appendChild(strip);
+
+        /* --- Collapsed body (visible only when collapsed) --- */
+        const collapsedBody = document.createElement('div');
+        collapsedBody.className = 'col-collapsed-body';
+        collapsedBody.innerHTML = `
+            <span class="col-collapsed-name">${h(col.name)}</span>
+            <span class="col-collapsed-count">${cards.length}</span>
+        `;
+        collapsedBody.addEventListener('click', () => expandColumn(col.id, el));
+        el.appendChild(collapsedBody);
+
+        /* --- Cards list --- */
+        const cardList = document.createElement('div');
+        cardList.className = 'col-cards';
+        cardList.dataset.colId = col.id;
+
+        if (cards.length === 0) {
+            const empty = document.createElement('div');
+            empty.className = 'col-empty-msg';
+            if (access === 'no-access') {
+                empty.innerHTML = `<i class="ph ph-lock-simple"></i><span>Column hidden</span>`;
+            } else if (access === 'contributor') {
+                empty.innerHTML = `<i class="ph ph-note-blank"></i><span>No cards yet</span>`;
+            } else {
+                empty.innerHTML = `<i class="ph ph-note-blank"></i><span>Empty</span>`;
+            }
+            cardList.appendChild(empty);
+        } else {
+            cards.forEach(card => cardList.appendChild(buildCard(card, access)));
+            if (access === 'no-access') {
+                const lockMsg = document.createElement('div');
+                lockMsg.className = 'no-access-lock-msg';
+                lockMsg.innerHTML = `<i class="ph ph-lock-simple"></i> Details hidden`;
+                cardList.appendChild(lockMsg);
+            }
+        }
+        el.appendChild(cardList);
+
+        /* --- Footer (contributor only) --- */
+        if (access === 'contributor') {
+            const footer = document.createElement('div');
+            footer.className = 'col-footer';
+            footer.innerHTML = `
+                <button class="add-card-trigger" data-col-id="${col.id}">
+                    <i class="ph ph-plus"></i> Add card
+                </button>
+            `;
+            el.appendChild(footer);
+        }
+
+        wireColumnEvents(el, col);
+        return el;
+    }
+
+    /* ------------------------------------------------------------------
+       Build a single card element
+    ------------------------------------------------------------------ */
+    function buildCard(card, access) {
+        const isNoAccess = access === 'no-access';
+        const el = document.createElement('div');
+        el.className = 'board-card' + (isNoAccess ? ' no-access-card' : '');
+        el.dataset.cardId = card.id;
+
+        const azureBadge = card.azureSynced
+            ? `<span class="azure-badge" title="Synced to Azure DevOps: ${h(card.azureId)}">${AZURE_SVG} ${h(card.azureId)}</span>`
+            : '';
+
+        const tagsHtml = card.tags.map(t => `<span class="card-tag">${h(t)}</span>`).join('');
+
+        const avatarsHtml = card.assignees.map(name =>
+            `<img class="card-avatar"
+                  src="https://api.dicebear.com/7.x/notionists/svg?seed=${encodeURIComponent(name)}"
+                  alt="${h(name)}" title="${h(name)}">`
+        ).join('');
+
+        el.innerHTML = `
+            <div class="card-top-row">
+                <span class="card-type-badge ${TYPE_CLASS[card.type]}">${TYPE_LABELS[card.type]}</span>
+                ${azureBadge}
+            </div>
+            <p class="card-title">${h(card.title)}</p>
+            ${card.tags.length ? `<div class="card-tags">${tagsHtml}</div>` : ''}
+            <div class="card-bottom-row">
+                <div class="card-assignees">${avatarsHtml}</div>
+            </div>
+        `;
+
+        if (!isNoAccess) {
+            el.draggable = (access === 'contributor'); // Only contributor can start dragging
+            el.addEventListener('click', () => window.location.href = 'board-card-details.html');
+        }
+
+        return el;
+    }
+
+    /* ======================================================================
+       COLUMN INTERACTIONS
+    ====================================================================== */
+    function wireColumnEvents(el, col) {
+        // Collapse
+        el.querySelector('.collapse-btn')?.addEventListener('click', e => {
+            e.stopPropagation();
+            collapseColumn(col.id, el);
+        });
+
+        // Expand
+        el.querySelector('.expand-btn')?.addEventListener('click', e => {
+            e.stopPropagation();
+            expandColumn(col.id, el);
+        });
+
+        // Context menu toggle
+        el.querySelector('.menu-btn')?.addEventListener('click', e => {
+            e.stopPropagation();
+            const menu = document.getElementById(`menu-${col.id}`);
+            closeAllMenus();
+            menu.classList.add('open');
+        });
+
+        // Rename
+        el.querySelector('.rename-btn')?.addEventListener('click', e => {
+            e.stopPropagation();
+            closeAllMenus();
+            startRename(col, el);
+        });
+
+        // Double-click name to rename
+        el.querySelector('.col-name-input')?.addEventListener('dblclick', () => startRename(col, el));
+
+        // Blur → save name
+        el.querySelector('.col-name-input')?.addEventListener('blur', e => {
+            e.target.setAttribute('readonly', '');
+            const val = e.target.value.trim();
+            if (val && val !== col.name) {
+                col.name = val;
+                el.querySelector('.col-collapsed-name').textContent = val;
+            } else if (!val) {
+                e.target.value = col.name;
+            }
+        });
+
+        el.querySelector('.col-name-input')?.addEventListener('keydown', e => {
+            if (e.key === 'Enter') e.target.blur();
+            if (e.key === 'Escape') { e.target.value = col.name; e.target.blur(); }
+        });
+
+        // Move left
+        el.querySelector('.move-left-btn')?.addEventListener('click', e => {
+            e.stopPropagation(); closeAllMenus(); moveCol(col.id, -1);
+        });
+
+        // Move right
+        el.querySelector('.move-right-btn')?.addEventListener('click', e => {
+            e.stopPropagation(); closeAllMenus(); moveCol(col.id, 1);
+        });
+
+        // Delete
+        el.querySelector('.delete-btn')?.addEventListener('click', e => {
+            e.stopPropagation(); closeAllMenus();
+            if (confirm(`Delete "${col.name}"? All cards in this column will be removed.`)) deleteCol(col.id);
+        });
+
+        // Add card
+        el.querySelector('.add-card-trigger')?.addEventListener('click', e => {
+            e.stopPropagation();
+            showAddCardForm(col.id, el);
+        });
+    }
+
+    function startRename(col, el) {
+        const input = el.querySelector('.col-name-input');
+        input.removeAttribute('readonly');
+        input.focus();
+        input.select();
+    }
+
+    function collapseColumn(colId, el) {
+        S.collapsed[colId] = true;
+        el.classList.add('collapsed');
+    }
+
+    function expandColumn(colId, el) {
+        S.collapsed[colId] = false;
+        el.classList.remove('collapsed');
+    }
+
+    /* ======================================================================
+       COLUMN OPERATIONS
+    ====================================================================== */
+    function moveCol(colId, dir) {
+        const sorted = [...S.columns].sort((a, b) => a.order - b.order);
+        const idx = sorted.findIndex(c => c.id === colId);
+        const nIdx = idx + dir;
+        if (nIdx < 0 || nIdx >= sorted.length) return;
+        const tmp = sorted[idx].order;
+        sorted[idx].order = sorted[nIdx].order;
+        sorted[nIdx].order = tmp;
+        renderBoard();
+    }
+
+    function deleteCol(colId) {
+        S.columns = S.columns.filter(c => c.id !== colId);
+        S.cards   = S.cards.filter(c => c.colId !== colId);
+        Object.keys(S.permissions).forEach(t => delete S.permissions[t][colId]);
+        normalizeOrders();
+        renderBoard();
+    }
+
+    function addCol(name) {
+        const id = uid('c');
+        const max = S.columns.reduce((m, c) => Math.max(m, c.order), -1);
+        S.columns.push({ id, name, order: max + 1 });
+        // Default: contributor for all teams
+        S.teams.forEach(t => {
+            if (!S.permissions[t.id]) S.permissions[t.id] = {};
+            S.permissions[t.id][id] = 'contributor';
+        });
+        renderBoard();
+    }
+
+    function normalizeOrders() {
+        [...S.columns].sort((a, b) => a.order - b.order).forEach((c, i) => c.order = i);
+    }
+
+    /* ======================================================================
+       ADD COLUMN INLINE FORM
+    ====================================================================== */
+    function showAddColumnForm() {
+        const container = document.getElementById('boardContainer');
+        const addBtn    = document.getElementById('addColBtn');
+
+        if (document.getElementById('addColFormEl')) return;
+
+        const form = document.createElement('div');
+        form.className = 'add-col-form';
+        form.id = 'addColFormEl';
+        form.innerHTML = `
+            <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-tertiary);">New column</span>
+            <input class="add-col-input" id="addColInput" placeholder="Column name..." autocomplete="off">
+            <div class="form-actions-row">
+                <button class="btn btn-outline" id="cancelAddCol" style="padding:6px 12px;font-size:0.8rem;">Cancel</button>
+                <button class="btn btn-primary" id="confirmAddCol" style="padding:6px 12px;font-size:0.8rem;">Add</button>
+            </div>
+        `;
+        container.insertBefore(form, addBtn);
+        document.getElementById('addColInput').focus();
+
+        document.getElementById('cancelAddCol').addEventListener('click', () => form.remove());
+        document.getElementById('confirmAddCol').addEventListener('click', () => {
+            const name = document.getElementById('addColInput').value.trim();
+            if (name) { form.remove(); addCol(name); }
+        });
+        document.getElementById('addColInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter')  document.getElementById('confirmAddCol').click();
+            if (e.key === 'Escape') document.getElementById('cancelAddCol').click();
+        });
+    }
+
+    /* ======================================================================
+       ADD CARD INLINE FORM
+    ====================================================================== */
+    let newCardType = 'story';
+
+    function showAddCardForm(colId, colEl) {
+        // Remove any existing form
+        colEl.querySelector('.add-card-form')?.remove();
+        const trigger = colEl.querySelector('.add-card-trigger');
+        const defaultType = 'story';
+
+        const form = document.createElement('div');
+        form.className = 'add-card-form';
+        form.innerHTML = `
+            <textarea class="card-title-textarea" rows="2" placeholder="Give this idea a title…"></textarea>
+            <div class="form-actions-row">
+                <button class="btn btn-outline cancel-add-card" style="padding:5px 10px;font-size:0.78rem;">Cancel</button>
+                <button class="btn btn-primary confirm-add-card" style="padding:5px 10px;font-size:0.78rem;">Add Card</button>
+            </div>
+        `;
+
+        trigger ? trigger.before(form) : colEl.querySelector('.col-cards').after(form);
+
+        const ta = form.querySelector('.card-title-textarea');
+        ta.focus();
+
+        form.querySelector('.cancel-add-card').addEventListener('click', () => form.remove());
+        form.querySelector('.confirm-add-card').addEventListener('click', () => {
+            const title = ta.value.trim();
+            if (!title) { ta.focus(); return; }
+            S.cards.push({
+                id: uid('k'), colId,
+                type: defaultType, title,
+                tags: [], assignees: [],
+                azureSynced: false, azureId: null,
+            });
+            form.remove();
+            renderBoard();
+        });
+
+        ta.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                form.querySelector('.confirm-add-card').click();
+            }
+            if (e.key === 'Escape') form.querySelector('.cancel-add-card').click();
+        });
+    }
+
+    /* ======================================================================
+       CARD DETAIL PANEL
+    ====================================================================== */
+    function openDetailPanel(cardId) {
+        const card = S.cards.find(c => c.id === cardId);
+        if (!card) return;
+
+        document.getElementById('detailTypeBadge').textContent = TYPE_LABELS[card.type];
+        document.getElementById('detailTypeBadge').className   = `card-type-badge ${TYPE_CLASS[card.type]}`;
+        document.getElementById('detailCardTitle').textContent = card.title;
+
+        const azBadge = document.getElementById('detailAzureBadge');
+        if (card.azureSynced) {
+            azBadge.style.display = 'inline-flex';
+            document.getElementById('detailAzureId').textContent = card.azureId;
+        } else {
+            azBadge.style.display = 'none';
+        }
+
+        document.getElementById('detailOverlay').classList.add('open');
+        document.getElementById('detailPanel').classList.add('open');
+    }
+
+    function closeDetailPanel() {
+        document.getElementById('detailOverlay').classList.remove('open');
+        document.getElementById('detailPanel').classList.remove('open');
+    }
+
+    /* ======================================================================
+       TEAM SWITCHER
+    ====================================================================== */
+    function renderTeamSwitcher() {
+        const team = teamById(S.currentTeam);
+        document.getElementById('activeTeamLabel').textContent = team ? team.name : '—';
+
+        const dd = document.getElementById('teamSwitcherDropdown');
+        dd.innerHTML = S.teams.map(t => `
+            <button class="team-switch-item${t.id === S.currentTeam ? ' is-active' : ''}"
+                    data-team="${t.id}">
+                <span style="font-size:1.1rem; width:24px; text-align:center;">${t.emoji}</span>
+                <span>${h(t.name)}</span>
+                ${t.id === S.currentTeam ? '<i class="ph ph-check" style="margin-left:auto;font-size:0.85rem;"></i>' : ''}
+            </button>
+        `).join('');
+
+        dd.querySelectorAll('.team-switch-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                S.currentTeam = btn.dataset.team;
+                applyTeamAccessCollapse();
+                dd.classList.remove('open');
+                renderBoard();
+            });
+        });
+    }
+
+    function applyTeamAccessCollapse() {
+        // Auto-collapse/expand based on new team's access
+        S.columns.forEach(col => {
+            const access = getAccess(col.id);
+            if (access === 'no-access') {
+                // Only auto-collapse if not manually expanded
+                if (S.collapsed[col.id] !== false) {
+                    S.collapsed[col.id] = true;
+                }
+            } else {
+                // If it was auto-collapsed due to no-access, auto-expand
+                if (S.collapsed[col.id] === true) {
+                    S.collapsed[col.id] = false;
+                }
+            }
+        });
+    }
+
+    /* ======================================================================
+       MANAGE COLUMNS MODAL
+    ====================================================================== */
+    function openManageCols() {
+        S.draftPerms = JSON.parse(JSON.stringify(S.permissions));
+        buildPermsTable();
+        document.getElementById('manageColsModal').showModal();
+    }
+
+    function buildPermsTable() {
+        const table = document.getElementById('permsTable');
+        const sorted = [...S.columns].sort((a, b) => a.order - b.order);
+
+        const teamHeaders = S.teams.map(t =>
+            `<th title="${h(t.name)}">${t.emoji} ${h(t.name)}</th>`
+        ).join('');
+
+        const rows = sorted.map((col, idx) => {
+            const teamCells = S.teams.map(team => {
+                const val = (S.draftPerms[team.id] || {})[col.id] || 'no-access';
+                return `<td>
+                    <select class="access-select sel-${val}" data-col="${col.id}" data-team="${team.id}">
+                        <option value="contributor"${val === 'contributor' ? ' selected' : ''}>Contributor</option>
+                        <option value="view-only"${val === 'view-only'   ? ' selected' : ''}>View-only</option>
+                        <option value="no-access"${val === 'no-access'   ? ' selected' : ''}>No Access</option>
+                    </select>
+                </td>`;
+            }).join('');
+
+            return `<tr>
+                <td>
+                    <div class="col-row-name-cell">
+                        <i class="ph ph-dots-six-vertical" style="color:var(--text-tertiary);"></i>
+                        ${h(col.name)}
+                    </div>
+                </td>
+                ${teamCells}
+                <td>
+                    <div class="order-btns">
+                        <button class="col-icon-btn modal-up-btn" data-col="${col.id}"
+                            title="Move up" ${idx === 0 ? 'disabled' : ''}>
+                            <i class="ph ph-arrow-up"></i>
+                        </button>
+                        <button class="col-icon-btn modal-dn-btn" data-col="${col.id}"
+                            title="Move down" ${idx === sorted.length - 1 ? 'disabled' : ''}>
+                            <i class="ph ph-arrow-down"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
+        }).join('');
+
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Column</th>
+                    ${teamHeaders}
+                    <th>Order</th>
+                </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        `;
+
+        // Access dropdowns
+        table.querySelectorAll('.access-select').forEach(sel => {
+            sel.addEventListener('change', e => {
+                const { col, team } = e.target.dataset;
+                if (!S.draftPerms[team]) S.draftPerms[team] = {};
+                S.draftPerms[team][col] = e.target.value;
+                e.target.className = `access-select sel-${e.target.value}`;
+            });
+        });
+
+        // Move buttons
+        table.querySelectorAll('.modal-up-btn').forEach(btn => {
+            btn.addEventListener('click', () => { moveCol(btn.dataset.col, -1); buildPermsTable(); });
+        });
+        table.querySelectorAll('.modal-dn-btn').forEach(btn => {
+            btn.addEventListener('click', () => { moveCol(btn.dataset.col, 1); buildPermsTable(); });
+        });
+    }
+
+    /* ======================================================================
+       DRAG AND DROP (columns)
+    ====================================================================== */
+    let colDragSrc = null;
+
+    function setupColumnDragAndDrop() {
+        document.querySelectorAll('.board-column').forEach(el => {
+            const colId = el.dataset.colId;
+
+            el.addEventListener('dragstart', e => {
+                if (e.target.classList.contains('board-card')) return; // Ignore if card drag
+                colDragSrc = colId;
+                setTimeout(() => el.classList.add('dragging-col'), 0);
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging-col');
+                document.querySelectorAll('.board-column').forEach(c => c.classList.remove('drag-over-col'));
+            });
+
+            el.addEventListener('dragover', e => {
+                if (colDragSrc === null) return;
+                e.preventDefault();
+                if (colId !== colDragSrc) {
+                    document.querySelectorAll('.board-column').forEach(c => c.classList.remove('drag-over-col'));
+                    el.classList.add('drag-over-col');
+                }
+            });
+
+            el.addEventListener('drop', e => {
+                if (colDragSrc === null) return;
+                e.preventDefault();
+                if (colId !== colDragSrc) {
+                    const src = S.columns.find(c => c.id === colDragSrc);
+                    const dst = S.columns.find(c => c.id === colId);
+                    if (src && dst) {
+                        const tmp = src.order;
+                        src.order = dst.order;
+                        dst.order = tmp;
+                        renderBoard();
+                    }
+                }
+                colDragSrc = null;
+            });
+        });
+    }
+
+    /* ======================================================================
+       DRAG AND DROP (cards)
+    ====================================================================== */
+    let cardDragSrcId = null;
+    let cardDragSourceColId = null;
+
+    function setupCardDragAndDrop() {
+        const cards = document.querySelectorAll('.board-card');
+        const columns = document.querySelectorAll('.board-column');
+
+        cards.forEach(cardEl => {
+            cardEl.addEventListener('dragstart', e => {
+                cardDragSrcId = cardEl.dataset.cardId;
+                const card = S.cards.find(c => c.id === cardDragSrcId);
+                cardDragSourceColId = card.colId;
+                
+                setTimeout(() => cardEl.classList.add('dragging'), 0);
+                e.dataTransfer.effectAllowed = 'move';
+                colDragSrc = null; // Ensure column drag is disabled
+            });
+
+            cardEl.addEventListener('dragend', () => {
+                cardEl.classList.remove('dragging');
+                columns.forEach(c => c.classList.remove('drop-target-allowed', 'drop-target-denied'));
+            });
+        });
+
+        columns.forEach(colEl => {
+            const targetColId = colEl.dataset.colId;
+
+            colEl.addEventListener('dragover', e => {
+                if (cardDragSrcId === null) return;
+                e.preventDefault();
+
+                const sourceAccess = getAccess(cardDragSourceColId);
+                const targetAccess = getAccess(targetColId);
+
+                // Logical checks:
+                // 1. Must be Contributor in Source
+                // 2. Target must be Contributor OR View-only
+                // 3. No Access in target is BLOCKED
+                const isAllowed = (sourceAccess === 'contributor') && (targetAccess !== 'no-access');
+
+                columns.forEach(c => c.classList.remove('drop-target-allowed', 'drop-target-denied'));
+                colEl.classList.add(isAllowed ? 'drop-target-allowed' : 'drop-target-denied');
+            });
+
+            colEl.addEventListener('drop', e => {
+                if (cardDragSrcId === null) return;
+                e.preventDefault();
+
+                const sourceAccess = getAccess(cardDragSourceColId);
+                const targetAccess = getAccess(targetColId);
+                const isAllowed = (sourceAccess === 'contributor') && (targetAccess !== 'no-access');
+
+                if (isAllowed && cardDragSourceColId !== targetColId) {
+                    const card = S.cards.find(c => c.id === cardDragSrcId);
+                    if (card) {
+                        card.colId = targetColId;
+                        renderBoard();
+                    }
+                }
+
+                cardDragSrcId = null;
+                cardDragSourceColId = null;
+                columns.forEach(c => c.classList.remove('drop-target-allowed', 'drop-target-denied'));
+            });
+        });
+    }
+
+    /* ======================================================================
+       GLOBAL UTILITIES
+    ====================================================================== */
+    function closeAllMenus() {
+        document.querySelectorAll('.col-context-menu.open').forEach(m => m.classList.remove('open'));
+        document.getElementById('teamSwitcherDropdown').classList.remove('open');
+    }
+
+    /* ======================================================================
+       EVENT WIRING
+    ====================================================================== */
+    // Close menus on outside click
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.menu-btn') && !e.target.closest('.col-context-menu')) {
+            document.querySelectorAll('.col-context-menu.open').forEach(m => m.classList.remove('open'));
+        }
+        if (!e.target.closest('.team-switcher-wrap')) {
+            document.getElementById('teamSwitcherDropdown').classList.remove('open');
+        }
+    });
+
+    // Team switcher toggle
+    document.getElementById('teamSwitcherBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        document.getElementById('teamSwitcherDropdown').classList.toggle('open');
+    });
+
+    // Manage columns button
+    document.getElementById('manageColsBtn').addEventListener('click', openManageCols);
+
+    // Apply permissions
+    document.getElementById('applyPermissionsBtn').addEventListener('click', () => {
+        S.permissions = S.draftPerms;
+        S.draftPerms = null;
+        applyTeamAccessCollapse();
+        document.getElementById('manageColsModal').close();
+        renderBoard();
+    });
+
+    // Cancel / close manage cols
+    document.getElementById('cancelManageCols').addEventListener('click', () =>
+        document.getElementById('manageColsModal').close()
+    );
+    document.getElementById('closeManageCols').addEventListener('click', () =>
+        document.getElementById('manageColsModal').close()
+    );
+
+    // Add column from modal
+    document.getElementById('addColFromModalBtn').addEventListener('click', () => {
+        const input = document.getElementById('newColNameInput');
+        const name  = input.value.trim();
+        if (name) {
+            addCol(name);
+            input.value = '';
+            buildPermsTable();
+        }
+    });
+
+    // Close detail panel
+    document.getElementById('closeDetailPanel').addEventListener('click', closeDetailPanel);
+    document.getElementById('detailOverlay').addEventListener('click', closeDetailPanel);
+
+    // Dark mode toggle
+    document.querySelector('.theme-toggle').addEventListener('click', function () {
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+        this.querySelector('i').className = dark ? 'ph ph-moon' : 'ph ph-sun';
+    });
+
+    /* ======================================================================
+       INIT
+    ====================================================================== */
+    // Auto-collapse no-access columns on load
+    S.columns.forEach(col => {
+        if (getAccess(col.id) === 'no-access') S.collapsed[col.id] = true;
+    });
+
+    renderBoard();
+    </script>
+
+    <script src="sidebar.js"></script>
+</body>
+
+</html>

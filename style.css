@@ -136,6 +136,62 @@ button {
   border-radius: 0 4px 4px 0;
 }
 
+/* Sub Navigation */
+.nav-item-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item-parent {
+  cursor: pointer;
+}
+
+.nav-item-parent span {
+  flex: 1;
+}
+
+.dropdown-icon {
+  transition: transform 0.2s ease;
+  font-size: 1rem !important;
+}
+
+.nav-item-group.open .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.sub-nav {
+  display: none;
+  flex-direction: column;
+  padding-left: 32px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  gap: 2px;
+}
+
+.nav-item-group.open .sub-nav {
+  display: flex;
+}
+
+.sub-nav-item {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  font-weight: 500;
+}
+
+.sub-nav-item:hover {
+  color: var(--primary);
+  background-color: var(--surface-hover);
+}
+
+.sub-nav-item.active {
+  color: var(--primary);
+  background-color: var(--surface-hover);
+  font-weight: 600;
+}
+
 .sidebar-footer {
   padding: var(--spacing-md);
   display: flex;

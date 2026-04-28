@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance | SereneHR</title>
+    <meta name="description" content="Manage employee attendance, exceptions, device reconciliation, and policies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific Styles for Attendance Module */
+        .attendance-tabs {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .attendance-tabs .tab-link {
+            background: none;
+            border: none;
+            padding: 0 0 12px 0;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .attendance-tabs .tab-link:hover {
+            color: var(--text-primary);
+        }
+
+        .attendance-tabs .tab-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .attendance-tabs .tab-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Dashboard Filters */
+        .analytics-toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-default);
+            background: var(--background);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            min-width: 140px;
+        }
+
+        .date-range-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--background);
+            border: 1px solid var(--border-default);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+        }
+
+        .date-range-picker input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        /* Status Badges Specific */
+        .status-official {
+            background-color: var(--status-success-bg);
+            color: var(--status-success-text);
+        }
+
+        .status-pending-hr {
+            background-color: var(--status-warning-bg);
+            color: var(--status-warning-text);
+            border: 1px dashed var(--status-warning-text);
+        }
+
+        .status-exception {
+            background-color: var(--status-danger-bg);
+            color: var(--status-danger-text);
+            animation: pulse-soft 2s infinite;
+        }
+
+        @keyframes pulse-soft {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Exception Cards layout */
+        .exceptions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .exception-card {
+            background: var(--status-danger-bg);
+            border: 1px solid rgba(225, 29, 72, 0.2);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .exception-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .exception-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--status-danger-text);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Request Inbox Items */
+        .request-item {
+            display: flex;
+            align-items: stretch;
+            background: var(--surface-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: var(--transition-fast);
+        }
+
+        .request-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .req-status-indicator {
+            width: 4px;
+            background: var(--status-warning-text);
+        }
+
+        .req-content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .req-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .req-conflict {
+            background: var(--status-danger-bg);
+            color: var(--status-danger-text);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        /* Device Cards */
+        .device-card {
+            padding: 20px;
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            background: var(--surface-card);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <app-sidebar active-page="attendance-requests"></app-sidebar>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top header -->
+        <header class="top-header">
+            <h2 class="page-title">Attendance Management</h2>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" title="Toggle Dark Theme">
+                    <i class="ph ph-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="page-body">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h3 style="font-size: 1.1rem; margin: 0;">Pending Adjustment Requests</h3>
+                <button class="btn btn-primary" onclick="openRequestAdjustmentModal()"><i class="ph ph-plus"></i> New
+                    Adjustment</button>
+            </div>
+
+            <div class="request-item">
+                <div class="req-status-indicator"></div>
+                <div class="req-content">
+                    <div class="req-details">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus"
+                                style="width: 24px; border-radius: 50%;">
+                            <span style="font-weight: 600; color: var(--text-primary);">Marcus Rodriguez</span>
+                            <span style="font-size: 0.8rem; color: var(--text-tertiary);">requested 2 hours ago</span>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 4px;">
+                            <span style="color: var(--text-secondary);">Proposed: </span>
+                            <strong>Manual Checkout at 5:30 PM (Apr 27)</strong>
+                        </div>
+                        <div
+                            style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; padding: 8px; background: var(--surface-hover); border-radius: var(--radius-sm); border-left: 2px solid var(--border-strong);">
+                            "Forgot to scan out at the East Wing gate as the machine was down."
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openApprovalDrawer()">Review Request</button>
+                </div>
+            </div>
+
+            <div class="request-item" style="border-color: rgba(225, 29, 72, 0.3);">
+                <div class="req-status-indicator" style="background: var(--status-danger-text);"></div>
+                <div class="req-content">
+                    <div class="req-details">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena"
+                                style="width: 24px; border-radius: 50%;">
+                            <span style="font-weight: 600; color: var(--text-primary);">Elena Belova</span>
+                            <span style="font-size: 0.8rem; color: var(--text-tertiary);">requested 1 day ago</span>
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 4px;">
+                            <span style="color: var(--text-secondary);">Proposed: </span>
+                            <strong>Overtime approval (2 hours) Apr 26</strong>
+                        </div>
+                        <div class="req-conflict">
+                            <i class="ph-fill ph-warning-octagon"></i> Conflict Detected: User already has approved Time
+                            Off for the second half of Apr 26.
+                        </div>
+                    </div>
+                    <button class="btn btn-outline">Review Details</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- Modals and Drawers Overlay -->
+    <div id="overlay"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1000; display: none;">
+    </div>
+
+    <!-- Approval Drawer for Adjustments -->
+    <div id="approvalDrawer"
+        style="position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: var(--surface-card); box-shadow: var(--shadow-lg); z-index: 1001; transition: right 0.3s ease; display: flex; flex-direction: column;">
+        <div
+            style="padding: 20px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0; font-size: 1.2rem;">Review Adjustment</h2>
+            <button class="icon-btn ghost" onclick="closeApprovalDrawer()"><i class="ph ph-x"></i></button>
+        </div>
+
+        <div style="padding: 20px; flex: 1; overflow-y: auto;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus"
+                    style="width: 48px; border-radius: 50%;">
+                <div>
+                    <h3 style="margin: 0; font-size: 1.1rem;">Marcus Rodriguez</h3>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">ID: SC-1209 • HR Department</span>
+                </div>
+            </div>
+
+            <!-- Comparison -->
+            <div
+                style="background: var(--background); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
+                <h4
+                    style="margin: 0 0 12px 0; font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase;">
+                    Log Comparison</h4>
+
+                <div
+                    style="display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 8px;">
+                    <div style="flex: 1;">
+                        <span style="display: block; font-size: 0.8rem; color: var(--text-tertiary);">Original System
+                            Log</span>
+                        <strong>In: 09:02 AM</strong><br>
+                        <span style="color: var(--status-danger-text); font-weight: 600;">Out: MISSING</span>
+                    </div>
+                    <div
+                        style="width: 24px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary);">
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </div>
+                    <div style="flex: 1; text-align: right;">
+                        <span style="display: block; font-size: 0.8rem; color: var(--text-tertiary);">Requested
+                            Change</span>
+                        <strong>In: 09:02 AM</strong><br>
+                        <span style="color: var(--status-success-text); font-weight: 600;">Out: 05:30 PM</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 12px;">
+                    <span
+                        style="display: block; font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 4px;">Requester
+                        Note</span>
+                    <p style="margin: 0; font-size: 0.9rem; font-style: italic; color: var(--text-primary);">"Forgot to
+                        scan out at the East Wing gate as the machine was down."</p>
+                </div>
+            </div>
+
+            <!-- Decision Form -->
+            <div class="form-group" style="margin-bottom: 16px;">
+                <label>Reviewer Note (Optional)</label>
+                <textarea class="input-field" rows="3" style="resize: vertical; max-width: 100%;"
+                    placeholder="Add a reason for your decision..."></textarea>
+            </div>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div
+            style="padding: 20px; border-top: 1px solid var(--border-subtle); background: var(--surface-card); display: flex; gap: 12px;">
+            <button class="btn btn-outline"
+                style="flex: 1; color: var(--status-danger-text); border-color: var(--status-danger-text);"
+                onclick="showToast('Adjustment Rejected', 'error'); closeApprovalDrawer();">
+                <i class="ph ph-x"></i> Reject
+            </button>
+            <button class="btn btn-primary"
+                style="flex: 1; background: var(--status-success-bg); color: var(--status-success-text); border: none;"
+                onclick="showToast('Adjustment Approved successfully.', 'success'); closeApprovalDrawer();">
+                <i class="ph ph-check"></i> Approve
+            </button>
+        </div>
+    </div>
+
+    <!-- Map Device ID Modal -->
+    <dialog id="mappingModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>Map Raw ID</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeMappingModal()"><i
+                        class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px;">Associating Raw
+                    Biometric ID <strong>#88291</strong> to an employee.</p>
+
+                <div class="form-group">
+                    <label>Select Employee</label>
+                    <div class="search-bar light" style="width: 100%;">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" placeholder="Search by name or ID...">
+                    </div>
+                </div>
+
+                <!-- Simulation of a dropdown result -->
+                <div
+                    style="margin-top: 12px; border: 1px solid var(--border-default); border-radius: var(--radius-sm); overflow: hidden;">
+                    <div
+                        style="padding: 8px 12px; display: flex; gap: 8px; align-items: center; cursor: pointer; background: var(--surface-hover);">
+                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena"
+                            style="width: 24px; border-radius: 50%;">
+                        <span style="font-size: 0.9rem;">Elena Belova</span>
+                        <span style="font-size: 0.8rem; color: var(--text-tertiary); margin-left: auto;">SC-5541</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeMappingModal()">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="showToast('Raw ID mapped successfully.', 'success'); closeMappingModal();">Save
+                    Mapping</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- New Request Modal -->
+    <dialog id="requestModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Submit Attendance Adjustment</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeRequestModal()"><i
+                        class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Date <span class="required">*</span></label>
+                    <input type="date" class="input-field" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                    <div class="form-group">
+                        <label>Check In Time</label>
+                        <input type="time" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>Check Out Time</label>
+                        <input type="time" class="input-field">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label>Adjustment Reason <span class="required">*</span></label>
+                    <textarea class="input-field" rows="3" required
+                        placeholder="Provide reason for this manual adjustment..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="showToast('Adjustment request submitted.', 'success'); closeRequestModal();">Submit
+                    Request</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer"
+        style="position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 9999;">
+    </div>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Remove active classes
+            document.querySelectorAll('.attendance-tabs .tab-link').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            // Add active to selected
+            event.currentTarget.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // Approval Drawer logic
+        function openApprovalDrawer() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('approvalDrawer').style.right = '0';
+
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeApprovalDrawer() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('approvalDrawer').style.right = '-500px';
+            document.body.style.overflow = '';
+        }
+
+        // Modals
+        function openMappingModal(rawId) {
+            document.getElementById('mappingModal').showModal();
+        }
+
+        function closeMappingModal() {
+            document.getElementById('mappingModal').close();
+        }
+
+        function openRequestAdjustmentModal() {
+            document.getElementById('requestModal').showModal();
+        }
+
+        function closeRequestModal() {
+            document.getElementById('requestModal').close();
+        }
+
+        function openResolveModal() {
+            // Reusing openRequestAdjustmentModal for demonstration
+            openRequestAdjustmentModal();
+        }
+
+        // Toast logic for Audit & Feedback
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.background = type === 'success' ? 'var(--status-success-bg)' : 'var(--status-danger-bg)';
+            toast.style.color = type === 'success' ? 'var(--status-success-text)' : 'var(--status-danger-text)';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = 'var(--radius-md)';
+            toast.style.boxShadow = 'var(--shadow-lg)';
+            toast.style.fontWeight = '500';
+            toast.style.display = 'flex';
+            toast.style.alignItems = 'center';
+            toast.style.gap = '8px';
+            toast.style.animation = 'slideIn 0.3s ease forwards';
+
+            const icon = type === 'success' ? '<i class="ph-fill ph-check-circle"></i>' : '<i class="ph-fill ph-warning-circle"></i>';
+            toast.innerHTML = icon + message;
+
+            document.getElementById('toastContainer').appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Document global listeners
+        document.getElementById('overlay').addEventListener('click', closeApprovalDrawer);
+
+        // Setup simple keyframes for toast
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
