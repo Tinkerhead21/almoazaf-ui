@@ -250,54 +250,58 @@
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <h3 style="font-size: 1.1rem; margin: 0;">Connected Biometric Devices</h3>
-                <button class="btn btn-primary"><i class="ph ph-plus"></i> Register Device</button>
+                <button class="btn btn-primary" onclick="openDeviceModal()"><i class="ph ph-plus"></i> Add Device</button>
             </div>
 
             <div
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px;">
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 32px;">
+                
+                <!-- Device Card 1 -->
                 <div class="device-card">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                         <div>
-                            <h4 style="margin: 0; font-size: 1.05rem;">HQ Gate 1 - Main Entrance</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-tertiary);">ZKTeco SpeedFace V5L</span>
+                            <h4 style="margin: 0; font-size: 1.05rem;">HQ Gate 1</h4>
+                            <span style="font-size: 0.8rem; color: var(--text-tertiary); font-family: monospace;">ID: DEV-001</span>
                         </div>
                         <span class="badge badge-success">ACTIVE</span>
                     </div>
-                    <div
-                        style="font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                        <span>IP: 192.168.1.105</span>
-                        <span>Tenant: SereneHR Global</span>
-                        <span>Last Sync: 2 mins ago</span>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); display: grid; grid-template-columns: 80px 1fr; gap: 4px; margin-bottom: 12px;">
+                        <span style="color: var(--text-tertiary);">Type:</span> <span>Biometric Scanner</span>
+                        <span style="color: var(--text-tertiary);">Model:</span> <span>ZKTeco SpeedFace V5L</span>
+                        <span style="color: var(--text-tertiary);">IP:</span> <span>192.168.1.105</span>
                     </div>
-                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
                         <button class="btn btn-outline"
-                            style="flex: 1; font-size: 0.8rem; padding: 4px;">Deactivate</button>
-                        <button class="btn btn-outline"
-                            style="flex: 1; font-size: 0.8rem; padding: 4px;">Settings</button>
+                            style="flex: 1; font-size: 0.8rem; padding: 6px; color: var(--status-danger-text); border-color: var(--status-danger-text);"
+                            onclick="showToast('Device Deactivated. Future logs will not be processed.', 'error')">
+                            Deactivate Device
+                        </button>
                     </div>
                 </div>
+
+                <!-- Device Card 2 -->
                 <div class="device-card">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                         <div>
                             <h4 style="margin: 0; font-size: 1.05rem;">East Wing Entrance</h4>
-                            <span style="font-size: 0.8rem; color: var(--text-tertiary);">ZKTeco MB20</span>
+                            <span style="font-size: 0.8rem; color: var(--text-tertiary); font-family: monospace;">ID: DEV-002</span>
                         </div>
-                        <span class="badge"
-                            style="background: var(--status-warning-bg); color: var(--status-warning-text);">OFFLINE</span>
+                        <span class="badge" style="background: var(--status-danger-bg); color: var(--status-danger-text);">INACTIVE</span>
                     </div>
-                    <div
-                        style="font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                        <span>IP: 192.168.1.108</span>
-                        <span>Tenant: SereneHR Global</span>
-                        <span>Last Sync: 4 hours ago</span>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); display: grid; grid-template-columns: 80px 1fr; gap: 4px; margin-bottom: 12px;">
+                        <span style="color: var(--text-tertiary);">Type:</span> <span>Biometric Scanner</span>
+                        <span style="color: var(--text-tertiary);">Model:</span> <span>ZKTeco MB20</span>
+                        <span style="color: var(--text-tertiary);">IP:</span> <span>192.168.1.108</span>
                     </div>
-                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                    <div style="display: flex; gap: 8px; margin-top: auto;">
                         <button class="btn btn-primary"
-                            style="flex: 1; font-size: 0.8rem; padding: 4px;">Troubleshoot</button>
-                        <button class="btn btn-outline"
-                            style="flex: 1; font-size: 0.8rem; padding: 4px;">Settings</button>
+                            style="flex: 1; font-size: 0.8rem; padding: 6px;"
+                            onclick="showToast('Device Activated successfully.', 'success')">
+                            Activate Device
+                        </button>
                     </div>
                 </div>
+
             </div>
 
             <div class="content-card" style="border-color: var(--status-danger-text);">
@@ -465,40 +469,42 @@
         </div>
     </dialog>
 
-    <!-- New Request Modal -->
-    <dialog id="requestModal" class="modal">
+    <!-- Add Device Modal -->
+    <dialog id="deviceModal" class="modal">
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2>Submit Attendance Adjustment</h2>
-                <button class="icon-btn ghost close-modal" onclick="closeRequestModal()"><i
+                <h2>Add Device</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeDeviceModal()"><i
                         class="ph ph-x"></i></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Date <span class="required">*</span></label>
-                    <input type="date" class="input-field" required>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Device Name <span class="required">*</span></label>
+                    <input type="text" class="input-field" placeholder="e.g. North Gate Scanner" required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Device ID <span class="required">*</span></label>
+                    <input type="text" class="input-field" placeholder="e.g. DEV-003" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <div class="form-group">
-                        <label>Check In Time</label>
-                        <input type="time" class="input-field">
+                        <label>Device Type</label>
+                        <select class="input-field">
+                            <option>Biometric Scanner</option>
+                            <option>RFID Reader</option>
+                            <option>Mobile App Geofence</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>Check Out Time</label>
-                        <input type="time" class="input-field">
+                        <label>Device Model</label>
+                        <input type="text" class="input-field" placeholder="e.g. ZKTeco V5">
                     </div>
-                </div>
-                <div class="form-group" style="margin-top: 16px;">
-                    <label>Adjustment Reason <span class="required">*</span></label>
-                    <textarea class="input-field" rows="3" required
-                        placeholder="Provide reason for this manual adjustment..."></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="closeDeviceModal()">Cancel</button>
                 <button class="btn btn-primary"
-                    onclick="showToast('Adjustment request submitted.', 'success'); closeRequestModal();">Submit
-                    Request</button>
+                    onclick="showToast('Device added successfully.', 'success'); closeDeviceModal();">Add Device</button>
             </div>
         </div>
     </dialog>
@@ -545,17 +551,12 @@
             document.getElementById('mappingModal').close();
         }
 
-        function openRequestAdjustmentModal() {
-            document.getElementById('requestModal').showModal();
+        function openDeviceModal() {
+            document.getElementById('deviceModal').showModal();
         }
 
-        function closeRequestModal() {
-            document.getElementById('requestModal').close();
-        }
-
-        function openResolveModal() {
-            // Reusing openRequestAdjustmentModal for demonstration
-            openRequestAdjustmentModal();
+        function closeDeviceModal() {
+            document.getElementById('deviceModal').close();
         }
 
         // Toast logic for Audit & Feedback

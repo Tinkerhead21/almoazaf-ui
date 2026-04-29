@@ -246,234 +246,266 @@
             </div>
         </header>
 
-        <div class="page-body">
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                <!-- Shifts -->
-                <div class="content-card" style="padding: 24px;">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                        <h3 style="margin: 0;">Shift Templates</h3>
-                        <button class="icon-btn ghost" title="Create Shift"><i class="ph ph-plus"></i></button>
-                    </div>
-
-                    <div style="border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='var(--surface-hover)'"
-                        onmouseout="this.style.background='transparent'">
-                        <div style="display: flex; justify-content: space-between;">
-                            <strong>Morning Standard</strong>
-                            <span style="color: var(--text-secondary); font-size: 0.85rem;">09:00 - 17:00</span>
-                        </div>
-                        <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 4px;">
-                            Grace period: 15 mins. Excludes weekends. Break: 60 mins.
-                        </div>
-                    </div>
-
-                    <div style="border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 12px; margin-bottom: 12px; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='var(--surface-hover)'"
-                        onmouseout="this.style.background='transparent'">
-                        <div style="display: flex; justify-content: space-between;">
-                            <strong>Night Shift</strong>
-                            <span style="color: var(--text-secondary); font-size: 0.85rem;">22:00 - 06:00</span>
-                        </div>
-                        <div style="font-size: 0.8rem; color: var(--text-tertiary); margin-top: 4px;">
-                            Grace period: 10 mins. Includes cross-day reconciliation.
-                        </div>
-                    </div>
+        <div class="page-body" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Shifts -->
+            <div class="content-card" style="padding: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="margin: 0;">Shift Templates</h3>
+                    <button class="btn btn-primary" onclick="openShiftModal()"><i class="ph ph-plus"></i> Add
+                        Shift</button>
                 </div>
 
-                <!-- Setup -->
-                <div class="content-card" style="padding: 24px;">
-                    <h3 style="margin: 0; margin-bottom: 16px;">Attendance Global Policies</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>SHIFT NAME</th>
+                                <th>SHIFT RANGE</th>
+                                <th>HOURS</th>
+                                <th>GRACE PERIOD</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Morning Standard</strong></td>
+                                <td>09:00 AM - 05:00 PM</td>
+                                <td>8 Hours</td>
+                                <td>15 mins</td>
+                                <td><button class="icon-btn ghost" onclick="openShiftModal()"><i
+                                            class="ph ph-pencil-simple"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Flexible Range</strong></td>
+                                <td>08:00 AM - 07:00 PM</td>
+                                <td>8 Hours</td>
+                                <td>None</td>
+                                <td><button class="icon-btn ghost" onclick="openShiftModal()"><i
+                                            class="ph ph-pencil-simple"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label style="display: flex; justify-content: space-between; width: 100%;">
-                            Early Checkout Handling
-                        </label>
-                        <select class="input-field" style="max-width: none;">
-                            <option>Flag as Exception (Pending HR)</option>
-                            <option>Auto-deduct salary fraction</option>
-                            <option>Ignore</option>
-                        </select>
+            <!-- Policy Rules -->
+            <div class="content-card" style="padding: 24px;">
+                <h3 style="margin: 0; margin-bottom: 24px;">Policy Rules</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                    <!-- Absence Rules -->
+                    <div>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h4 style="margin: 0; font-size: 1rem; color: var(--text-primary);">Unannounced Absence</h4>
+                            <button class="icon-btn ghost" title="Add Rule" onclick="openAbsenceRuleModal()"><i
+                                    class="ph ph-plus"></i></button>
+                        </div>
+                        <div
+                            style="border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden;">
+                            <table class="data-table" style="margin: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>THRESHOLD</th>
+                                        <th>DEDUCTION VALUE</th>
+                                        <th style="width: 80px; text-align: right;">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1 Day</td>
+                                        <td>1 day</td>
+                                        <td style="text-align: right; display: flex;">
+                                            <button class="icon-btn ghost" onclick="openAbsenceRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2 Days</td>
+                                        <td>3 days</td>
+                                        <td style="text-align: right;">
+                                            <button class="icon-btn ghost" onclick="openAbsenceRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 Days</td>
+                                        <td>5 days</td>
+                                        <td style="text-align: right;">
+                                            <button class="icon-btn ghost" onclick="openAbsenceRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label style="display: flex; justify-content: space-between; width: 100%;">
-                            Missing Checkout Fallback
-                        </label>
-                        <select class="input-field" style="max-width: none;">
-                            <option>Flag as Missing (Requires Manual Adjustment)</option>
-                            <option>Assume end of shift</option>
-                        </select>
+                    <!-- Lateness Rules -->
+                    <div>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h4 style="margin: 0; font-size: 1rem; color: var(--text-primary);">Lateness / Early Leave
+                            </h4>
+                            <button class="icon-btn ghost" title="Add Rule" onclick="openLatenessRuleModal()"><i
+                                    class="ph ph-plus"></i></button>
+                        </div>
+                        <div
+                            style="border: 1px solid var(--border-default); border-radius: var(--radius-md); overflow: hidden;">
+                            <table class="data-table" style="margin: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>THRESHOLD</th>
+                                        <th>DEDUCTION VALUE</th>
+                                        <th style="width: 80px; text-align: right;">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1 Hour</td>
+                                        <td>0.25 day</td>
+                                        <td style="text-align: right; display: flex;">
+                                            <button class="icon-btn ghost" onclick="openLatenessRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2 Hours</td>
+                                        <td>0.5 day</td>
+                                        <td style="text-align: right;">
+                                            <button class="icon-btn ghost" onclick="openLatenessRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3 Hours</td>
+                                        <td>1 day</td>
+                                        <td style="text-align: right; display: flex;">
+                                            <button class="icon-btn ghost" onclick="openLatenessRuleModal()"><i
+                                                    class="ph ph-pencil-simple"></i></button>
+                                            <button class="icon-btn ghost" style="color: var(--status-danger-text);"><i
+                                                    class="ph ph-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-
-                    <button class="btn btn-primary" style="width: 100%; margin-top: 16px;">Save Policy
-                        Configuration</button>
                 </div>
             </div>
         </div>
     </main>
 
 
-    <!-- Modals and Drawers Overlay -->
-    <div id="overlay"
-        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1000; display: none;">
-    </div>
-
-    <!-- Approval Drawer for Adjustments -->
-    <div id="approvalDrawer"
-        style="position: fixed; top: 0; right: -500px; width: 450px; height: 100vh; background: var(--surface-card); box-shadow: var(--shadow-lg); z-index: 1001; transition: right 0.3s ease; display: flex; flex-direction: column;">
-        <div
-            style="padding: 20px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="margin: 0; font-size: 1.2rem;">Review Adjustment</h2>
-            <button class="icon-btn ghost" onclick="closeApprovalDrawer()"><i class="ph ph-x"></i></button>
-        </div>
-
-        <div style="padding: 20px; flex: 1; overflow-y: auto;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-                <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Marcus"
-                    style="width: 48px; border-radius: 50%;">
-                <div>
-                    <h3 style="margin: 0; font-size: 1.1rem;">Marcus Rodriguez</h3>
-                    <span style="font-size: 0.85rem; color: var(--text-secondary);">ID: SC-1209 • HR Department</span>
-                </div>
-            </div>
-
-            <!-- Comparison -->
-            <div
-                style="background: var(--background); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px;">
-                <h4
-                    style="margin: 0 0 12px 0; font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase;">
-                    Log Comparison</h4>
-
-                <div
-                    style="display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px dashed var(--border-subtle); padding-bottom: 8px;">
-                    <div style="flex: 1;">
-                        <span style="display: block; font-size: 0.8rem; color: var(--text-tertiary);">Original System
-                            Log</span>
-                        <strong>In: 09:02 AM</strong><br>
-                        <span style="color: var(--status-danger-text); font-weight: 600;">Out: MISSING</span>
-                    </div>
-                    <div
-                        style="width: 24px; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary);">
-                        <i class="ph-bold ph-arrow-right"></i>
-                    </div>
-                    <div style="flex: 1; text-align: right;">
-                        <span style="display: block; font-size: 0.8rem; color: var(--text-tertiary);">Requested
-                            Change</span>
-                        <strong>In: 09:02 AM</strong><br>
-                        <span style="color: var(--status-success-text); font-weight: 600;">Out: 05:30 PM</span>
-                    </div>
-                </div>
-
-                <div style="margin-top: 12px;">
-                    <span
-                        style="display: block; font-size: 0.8rem; color: var(--text-tertiary); margin-bottom: 4px;">Requester
-                        Note</span>
-                    <p style="margin: 0; font-size: 0.9rem; font-style: italic; color: var(--text-primary);">"Forgot to
-                        scan out at the East Wing gate as the machine was down."</p>
-                </div>
-            </div>
-
-            <!-- Decision Form -->
-            <div class="form-group" style="margin-bottom: 16px;">
-                <label>Reviewer Note (Optional)</label>
-                <textarea class="input-field" rows="3" style="resize: vertical; max-width: 100%;"
-                    placeholder="Add a reason for your decision..."></textarea>
-            </div>
-        </div>
-
-        <!-- Sticky Footer -->
-        <div
-            style="padding: 20px; border-top: 1px solid var(--border-subtle); background: var(--surface-card); display: flex; gap: 12px;">
-            <button class="btn btn-outline"
-                style="flex: 1; color: var(--status-danger-text); border-color: var(--status-danger-text);"
-                onclick="showToast('Adjustment Rejected', 'error'); closeApprovalDrawer();">
-                <i class="ph ph-x"></i> Reject
-            </button>
-            <button class="btn btn-primary"
-                style="flex: 1; background: var(--status-success-bg); color: var(--status-success-text); border: none;"
-                onclick="showToast('Adjustment Approved successfully.', 'success'); closeApprovalDrawer();">
-                <i class="ph ph-check"></i> Approve
-            </button>
-        </div>
-    </div>
-
-    <!-- Map Device ID Modal -->
-    <dialog id="mappingModal" class="modal">
-        <div class="modal-content" style="max-width: 400px;">
+    <!-- Shift Modal -->
+    <dialog id="shiftModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
-                <h2>Map Raw ID</h2>
-                <button class="icon-btn ghost close-modal" onclick="closeMappingModal()"><i
-                        class="ph ph-x"></i></button>
+                <h2>Add/Edit Shift</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeShiftModal()"><i class="ph ph-x"></i></button>
             </div>
             <div class="modal-body">
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px;">Associating Raw
-                    Biometric ID <strong>#88291</strong> to an employee.</p>
-
-                <div class="form-group">
-                    <label>Select Employee</label>
-                    <div class="search-bar light" style="width: 100%;">
-                        <i class="ph ph-magnifying-glass"></i>
-                        <input type="text" placeholder="Search by name or ID...">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Shift Name <span class="required">*</span></label>
+                    <input type="text" class="input-field" placeholder="e.g. Morning Standard" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label>Start Range <span class="required">*</span></label>
+                        <input type="time" class="input-field" value="09:00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Range <span class="required">*</span></label>
+                        <input type="time" class="input-field" value="17:00" required>
                     </div>
                 </div>
-
-                <!-- Simulation of a dropdown result -->
-                <div
-                    style="margin-top: 12px; border: 1px solid var(--border-default); border-radius: var(--radius-sm); overflow: hidden;">
-                    <div
-                        style="padding: 8px 12px; display: flex; gap: 8px; align-items: center; cursor: pointer; background: var(--surface-hover);">
-                        <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Elena"
-                            style="width: 24px; border-radius: 50%;">
-                        <span style="font-size: 0.9rem;">Elena Belova</span>
-                        <span style="font-size: 0.8rem; color: var(--text-tertiary); margin-left: auto;">SC-5541</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group">
+                        <label>Shift Hours (Optional)</label>
+                        <input type="number" class="input-field" placeholder="e.g. 8">
+                    </div>
+                    <div class="form-group">
+                        <label>Grace Period (Mins)</label>
+                        <input type="number" class="input-field" placeholder="e.g. 15">
+                        <span style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 4px;">Must not exceed
+                            lateness thresholds</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeMappingModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="closeShiftModal()">Cancel</button>
                 <button class="btn btn-primary"
-                    onclick="showToast('Raw ID mapped successfully.', 'success'); closeMappingModal();">Save
-                    Mapping</button>
+                    onclick="showToast('Shift saved successfully.', 'success'); closeShiftModal();">Save Shift</button>
             </div>
         </div>
     </dialog>
 
-    <!-- New Request Modal -->
-    <dialog id="requestModal" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
+    <!-- Absence Rule Modal -->
+    <dialog id="absenceRuleModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
-                <h2>Submit Attendance Adjustment</h2>
-                <button class="icon-btn ghost close-modal" onclick="closeRequestModal()"><i
+                <h2>Add/Edit Absence Rule</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeAbsenceRuleModal()"><i
                         class="ph ph-x"></i></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Date <span class="required">*</span></label>
-                    <input type="date" class="input-field" required>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Threshold (Days) <span class="required">*</span></label>
+                    <input type="number" class="input-field" placeholder="e.g. 1" required>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
-                    <div class="form-group">
-                        <label>Check In Time</label>
-                        <input type="time" class="input-field">
-                    </div>
-                    <div class="form-group">
-                        <label>Check Out Time</label>
-                        <input type="time" class="input-field">
-                    </div>
-                </div>
-                <div class="form-group" style="margin-top: 16px;">
-                    <label>Adjustment Reason <span class="required">*</span></label>
-                    <textarea class="input-field" rows="3" required
-                        placeholder="Provide reason for this manual adjustment..."></textarea>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Deduction Value (Days) <span class="required">*</span></label>
+                    <input type="number" step="0.25" class="input-field" placeholder="e.g. 1.5" required>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeRequestModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="closeAbsenceRuleModal()">Cancel</button>
                 <button class="btn btn-primary"
-                    onclick="showToast('Adjustment request submitted.', 'success'); closeRequestModal();">Submit
-                    Request</button>
+                    onclick="showToast('Rule saved successfully.', 'success'); closeAbsenceRuleModal();">Save
+                    Rule</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Lateness Rule Modal -->
+    <dialog id="latenessRuleModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2>Add/Edit Lateness Rule</h2>
+                <button class="icon-btn ghost close-modal" onclick="closeLatenessRuleModal()"><i
+                        class="ph ph-x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Time Threshold <span class="required">*</span></label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="number" class="input-field" placeholder="e.g. 1" style="flex: 1;" required>
+                        <select class="input-field" style="width: auto;">
+                            <option value="hours">Hours</option>
+                            <option value="minutes">Minutes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label>Deduction Value (Days) <span class="required">*</span></label>
+                    <input type="number" step="0.25" class="input-field" placeholder="e.g. 0.25" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeLatenessRuleModal()">Cancel</button>
+                <button class="btn btn-primary"
+                    onclick="showToast('Rule saved successfully.', 'success'); closeLatenessRuleModal();">Save
+                    Rule</button>
             </div>
         </div>
     </dialog>
@@ -485,55 +517,30 @@
 
     <script src="sidebar.js"></script>
     <script>
-        // Tab switching logic
-        function switchTab(tabId) {
-            // Remove active classes
-            document.querySelectorAll('.attendance-tabs .tab-link').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-
-            // Add active to selected
-            event.currentTarget.classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
+        function openShiftModal() {
+            document.getElementById('shiftModal').showModal();
         }
 
-        // Approval Drawer logic
-        function openApprovalDrawer() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('approvalDrawer').style.right = '0';
-
-            // Prevent body scroll
-            document.body.style.overflow = 'hidden';
+        function closeShiftModal() {
+            document.getElementById('shiftModal').close();
         }
 
-        function closeApprovalDrawer() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('approvalDrawer').style.right = '-500px';
-            document.body.style.overflow = '';
+        function openAbsenceRuleModal() {
+            document.getElementById('absenceRuleModal').showModal();
         }
 
-        // Modals
-        function openMappingModal(rawId) {
-            document.getElementById('mappingModal').showModal();
+        function closeAbsenceRuleModal() {
+            document.getElementById('absenceRuleModal').close();
         }
 
-        function closeMappingModal() {
-            document.getElementById('mappingModal').close();
+        function openLatenessRuleModal() {
+            document.getElementById('latenessRuleModal').showModal();
         }
 
-        function openRequestAdjustmentModal() {
-            document.getElementById('requestModal').showModal();
+        function closeLatenessRuleModal() {
+            document.getElementById('latenessRuleModal').close();
         }
 
-        function closeRequestModal() {
-            document.getElementById('requestModal').close();
-        }
-
-        function openResolveModal() {
-            // Reusing openRequestAdjustmentModal for demonstration
-            openRequestAdjustmentModal();
-        }
-
-        // Toast logic for Audit & Feedback
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.style.background = type === 'success' ? 'var(--status-success-bg)' : 'var(--status-danger-bg)';
@@ -558,10 +565,6 @@
             }, 3000);
         }
 
-        // Document global listeners
-        document.getElementById('overlay').addEventListener('click', closeApprovalDrawer);
-
-        // Setup simple keyframes for toast
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideIn {
